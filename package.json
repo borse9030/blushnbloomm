@@ -1,0 +1,19 @@
+{
+  "name": "blushnbloomm",
+  "version": "1.0.0",
+  "description": "Bloom&blush Boutique Gifting & Floral Studio Showcase and Owner Portal",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "serve": "node server.js"
+  },
+  "keywords": [
+    "blushnbloomm",
+    "boutique",
+    "gifting",
+    "floral"
+  ],
+  "author": "Siddhi Kokate",
+  "license": "MIT"
+}
