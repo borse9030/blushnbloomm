@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Owner Studio Portal | Bloom&amp;blush</title>
+  <meta name="description" content="Exclusive owner dashboard to curate, add, edit, and sync handcrafted creations for the Bloom&blush boutique showcase.">
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Google Fonts: Playfair Display & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <!-- Admin Stylesheet -->
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg">
+</head>
+<body>
+
+  <!-- ===================================================================
+       Top Admin Navigation Bar
+       =================================================================== -->
+  <header class="admin-navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand-section">
+        <div class="brand-logo-badge">B</div>
+        <div class="brand-title-group">
+          <h1>Bloom&amp;blush</h1>
+          <span class="admin-badge">Owner Studio Portal</span>
+        </div>
+      </a>
+
+      <div class="nav-actions">
+        <a href="../index.html" target="_blank" rel="noopener noreferrer" class="btn btn-outline-gold" title="Open main website in a new window to see live preview">
+          <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+          <span>View Main Website</span>
+        </a>
+
+        <button type="button" class="btn btn-secondary" id="btn-sync-drawer">
+          <svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+          <span>Sync &amp; Export</span>
+        </button>
+
+        <button type="button" class="btn btn-primary" id="btn-add-product">
+          <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+          <span>+ Add Creation</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===================================================================
+       Main Dashboard Body
+       =================================================================== -->
+  <main class="admin-main">
+
+    <!-- KPI & Stats Summary Banner -->
+    <section class="stats-banner">
+      <div class="stat-card">
+        <div class="stat-icon-wrapper">
+          <svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
+        </div>
+        <div class="stat-content">
+          <div class="stat-label">Total Creations</div>
+          <div class="stat-value" id="stat-total-products">--</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon-wrapper">
+          <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
+        </div>
+        <div class="stat-content">
+          <div class="stat-label">Active Collections</div>
+          <div class="stat-value" id="stat-total-collections">--</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon-wrapper">
+          <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+        </div>
+        <div class="stat-content">
+          <div class="stat-label">Price Spectrum</div>
+          <div class="stat-value" id="stat-avg-price">--</div>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon-wrapper">
+          <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        </div>
+        <div class="stat-content">
+          <div class="stat-label">Signature Offerings</div>
+          <div class="stat-value" id="stat-signature-count">--</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Real-Time Sync Indicator Bar -->
+    <div class="sync-status-bar">
+      <div class="sync-status-left">
+        <span class="sync-pulse"></span>
+        <span><strong>Live Sync Active:</strong> Any creation you add or edit here updates your main website instantly in your browser.</span>
+      </div>
+      <div>
+        <span style="font-size: 0.8rem; color: var(--text-muted);">Crafted for Siddhi Kokate &bull; Pune, India</span>
+      </div>
+    </div>
+
+    <!-- Search, Filter & Sort Toolbar -->
+    <div class="toolbar-card">
+      <div class="toolbar-top">
+        <div class="search-box-wrapper">
+          <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+          <input type="text" id="search-input" class="search-input" placeholder="Search creations by name, occasion, badge, or keyword...">
+        </div>
+
+        <div class="toolbar-buttons">
+          <select id="sort-select" class="form-control" style="width: auto; min-width: 170px;">
+            <option value="default">Sort: Default Order</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="name-asc">Name: A to Z</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Category Filter Pills -->
+      <div class="category-filter-scroll" id="category-filter-chips">
+        <!-- Rendered dynamically by admin.js -->
+      </div>
+    </div>
+
+    <!-- Products Section Header -->
+    <div class="products-view-header">
+      <h2 class="products-view-title">Boutique Portfolio Inventory</h2>
+      <span id="filtered-count" style="font-size: 0.85rem; color: var(--text-muted);">Loading creations...</span>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="products-grid" id="products-grid">
+      <!-- Rendered dynamically by admin.js -->
+    </div>
+
+  </main>
+
+  <!-- ===================================================================
+       Modal: Add / Edit Product Form
+       =================================================================== -->
+  <div class="modal-overlay" id="product-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 id="modal-form-title">Add New Boutique Creation</h2>
+        <button type="button" class="modal-close-btn js-close-modal" aria-label="Close modal">&times;</button>
+      </div>
+
+      <form id="product-form" class="modal-body">
+        <div class="form-grid">
+
+          <!-- Creation Name -->
+          <div class="form-group form-full">
+            <label class="form-label" for="prod-name">Creation Name *</label>
+            <input type="text" id="prod-name" class="form-control" placeholder="e.g. The Royal Sovereign Money Garland" required>
+          </div>
+
+          <!-- Product Slug ID -->
+          <div class="form-group">
+            <label class="form-label" for="prod-id">
+              <span>Unique Item Identifier (Slug) *</span>
+              <span class="helper">Auto-generated</span>
+            </label>
+            <input type="text" id="prod-id" class="form-control" placeholder="e.g. royal-sovereign-garland" required>
+          </div>
+
+          <!-- Collection / Category -->
+          <div class="form-group">
+            <label class="form-label" for="prod-category-select">Collection / Category *</label>
+            <select id="prod-category-select" class="form-control" required></select>
+          </div>
+
+          <!-- Custom Category Input (shown if '__custom__' selected) -->
+          <div class="form-group form-full" id="custom-category-wrapper" style="display: none;">
+            <label class="form-label" for="prod-custom-category">New Custom Category Name *</label>
+            <input type="text" id="prod-custom-category" class="form-control" placeholder="e.g. Festive Thali Platters">
+          </div>
+
+          <!-- Badge / Tag -->
+          <div class="form-group">
+            <label class="form-label" for="prod-badge">Featured Badge</label>
+            <select id="prod-badge" class="form-control"></select>
+          </div>
+
+          <!-- Numeric Price -->
+          <div class="form-group">
+            <label class="form-label" for="prod-price">Base Price (₹ INR) *</label>
+            <input type="number" id="prod-price" class="form-control" placeholder="e.g. 4500" min="0" required>
+          </div>
+
+          <!-- Formatted Display Price -->
+          <div class="form-group">
+            <label class="form-label" for="prod-price-formatted">Display Price Text</label>
+            <input type="text" id="prod-price-formatted" class="form-control" placeholder="e.g. Starting at ₹4,500">
+          </div>
+
+          <!-- Price Note -->
+          <div class="form-group">
+            <label class="form-label" for="prod-price-note">Price Subtext / Note</label>
+            <input type="text" id="prod-price-note" class="form-control" placeholder="e.g. + Currency face value or Fresh blooms">
+          </div>
+
+          <!-- Image Selector -->
+          <div class="form-group form-full">
+            <label class="form-label">
+              <span>Product Photography *</span>
+              <span class="helper">Choose file, existing photo, or web URL</span>
+            </label>
+
+            <div class="image-source-tabs">
+              <button type="button" class="tab-btn active" data-tab="upload">Upload Local Photo</button>
+              <button type="button" class="tab-btn" data-tab="asset">Studio Asset Gallery</button>
+              <button type="button" class="tab-btn" data-tab="url">Image Web URL</button>
+            </div>
+
+            <!-- 1. Upload File -->
+            <div id="img-panel-upload">
+              <input type="file" id="prod-image-file" class="form-control" accept="image/*">
+            </div>
+
+            <!-- 2. Studio Asset Gallery -->
+            <div id="img-panel-asset" style="display: none;">
+              <select id="prod-asset-select" class="form-control"></select>
+            </div>
+
+            <!-- 3. Web URL -->
+            <div id="img-panel-url" style="display: none;">
+              <input type="url" id="prod-image-url" class="form-control" placeholder="https://images.unsplash.com/...">
+            </div>
+
+            <!-- Hidden input holding final image string/base64 -->
+            <input type="hidden" id="prod-image-final">
+
+            <!-- Image Preview Box -->
+            <div id="prod-image-preview-container" class="image-preview-container" style="display: none;">
+              <img id="prod-img-preview-thumb" class="image-preview-thumb" src="" alt="Preview">
+              <div class="image-preview-info">
+                <strong id="prod-img-preview-label">Image Selected</strong>
+                <p style="font-size: 0.75rem; color: var(--text-muted);">This photo will be displayed on the card and modal.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Short Card Teaser Description -->
+          <div class="form-group form-full">
+            <label class="form-label" for="prod-short-desc">Short Card Description (1-2 sentences) *</label>
+            <textarea id="prod-short-desc" class="form-control" rows="2" placeholder="Brief summary displayed on the product catalog card..." required></textarea>
+          </div>
+
+          <!-- Detailed Narrative Description -->
+          <div class="form-group form-full">
+            <label class="form-label" for="prod-detailed-desc">Detailed Creation Story (Shown in Modal) *</label>
+            <textarea id="prod-detailed-desc" class="form-control" rows="3" placeholder="Artistic narrative, materials used, craftsmanship story..." required></textarea>
+          </div>
+
+          <!-- Customization Options Tag Input -->
+          <div class="form-group form-full tag-input-wrapper">
+            <label class="form-label">
+              <span>Customization Options</span>
+              <span class="helper">Add bespoke options offered to clients</span>
+            </label>
+            <div class="tag-entry-row">
+              <input type="text" id="customization-input" class="form-control" placeholder="e.g. Color tuning to match wedding attire">
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-add-customization">+ Add</button>
+            </div>
+            <div class="tags-list" id="customization-tags-list"></div>
+            <input type="hidden" id="customization-values" value="[]">
+          </div>
+
+          <!-- Suitable Occasions Tag Input -->
+          <div class="form-group form-full tag-input-wrapper">
+            <label class="form-label">
+              <span>Suitable Occasions</span>
+              <span class="helper">Select presets or type custom</span>
+            </label>
+            <div class="tag-entry-row">
+              <input type="text" id="occasion-input" class="form-control" placeholder="e.g. Sangeet Celebration">
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-add-occasion">+ Add</button>
+            </div>
+            <div id="occasion-presets" style="display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.25rem;"></div>
+            <div class="tags-list" id="occasion-tags-list"></div>
+            <input type="hidden" id="occasion-values" value="[]">
+          </div>
+
+          <!-- Creation Specifications (Key-Value Pairs) -->
+          <div class="form-group form-full">
+            <label class="form-label">
+              <span>Creation Specifications &amp; Care Details</span>
+              <button type="button" class="btn btn-sm btn-outline-gold" id="btn-add-spec-row" style="padding: 0.2rem 0.5rem; font-size: 0.74rem;">+ Add Row</button>
+            </label>
+            <table class="kv-editor-table">
+              <thead>
+                <tr>
+                  <th style="width: 40%;">Specification Name</th>
+                  <th style="width: 50%;">Detail / Instructions</th>
+                  <th style="width: 10%;"></th>
+                </tr>
+              </thead>
+              <tbody id="spec-table-body"></tbody>
+            </table>
+          </div>
+
+        </div>
+
+        <div class="modal-footer" style="margin-top: 1.5rem; padding: 1rem 0 0 0; background: none;">
+          <button type="button" class="btn btn-secondary js-close-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Creation to Boutique</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       Modal: Sync, Backup & GitHub Publisher Drawer
+       =================================================================== -->
+  <div class="modal-overlay" id="sync-drawer-modal">
+    <div class="modal-card" style="max-width: 680px;">
+      <div class="modal-header">
+        <h2>Boutique Data Sync &amp; Publishing</h2>
+        <button type="button" class="modal-close-btn js-close-modal" aria-label="Close modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+
+        <!-- Method 1: Export products.json -->
+        <div class="sync-box">
+          <div class="sync-box-header">
+            <svg style="width: 24px; height: 24px; fill: var(--gold-600);" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+            <h4>1. Download Updated `products.json`</h4>
+          </div>
+          <p>Export your full creations catalog as a clean, formatted <code>products.json</code> file. You can simply replace the existing <code>products.json</code> in your project directory or commit it via Git.</p>
+          <button type="button" class="btn btn-primary" id="btn-download-json">
+            <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+            <span>Download products.json</span>
+          </button>
+        </div>
+
+        <!-- Method 2: Import Backup JSON -->
+        <div class="sync-box">
+          <div class="sync-box-header">
+            <svg style="width: 24px; height: 24px; fill: var(--burgundy-700);" viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
+            <h4>2. Import or Restore from Backup File</h4>
+          </div>
+          <p>Load an existing <code>products.json</code> or backup file from your computer into this admin workspace.</p>
+          <input type="file" id="import-json-file" accept=".json" class="form-control">
+        </div>
+
+        <!-- Method 3: Cloud Direct Publish to GitHub -->
+        <div class="sync-box" style="border: 1px solid rgba(212, 175, 55, 0.6); background: #FAF5EB;">
+          <div class="sync-box-header">
+            <svg style="width: 24px; height: 24px; fill: var(--burgundy-900);" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
+            <h4>3. Direct One-Click Publish to GitHub (Zero Backend)</h4>
+          </div>
+          <p>Optionally connect directly to your GitHub repository (<code>borse9030/blushnbloomm</code>). Entering your GitHub Personal Access Token allows you to update your live website on GitHub Pages with a single click without opening a terminal!</p>
+          <div class="form-group" style="margin-bottom: 0.75rem;">
+            <label class="form-label" for="gh-token-input">GitHub Personal Access Token (PAT)</label>
+            <input type="password" id="gh-token-input" class="form-control" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+            <span style="font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;">Saved securely only in your own private browser storage.</span>
+          </div>
+          <button type="button" class="btn btn-burgundy" id="btn-publish-github">
+            <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+            <span>Publish Live to GitHub</span>
+          </button>
+          <div id="gh-publish-status" style="margin-top: 0.75rem; font-size: 0.82rem; display: none;"></div>
+        </div>
+
+        <!-- Method 4: Factory Reset -->
+        <div style="margin-top: 1.5rem; text-align: right;">
+          <button type="button" class="btn btn-sm btn-danger-outline" id="btn-reset-defaults">Restore Original Factory Catalog</button>
+        </div>
+
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary js-close-modal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       Modal: Confirm Deletion
+       =================================================================== -->
+  <div class="modal-overlay" id="delete-confirm-modal">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-header" style="background: #5E0D18;">
+        <h2>Delete Creation</h2>
+        <button type="button" class="modal-close-btn js-close-modal" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 1.5rem;">
+        <p style="font-size: 0.95rem; margin-bottom: 1rem;">Are you sure you want to permanently remove <strong id="delete-product-name">this creation</strong> from your catalog?</p>
+        <p style="font-size: 0.82rem; color: var(--text-muted);">This action will remove the item from your store inventory and the live website.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary js-close-modal">Cancel</button>
+        <button type="button" class="btn btn-burgundy" id="btn-confirm-delete" style="background: var(--danger); border-color: var(--danger);">Yes, Delete Creation</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notifications Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Footer -->
+  <footer class="admin-footer">
+    <p>&copy; 2026 Bloom&amp;blush &bull; Owner Studio Portal &bull; Handcrafted for Siddhi Kokate</p>
+    <p style="margin-top: 4px;"><a href="../index.html" target="_blank">Visit Main Website</a> &bull; Pimpri-Chinchwad, Pune</p>
+  </footer>
+
+  <!-- Admin Application Logic Script -->
+  <script src="js/admin.js"></script>
+</body>
+</html>

@@ -84,6 +84,20 @@ function setupSyncListeners() {
     }
   });
 
+  // Cross-tab / cross-window BroadcastChannel sync with Owner Portal
+  if ('BroadcastChannel' in window) {
+    try {
+      const channel = new BroadcastChannel('bloom_product_sync');
+      channel.onmessage = (e) => {
+        if (e.data && e.data.type === 'PRODUCTS_UPDATED' && Array.isArray(e.data.products)) {
+          PRODUCTS = e.data.products;
+          renderProducts('all');
+          initCategoryFilters();
+        }
+      };
+    } catch (err) {}
+  }
+
   // Global programmatic sync API for alternate website, headless CMS, or admin panel
   window.bloomSyncProducts = function(newProducts) {
     if (Array.isArray(newProducts)) {
