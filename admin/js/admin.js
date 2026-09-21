@@ -258,38 +258,10 @@ function initSyncChannel() {
  * Load Products: Priority 1 = LocalStorage, Priority 2 = products.json, Priority 3 = Default bundled
  */
 async function loadProducts() {
-  // 0. Connect to Firebase Firestore in real time if available
-  if (typeof firestoreDb !== 'undefined' && firestoreDb) {
-    try {
-      firestoreDb.collection('products').onSnapshot((snapshot) => {
-        if (!snapshot.empty) {
-          const cloudProducts = [];
-          snapshot.forEach(doc => {
-            cloudProducts.push(doc.data());
-          });
-          if (cloudProducts.length > 0) {
-            PRODUCTS = cloudProducts;
-            localStorage.setItem('bloom_custom_products', JSON.stringify(PRODUCTS));
-            renderCategoryFilters();
-            renderProducts();
-            updateStats();
-            updateFirebaseBadge(true, cloudProducts.length);
-            console.log('[Admin] Synced with Firebase Cloud:', cloudProducts.length, 'products');
-            return;
-          }
-        } else {
-          updateFirebaseBadge(true, 0);
-        }
-      }, (err) => {
-        console.warn('[Admin] Firestore onSnapshot warning:', err);
-        updateFirebaseBadge(false, 0, err.message);
-      });
-    } catch (err) {
-      console.warn('[Admin] Firebase Firestore listener error:', err);
-    }
-  }
+  // 0. Connect to Firebase Firestore in real time with auto-sync
+  startFirestoreSync();
 
-  // 1. Check localStorage first
+  // 1. Check localStorage first (fast local display)
   const localData = localStorage.getItem('bloom_custom_products');
   if (localData) {
     try {
@@ -362,9 +334,11 @@ function loadFromLocalStorage(render = true) {
    Event Listeners & Controls
    =================================================================== */
 function setupEventListeners() {
-  // Search input
+  // Search input - explicitly reset value so browser autocomplete does not filter out creations
   const searchInput = document.getElementById('search-input');
   if (searchInput) {
+    searchInput.value = '';
+    SEARCH_QUERY = '';
     searchInput.addEventListener('input', (e) => {
       SEARCH_QUERY = e.target.value.toLowerCase().trim();
       renderProducts();
@@ -384,12 +358,6 @@ function setupEventListeners() {
   const addBtn = document.getElementById('btn-add-product');
   if (addBtn) {
     addBtn.addEventListener('click', () => openProductModal(null));
-  }
-
-  // Open Sync & Export drawer
-  const syncBtn = document.getElementById('btn-sync-drawer');
-  if (syncBtn) {
-    syncBtn.addEventListener('click', openSyncDrawer);
   }
 
   // Modal close buttons
@@ -1355,8 +1323,52 @@ function escapeHtml(str) {
 }
 
 /* ===================================================================
-   Firebase Cloud Helpers
+   Firebase Automated Real-Time Synchronization
    =================================================================== */
+function startFirestoreSync() {
+  if (typeof firestoreDb === 'undefined' || !firestoreDb) return;
+
+  try {
+    firestoreDb.collection('products').onSnapshot((snapshot) => {
+      if (!snapshot.empty) {
+        const cloudProducts = [];
+        snapshot.forEach(doc => {
+          cloudProducts.push(doc.data());
+        });
+        if (cloudProducts.length > 0) {
+          PRODUCTS = cloudProducts;
+          localStorage.setItem('bloom_custom_products', JSON.stringify(PRODUCTS));
+          renderCategoryFilters();
+          renderProducts();
+          updateStats();
+          updateFirebaseBadge(true, cloudProducts.length);
+          console.log('[Firebase] Automated sync:', cloudProducts.length, 'creations active');
+          return;
+        }
+      } else {
+        // If collection is completely empty, automatically seed it without any manual click
+        console.log('[Firebase] Empty collection detected. Automatically seeding initial catalog...');
+        const batch = firestoreDb.batch();
+        const catalogToUpload = (PRODUCTS && PRODUCTS.length > 0) ? PRODUCTS : DEFAULT_FALLBACK_PRODUCTS;
+        catalogToUpload.forEach(prod => {
+          batch.set(firestoreDb.collection('products').doc(prod.id), prod);
+        });
+        batch.commit().then(() => {
+          console.log('[Firebase] Automatically populated Firestore cloud with initial catalog.');
+          updateFirebaseBadge(true, catalogToUpload.length);
+        }).catch(err => console.warn('[Firebase] Auto-seed note:', err));
+      }
+    }, (err) => {
+      console.warn('[Admin] Firestore auto-sync error, will retry:', err);
+      updateFirebaseBadge(false, 0, err.message);
+      // Automatically retry in 4 seconds
+      setTimeout(startFirestoreSync, 4000);
+    });
+  } catch (e) {
+    console.warn('[Admin] startFirestoreSync exception:', e);
+  }
+}
+
 function updateFirebaseBadge(connected, count = 0, errorMsg = '') {
   const badgeEl = document.getElementById('firebase-cloud-badge');
   const pulseEl = document.getElementById('sync-pulse-indicator');
@@ -1365,87 +1377,11 @@ function updateFirebaseBadge(connected, count = 0, errorMsg = '') {
   if (!badgeEl) return;
 
   if (connected) {
-    badgeEl.innerHTML = `<span style="font-size: 0.78rem; font-weight: 600; color: #2E7D32; background: #E8F5E9; padding: 0.25rem 0.65rem; border-radius: 999px; border: 1px solid #A5D6A7;">Firebase: Connected (${count} cloud items)</span>`;
+    badgeEl.innerHTML = `<span style="font-size: 0.78rem; font-weight: 600; color: #2E7D32; background: #E8F5E9; padding: 0.25rem 0.65rem; border-radius: 999px; border: 1px solid #A5D6A7;">Live Cloud: Automated</span>`;
     if (pulseEl) pulseEl.style.backgroundColor = '#28A745';
-    if (textEl) textEl.innerHTML = `<strong>Firebase Cloud Sync:</strong> Any creation you add or edit here updates your live website instantly for all customers worldwide.`;
+    if (textEl) textEl.innerHTML = `<strong>Automated Cloud Sync Active:</strong> All creations update live in real-time. Any changes you make here are automatically published to your live website.`;
   } else {
-    badgeEl.innerHTML = `<span style="font-size: 0.78rem; font-weight: 600; color: #C62828; background: #FFEBEE; padding: 0.25rem 0.65rem; border-radius: 999px; border: 1px solid #FFCDD2;" title="${escapeHtml(errorMsg)}">Firebase: Offline / Rule Check</span>`;
+    badgeEl.innerHTML = `<span style="font-size: 0.78rem; font-weight: 600; color: #FFA000; background: #FFF8E1; padding: 0.25rem 0.65rem; border-radius: 999px; border: 1px solid #FFE082;">Cloud: Connecting...</span>`;
     if (pulseEl) pulseEl.style.backgroundColor = '#FFA000';
-  }
-}
-
-async function seedCatalogToFirebase() {
-  if (typeof firestoreDb === 'undefined' || !firestoreDb) {
-    showToast('Firebase Firestore is not initialized.', 'error');
-    return;
-  }
-
-  const statusEl = document.getElementById('firebase-sync-status');
-  if (statusEl) {
-    statusEl.style.display = 'block';
-    statusEl.innerHTML = '<span style="color: var(--burgundy-700);">Uploading all creations to Firebase Firestore...</span>';
-  }
-
-  try {
-    const batch = firestoreDb.batch();
-    const catalogToUpload = PRODUCTS && PRODUCTS.length > 0 ? PRODUCTS : DEFAULT_FALLBACK_PRODUCTS;
-
-    catalogToUpload.forEach(prod => {
-      const docRef = firestoreDb.collection('products').doc(prod.id);
-      batch.set(docRef, prod);
-    });
-
-    await batch.commit();
-
-    if (statusEl) {
-      statusEl.innerHTML = `<span style="color: #2E7D32; font-weight: 600;">Uploaded all ${catalogToUpload.length} creations to Firebase Cloud!</span>`;
-    }
-    showToast(`Successfully uploaded ${catalogToUpload.length} creations to Firebase Cloud!`, 'success');
-  } catch (err) {
-    console.error('Seed error:', err);
-    if (statusEl) {
-      statusEl.innerHTML = `<span style="color: #C62828;">Upload failed: ${escapeHtml(err.message)}. Check Firestore rules in Firebase console.</span>`;
-    }
-    showToast('Firebase upload error: ' + err.message, 'error');
-  }
-}
-
-async function pullCatalogFromFirebase() {
-  if (typeof firestoreDb === 'undefined' || !firestoreDb) {
-    showToast('Firebase Firestore is not initialized.', 'error');
-    return;
-  }
-
-  const statusEl = document.getElementById('firebase-sync-status');
-  if (statusEl) {
-    statusEl.style.display = 'block';
-    statusEl.innerHTML = '<span style="color: var(--burgundy-700);">Fetching creations from Firestore...</span>';
-  }
-
-  try {
-    const snapshot = await firestoreDb.collection('products').get();
-    if (!snapshot.empty) {
-      const cloudProducts = [];
-      snapshot.forEach(doc => cloudProducts.push(doc.data()));
-      PRODUCTS = cloudProducts;
-      saveProducts(true);
-      renderCategoryFilters();
-      renderProducts();
-      if (statusEl) {
-        statusEl.innerHTML = `<span style="color: #2E7D32; font-weight: 600;">Loaded ${cloudProducts.length} creations from Firebase!</span>`;
-      }
-      showToast(`Loaded ${cloudProducts.length} creations from Firebase!`, 'success');
-    } else {
-      if (statusEl) {
-        statusEl.innerHTML = '<span style="color: #FFA000;">Firebase collection is currently empty. Click "Upload Entire Catalog to Firebase Cloud" to populate it.</span>';
-      }
-      showToast('Firebase database is currently empty.', 'info');
-    }
-  } catch (err) {
-    console.error('Pull error:', err);
-    if (statusEl) {
-      statusEl.innerHTML = `<span style="color: #C62828;">Fetch failed: ${escapeHtml(err.message)}</span>`;
-    }
-    showToast('Firebase fetch error: ' + err.message, 'error');
   }
 }

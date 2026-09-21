@@ -37,11 +37,6 @@
           <span>View Main Website</span>
         </a>
 
-        <button type="button" class="btn btn-secondary" id="btn-sync-drawer">
-          <svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
-          <span>Sync &amp; Export</span>
-        </button>
-
         <button type="button" class="btn btn-primary" id="btn-add-product">
           <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
           <span>+ Add Creation</span>
@@ -98,14 +93,14 @@
       </div>
     </section>
 
-    <!-- Real-Time Sync Indicator Bar -->
+    <!-- Real-Time Automated Cloud Sync Indicator Bar -->
     <div class="sync-status-bar">
       <div class="sync-status-left">
         <span class="sync-pulse" id="sync-pulse-indicator"></span>
-        <span id="sync-status-text"><strong>Firebase Cloud Sync:</strong> Any creation you add or edit here updates your live website instantly for all customers worldwide.</span>
+        <span id="sync-status-text"><strong>Automated Cloud Sync Active:</strong> All creations update live in real-time. Any changes you make here are automatically published to your live website.</span>
       </div>
       <div id="firebase-cloud-badge">
-        <span style="font-size: 0.78rem; font-weight: 600; color: #2E7D32; background: #E8F5E9; padding: 0.25rem 0.65rem; border-radius: 999px; border: 1px solid #A5D6A7;">Firebase: Connected</span>
+        <span style="font-size: 0.78rem; font-weight: 600; color: #2E7D32; background: #E8F5E9; padding: 0.25rem 0.65rem; border-radius: 999px; border: 1px solid #A5D6A7;">Live Cloud: Automated</span>
       </div>
     </div>
 
@@ -114,7 +109,7 @@
       <div class="toolbar-top">
         <div class="search-box-wrapper">
           <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-          <input type="text" id="search-input" class="search-input" placeholder="Search creations by name, occasion, badge, or keyword...">
+          <input type="search" id="search-input" class="search-input" placeholder="Search creations by name, occasion, badge, or keyword..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" name="catalog_search_unique">
         </div>
 
         <div class="toolbar-buttons">
@@ -322,90 +317,7 @@
 
   <!-- ===================================================================
        Modal: Sync, Backup & GitHub Publisher Drawer
-       =================================================================== -->
-  <div class="modal-overlay" id="sync-drawer-modal">
-    <div class="modal-card" style="max-width: 680px;">
-      <div class="modal-header">
-        <h2>Boutique Data Sync &amp; Publishing</h2>
-        <button type="button" class="modal-close-btn js-close-modal" aria-label="Close modal">&times;</button>
-      </div>
 
-      <div class="modal-body">
-
-        <!-- Method 0: Firebase Cloud Live Sync -->
-        <div class="sync-box" style="border: 2px solid var(--gold-500); background: #FCF9F2;">
-          <div class="sync-box-header">
-            <svg style="width: 24px; height: 24px; fill: #FFA000;" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
-            <h4 style="color: var(--burgundy-900);">Firebase Cloud Database (Instant Global Sync)</h4>
-          </div>
-          <p>Connected to project: <code>blushnbloomm-4c7b9</code>. Whenever you add or edit products in this portal, they automatically save to Firestore Cloud and appear <strong>instantly for all customers</strong> visiting your website on any device.</p>
-          <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
-            <button type="button" class="btn btn-primary" id="btn-seed-firebase">
-              <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
-              <span>Upload Entire Catalog to Firebase Cloud</span>
-            </button>
-            <button type="button" class="btn btn-secondary" id="btn-pull-firebase">
-              <svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
-              <span>Refresh from Firebase</span>
-            </button>
-          </div>
-          <div id="firebase-sync-status" style="margin-top: 0.75rem; font-size: 0.82rem; display: none;"></div>
-        </div>
-
-        <!-- Method 1: Export products.json -->
-        <div class="sync-box">
-          <div class="sync-box-header">
-            <svg style="width: 24px; height: 24px; fill: var(--gold-600);" viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-            <h4>1. Download Updated `products.json`</h4>
-          </div>
-          <p>Export your full creations catalog as a clean, formatted <code>products.json</code> file. You can simply replace the existing <code>products.json</code> in your project directory or commit it via Git.</p>
-          <button type="button" class="btn btn-primary" id="btn-download-json">
-            <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
-            <span>Download products.json</span>
-          </button>
-        </div>
-
-        <!-- Method 2: Import Backup JSON -->
-        <div class="sync-box">
-          <div class="sync-box-header">
-            <svg style="width: 24px; height: 24px; fill: var(--burgundy-700);" viewBox="0 0 24 24"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
-            <h4>2. Import or Restore from Backup File</h4>
-          </div>
-          <p>Load an existing <code>products.json</code> or backup file from your computer into this admin workspace.</p>
-          <input type="file" id="import-json-file" accept=".json" class="form-control">
-        </div>
-
-        <!-- Method 3: Cloud Direct Publish to GitHub -->
-        <div class="sync-box" style="border: 1px solid rgba(212, 175, 55, 0.6); background: #FAF5EB;">
-          <div class="sync-box-header">
-            <svg style="width: 24px; height: 24px; fill: var(--burgundy-900);" viewBox="0 0 24 24"><path d="M12 2A10 10 0 0 0 2 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5C19.14 20.16 22 16.42 22 12A10 10 0 0 0 12 2z"/></svg>
-            <h4>3. Direct One-Click Publish to GitHub (Zero Backend)</h4>
-          </div>
-          <p>Optionally connect directly to your GitHub repository (<code>borse9030/blushnbloomm</code>). Entering your GitHub Personal Access Token allows you to update your live website on GitHub Pages with a single click without opening a terminal!</p>
-          <div class="form-group" style="margin-bottom: 0.75rem;">
-            <label class="form-label" for="gh-token-input">GitHub Personal Access Token (PAT)</label>
-            <input type="password" id="gh-token-input" class="form-control" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
-            <span style="font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;">Saved securely only in your own private browser storage.</span>
-          </div>
-          <button type="button" class="btn btn-burgundy" id="btn-publish-github">
-            <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
-            <span>Publish Live to GitHub</span>
-          </button>
-          <div id="gh-publish-status" style="margin-top: 0.75rem; font-size: 0.82rem; display: none;"></div>
-        </div>
-
-        <!-- Method 4: Factory Reset -->
-        <div style="margin-top: 1.5rem; text-align: right;">
-          <button type="button" class="btn btn-sm btn-danger-outline" id="btn-reset-defaults">Restore Original Factory Catalog</button>
-        </div>
-
-      </div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary js-close-modal">Close</button>
-      </div>
-    </div>
-  </div>
 
   <!-- ===================================================================
        Modal: Confirm Deletion
