@@ -258,6 +258,37 @@ function initSyncChannel() {
  * Load Products: Priority 1 = LocalStorage, Priority 2 = products.json, Priority 3 = Default bundled
  */
 async function loadProducts() {
+  // 0. Connect to Firebase Firestore in real time if available
+  if (typeof firestoreDb !== 'undefined' && firestoreDb) {
+    try {
+      firestoreDb.collection('products').onSnapshot((snapshot) => {
+        if (!snapshot.empty) {
+          const cloudProducts = [];
+          snapshot.forEach(doc => {
+            cloudProducts.push(doc.data());
+          });
+          if (cloudProducts.length > 0) {
+            PRODUCTS = cloudProducts;
+            localStorage.setItem('bloom_custom_products', JSON.stringify(PRODUCTS));
+            renderCategoryFilters();
+            renderProducts();
+            updateStats();
+            updateFirebaseBadge(true, cloudProducts.length);
+            console.log('[Admin] Synced with Firebase Cloud:', cloudProducts.length, 'products');
+            return;
+          }
+        } else {
+          updateFirebaseBadge(true, 0);
+        }
+      }, (err) => {
+        console.warn('[Admin] Firestore onSnapshot warning:', err);
+        updateFirebaseBadge(false, 0, err.message);
+      });
+    } catch (err) {
+      console.warn('[Admin] Firebase Firestore listener error:', err);
+    }
+  }
+
   // 1. Check localStorage first
   const localData = localStorage.getItem('bloom_custom_products');
   if (localData) {
@@ -1012,6 +1043,20 @@ function handleProductFormSubmit(e) {
   }
 
   saveProducts(true);
+
+  // Save creation to Firebase Cloud in real time
+  if (typeof firestoreDb !== 'undefined' && firestoreDb) {
+    firestoreDb.collection('products').doc(productObj.id).set(productObj)
+      .then(() => {
+        console.log('[Firebase] Creation saved to Cloud:', productObj.name);
+        showToast(`"${name}" live on Firebase Cloud for all customers!`, 'success');
+      })
+      .catch((err) => {
+        console.error('[Firebase] Firestore save error:', err);
+        showToast('Saved locally, but Firebase error: ' + err.message, 'error');
+      });
+  }
+
   renderCategoryFilters();
   renderProducts();
   closeAllModals();
@@ -1031,6 +1076,11 @@ function duplicateProduct(productId) {
 
   PRODUCTS.unshift(clone);
   saveProducts(true);
+
+  if (typeof firestoreDb !== 'undefined' && firestoreDb) {
+    firestoreDb.collection('products').doc(clone.id).set(clone).catch(e => console.warn(e));
+  }
+
   renderProducts();
   showToast(`Duplicated "${p.name}" as a new creation.`, 'info');
 }
@@ -1056,8 +1106,16 @@ function confirmDeleteProduct() {
   const idx = PRODUCTS.findIndex(p => p.id === PRODUCT_ID_TO_DELETE);
   if (idx >= 0) {
     const deletedName = PRODUCTS[idx].name;
+    const deletedId = PRODUCTS[idx].id;
     PRODUCTS.splice(idx, 1);
     saveProducts(true);
+
+    if (typeof firestoreDb !== 'undefined' && firestoreDb) {
+      firestoreDb.collection('products').doc(deletedId).delete()
+        .then(() => console.log('[Firebase] Deleted from Cloud:', deletedId))
+        .catch(e => console.warn('[Firebase] Delete error:', e));
+    }
+
     renderProducts();
     showToast(`Removed "${deletedName}" from catalog.`, 'info');
   }
@@ -1084,6 +1142,17 @@ function setupSyncDrawerActions() {
   const confirmDeleteBtn = document.getElementById('btn-confirm-delete');
   if (confirmDeleteBtn) {
     confirmDeleteBtn.addEventListener('click', confirmDeleteProduct);
+  }
+
+  // 0. Firebase Seed & Pull
+  const seedFirebaseBtn = document.getElementById('btn-seed-firebase');
+  if (seedFirebaseBtn) {
+    seedFirebaseBtn.addEventListener('click', seedCatalogToFirebase);
+  }
+
+  const pullFirebaseBtn = document.getElementById('btn-pull-firebase');
+  if (pullFirebaseBtn) {
+    pullFirebaseBtn.addEventListener('click', pullCatalogFromFirebase);
   }
 
   // 1. Download products.json
@@ -1283,4 +1352,100 @@ function escapeHtml(str) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
+}
+
+/* ===================================================================
+   Firebase Cloud Helpers
+   =================================================================== */
+function updateFirebaseBadge(connected, count = 0, errorMsg = '') {
+  const badgeEl = document.getElementById('firebase-cloud-badge');
+  const pulseEl = document.getElementById('sync-pulse-indicator');
+  const textEl = document.getElementById('sync-status-text');
+
+  if (!badgeEl) return;
+
+  if (connected) {
+    badgeEl.innerHTML = `<span style="font-size: 0.78rem; font-weight: 600; color: #2E7D32; background: #E8F5E9; padding: 0.25rem 0.65rem; border-radius: 999px; border: 1px solid #A5D6A7;">Firebase: Connected (${count} cloud items)</span>`;
+    if (pulseEl) pulseEl.style.backgroundColor = '#28A745';
+    if (textEl) textEl.innerHTML = `<strong>Firebase Cloud Sync:</strong> Any creation you add or edit here updates your live website instantly for all customers worldwide.`;
+  } else {
+    badgeEl.innerHTML = `<span style="font-size: 0.78rem; font-weight: 600; color: #C62828; background: #FFEBEE; padding: 0.25rem 0.65rem; border-radius: 999px; border: 1px solid #FFCDD2;" title="${escapeHtml(errorMsg)}">Firebase: Offline / Rule Check</span>`;
+    if (pulseEl) pulseEl.style.backgroundColor = '#FFA000';
+  }
+}
+
+async function seedCatalogToFirebase() {
+  if (typeof firestoreDb === 'undefined' || !firestoreDb) {
+    showToast('Firebase Firestore is not initialized.', 'error');
+    return;
+  }
+
+  const statusEl = document.getElementById('firebase-sync-status');
+  if (statusEl) {
+    statusEl.style.display = 'block';
+    statusEl.innerHTML = '<span style="color: var(--burgundy-700);">Uploading all creations to Firebase Firestore...</span>';
+  }
+
+  try {
+    const batch = firestoreDb.batch();
+    const catalogToUpload = PRODUCTS && PRODUCTS.length > 0 ? PRODUCTS : DEFAULT_FALLBACK_PRODUCTS;
+
+    catalogToUpload.forEach(prod => {
+      const docRef = firestoreDb.collection('products').doc(prod.id);
+      batch.set(docRef, prod);
+    });
+
+    await batch.commit();
+
+    if (statusEl) {
+      statusEl.innerHTML = `<span style="color: #2E7D32; font-weight: 600;">Uploaded all ${catalogToUpload.length} creations to Firebase Cloud!</span>`;
+    }
+    showToast(`Successfully uploaded ${catalogToUpload.length} creations to Firebase Cloud!`, 'success');
+  } catch (err) {
+    console.error('Seed error:', err);
+    if (statusEl) {
+      statusEl.innerHTML = `<span style="color: #C62828;">Upload failed: ${escapeHtml(err.message)}. Check Firestore rules in Firebase console.</span>`;
+    }
+    showToast('Firebase upload error: ' + err.message, 'error');
+  }
+}
+
+async function pullCatalogFromFirebase() {
+  if (typeof firestoreDb === 'undefined' || !firestoreDb) {
+    showToast('Firebase Firestore is not initialized.', 'error');
+    return;
+  }
+
+  const statusEl = document.getElementById('firebase-sync-status');
+  if (statusEl) {
+    statusEl.style.display = 'block';
+    statusEl.innerHTML = '<span style="color: var(--burgundy-700);">Fetching creations from Firestore...</span>';
+  }
+
+  try {
+    const snapshot = await firestoreDb.collection('products').get();
+    if (!snapshot.empty) {
+      const cloudProducts = [];
+      snapshot.forEach(doc => cloudProducts.push(doc.data()));
+      PRODUCTS = cloudProducts;
+      saveProducts(true);
+      renderCategoryFilters();
+      renderProducts();
+      if (statusEl) {
+        statusEl.innerHTML = `<span style="color: #2E7D32; font-weight: 600;">Loaded ${cloudProducts.length} creations from Firebase!</span>`;
+      }
+      showToast(`Loaded ${cloudProducts.length} creations from Firebase!`, 'success');
+    } else {
+      if (statusEl) {
+        statusEl.innerHTML = '<span style="color: #FFA000;">Firebase collection is currently empty. Click "Upload Entire Catalog to Firebase Cloud" to populate it.</span>';
+      }
+      showToast('Firebase database is currently empty.', 'info');
+    }
+  } catch (err) {
+    console.error('Pull error:', err);
+    if (statusEl) {
+      statusEl.innerHTML = `<span style="color: #C62828;">Fetch failed: ${escapeHtml(err.message)}</span>`;
+    }
+    showToast('Firebase fetch error: ' + err.message, 'error');
+  }
 }

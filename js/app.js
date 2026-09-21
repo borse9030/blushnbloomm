@@ -25,11 +25,36 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /**
- * Sync with alternate website / products.json
+ * Sync with Firebase Firestore / alternate website / products.json
  */
 async function loadProductsData() {
+  // 1. If Firebase Firestore is initialized, listen for real-time updates!
+  if (typeof firestoreDb !== 'undefined' && firestoreDb) {
+    try {
+      firestoreDb.collection('products').onSnapshot((snapshot) => {
+        if (!snapshot.empty) {
+          const cloudProducts = [];
+          snapshot.forEach(doc => {
+            cloudProducts.push(doc.data());
+          });
+          if (cloudProducts.length > 0) {
+            PRODUCTS = cloudProducts;
+            renderProducts('all');
+            initCategoryFilters();
+            console.log('[Firebase] Real-time synced', cloudProducts.length, 'products from Firestore!');
+            return;
+          }
+        }
+      }, (err) => {
+        console.warn('[Firebase] Firestore onSnapshot warning:', err);
+      });
+    } catch (e) {
+      console.warn('[Firebase] Error setting up Firestore listener:', e);
+    }
+  }
+
   try {
-    // 1. Check if alternate admin website saved products into localStorage
+    // 2. Check if alternate admin website saved products into localStorage
     const localData = localStorage.getItem('bloom_custom_products');
     if (localData) {
       const parsed = JSON.parse(localData);
@@ -41,7 +66,7 @@ async function loadProductsData() {
       }
     }
 
-    // 2. Fetch from products.json or configured API endpoint
+    // 3. Fetch from products.json or configured API endpoint
     const endpoint = CONFIG.productsApiUrl || 'products.json';
     const res = await fetch(endpoint);
     if (res.ok) {

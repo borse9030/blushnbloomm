@@ -101,11 +101,11 @@
     <!-- Real-Time Sync Indicator Bar -->
     <div class="sync-status-bar">
       <div class="sync-status-left">
-        <span class="sync-pulse"></span>
-        <span><strong>Live Sync Active:</strong> Any creation you add or edit here updates your main website instantly in your browser.</span>
+        <span class="sync-pulse" id="sync-pulse-indicator"></span>
+        <span id="sync-status-text"><strong>Firebase Cloud Sync:</strong> Any creation you add or edit here updates your live website instantly for all customers worldwide.</span>
       </div>
-      <div>
-        <span style="font-size: 0.8rem; color: var(--text-muted);">Crafted for Siddhi Kokate &bull; Pune, India</span>
+      <div id="firebase-cloud-badge">
+        <span style="font-size: 0.78rem; font-weight: 600; color: #2E7D32; background: #E8F5E9; padding: 0.25rem 0.65rem; border-radius: 999px; border: 1px solid #A5D6A7;">Firebase: Connected</span>
       </div>
     </div>
 
@@ -332,6 +332,26 @@
 
       <div class="modal-body">
 
+        <!-- Method 0: Firebase Cloud Live Sync -->
+        <div class="sync-box" style="border: 2px solid var(--gold-500); background: #FCF9F2;">
+          <div class="sync-box-header">
+            <svg style="width: 24px; height: 24px; fill: #FFA000;" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+            <h4 style="color: var(--burgundy-900);">Firebase Cloud Database (Instant Global Sync)</h4>
+          </div>
+          <p>Connected to project: <code>blushnbloomm-4c7b9</code>. Whenever you add or edit products in this portal, they automatically save to Firestore Cloud and appear <strong>instantly for all customers</strong> visiting your website on any device.</p>
+          <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            <button type="button" class="btn btn-primary" id="btn-seed-firebase">
+              <svg viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
+              <span>Upload Entire Catalog to Firebase Cloud</span>
+            </button>
+            <button type="button" class="btn btn-secondary" id="btn-pull-firebase">
+              <svg viewBox="0 0 24 24"><path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/></svg>
+              <span>Refresh from Firebase</span>
+            </button>
+          </div>
+          <div id="firebase-sync-status" style="margin-top: 0.75rem; font-size: 0.82rem; display: none;"></div>
+        </div>
+
         <!-- Method 1: Export products.json -->
         <div class="sync-box">
           <div class="sync-box-header">
@@ -415,6 +435,12 @@
     <p>&copy; 2026 Bloom&amp;blush &bull; Owner Studio Portal &bull; Handcrafted for Siddhi Kokate</p>
     <p style="margin-top: 4px;"><a href="../index.html" target="_blank">Visit Main Website</a> &bull; Pimpri-Chinchwad, Pune</p>
   </footer>
+
+  <!-- Firebase App & Firestore SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
+  <script src="../js/firebase-config.js"></script>
 
   <!-- Admin Application Logic Script -->
   <script src="js/admin.js"></script>
