@@ -99,88 +99,108 @@ const DEFAULT_FALLBACK_COLLECTIONS = [
 // Default bundled portfolio fallback - matching authentic portfolio.json
 const DEFAULT_FALLBACK_PORTFOLIO = [
   {
-    "id": "port-sovereign-garland",
-    "title": "The Royal Sovereign Money Garland",
-    "category": "Money Garlands",
+    "id": "port-reel-dd3ozl8kbw8",
+    "title": "The Royal Sovereign Currency Garland",
+    "category": "Garlands",
     "image": "assets/images/money_garland.jpg",
-    "linkUrl": "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
+    "linkUrl": "https://www.instagram.com/reel/Dd3Ozl8KBW8/",
+    "shortcode": "Dd3Ozl8KBW8",
     "caption": "Handcrafted currency garland with rich burgundy roses and zari brocade for grand Maharashtrian wedding entry.",
-    "tags": ["Money Garlands", "Wedding", "Groom Styling"],
+    "tags": ["Garlands", "Money Garlands", "Wedding", "Groom Styling"],
     "span": "col-span-2 row-span-2",
     "featured": true,
     "createdAt": 1738100000000
   },
   {
-    "id": "port-bridal-trousseau",
-    "title": "Raas Velvet Trousseau Suite",
-    "category": "Wedding & Celebration Gifting",
+    "id": "port-reel-ddinv2hkpe1",
+    "title": "Opulent Velvet Bridal Trousseau Suite",
+    "category": "Bridal",
     "image": "assets/images/wedding_trousseau.jpg",
-    "linkUrl": "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
+    "linkUrl": "https://www.instagram.com/reel/DdInv2hKpE1/",
+    "shortcode": "DdInv2hKpE1",
     "caption": "Opulent burgundy velvet ceremonial trays with antique zardozi borders and Kundan brooch pins.",
-    "tags": ["Trousseau", "Bridal", "Ceremonial"],
+    "tags": ["Bridal", "Trousseau", "Ceremonial", "Wedding"],
     "span": "col-span-1 row-span-1",
     "featured": true,
     "createdAt": 1738050000000
   },
   {
-    "id": "port-rose-cloche",
-    "title": "Eternal Burgundy Rose Cloche",
-    "category": "Bouquets",
-    "image": "assets/images/floral_dome.jpg",
-    "linkUrl": "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
-    "caption": "Natural preserved deep wine rose under brass glass dome that lasts 3+ years.",
-    "tags": ["Preserved Florals", "Keepsake", "Anniversary"],
+    "id": "port-reel-db41owdpwnl",
+    "title": "Sacred Ceremonial Offering Garland",
+    "category": "Garlands",
+    "image": "assets/images/reel_garland_preview.jpg",
+    "linkUrl": "https://www.instagram.com/reel/Db41OwdPwnL/",
+    "shortcode": "Db41OwdPwnL",
+    "caption": "Handcrafted sacred devotional garland with fragrant floral arrangement and gold zari accents.",
+    "tags": ["Garlands", "Devotional", "Ceremony", "Handcrafted"],
     "span": "col-span-1 row-span-1",
     "featured": true,
     "createdAt": 1738000000000
   },
   {
-    "id": "port-luxe-hamper",
-    "title": "Velvet Reverie Celebration Hamper",
-    "category": "Customized Hampers",
-    "image": "assets/images/luxury_hamper.jpg",
-    "linkUrl": "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
-    "caption": "Rigid velvet trunk with brass canisters, scented wood-wick candle, and wax-sealed greeting.",
-    "tags": ["Hampers", "Festive", "Luxury Gifting"],
+    "id": "port-reel-dbkdeiouzjy",
+    "title": "Grand Floral Entry & Wedding Decor",
+    "category": "Decor",
+    "image": "assets/images/hero.jpg",
+    "linkUrl": "https://www.instagram.com/reel/DbkDEIouZJy/",
+    "shortcode": "DbkDEIouZJy",
+    "caption": "Majestic floral installation, luxury stage decor, and ambient floral styling for wedding receptions.",
+    "tags": ["Decor", "Floral Styling", "Wedding Decor", "Grand Entry"],
     "span": "col-span-1 row-span-2",
     "featured": true,
     "createdAt": 1737950000000
   },
   {
-    "id": "port-wine-posy",
-    "title": "Wine & Blush Bridal Posy",
-    "category": "Bouquets",
-    "image": "assets/images/editorial_bouquet.jpg",
-    "linkUrl": "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
-    "caption": "Garden roses and ranunculus bound with trailing hand-dyed burgundy silk velvet ribbons.",
-    "tags": ["Bouquets", "Bridal", "Fresh Florals"],
+    "id": "port-reel-dzr_p-rivdf",
+    "title": "Velvet Reverie Celebration Hamper",
+    "category": "Hampers",
+    "image": "assets/images/luxury_hamper.jpg",
+    "linkUrl": "https://www.instagram.com/reel/DZr_p-RIvdf/",
+    "shortcode": "DZr_p-RIvdf",
+    "caption": "Rigid velvet trunk with brass canisters, scented wood-wick candle, and wax-sealed greeting.",
+    "tags": ["Hampers", "Festive", "Luxury Gifting", "Customized"],
     "span": "col-span-1 row-span-1",
     "featured": true,
     "createdAt": 1737900000000
   },
   {
-    "id": "port-pastel-garland",
-    "title": "Pastel Pearl Ceremony Garland",
-    "category": "Money Garlands",
-    "image": "assets/images/pastel_garland.jpg",
-    "linkUrl": "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
-    "caption": "Soft blush and pearl draping for baby naming ceremonies and morning engagements.",
-    "tags": ["Money Garlands", "Baby Shower", "Pastel"],
+    "id": "port-reel-dzdo5xloxn0",
+    "title": "Studio BTS & Artisan Flower Weaving",
+    "category": "Behind the Scenes",
+    "image": "assets/images/reel_styling_preview.jpg",
+    "linkUrl": "https://www.instagram.com/reel/DZdO5XLoxn0/",
+    "shortcode": "DZdO5XLoxn0",
+    "caption": "Behind-the-scenes in our Pimpri-Chinchwad studio crafting delicate bespoke pieces with patience and passion.",
+    "tags": ["Behind the Scenes", "Studio BTS", "Artisanal", "Pune"],
     "span": "col-span-1 row-span-1",
     "featured": true,
     "createdAt": 1737850000000
   },
   {
-    "id": "port-keepsake-box",
-    "title": "Hand-Carved Keepsake Letter Box",
-    "category": "Customized Gifts",
-    "image": "assets/images/customized_gifts.jpg",
-    "linkUrl": "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
-    "caption": "Seasoned wood filigree casket with deckle-edge calligraphy love note and wax seal.",
-    "tags": ["Customized Gifts", "Personalized", "Keepsake"],
+    "id": "port-reel-dv5c0ubcony",
+    "title": "Pastel Pearl Ceremony Garland",
+    "category": "Garlands",
+    "image": "assets/images/pastel_garland.jpg",
+    "linkUrl": "https://www.instagram.com/reel/DV5C0UbCOnY/",
+    "shortcode": "DV5C0UbCOnY",
+    "caption": "Soft blush and pearl draping for baby naming ceremonies, roka, and morning engagements.",
+    "tags": ["Garlands", "Pastel", "Baby Shower", "Roka"],
     "span": "col-span-1 row-span-1",
     "featured": true,
     "createdAt": 1737800000000
+  },
+  {
+    "id": "port-reel-dvkxv4hdjv2",
+    "title": "Wine & Blush Bridal Posy Bouquet",
+    "category": "Bridal",
+    "image": "assets/images/editorial_bouquet.jpg",
+    "linkUrl": "https://www.instagram.com/reel/DVkXv4hDJV2/",
+    "shortcode": "DVkXv4hDJV2",
+    "caption": "Garden roses and ranunculus bound with trailing hand-dyed burgundy silk velvet ribbons.",
+    "tags": ["Bridal", "Bouquets", "Fresh Florals", "Bridal Entry"],
+    "span": "col-span-1 row-span-1",
+    "featured": true,
+    "createdAt": 1737750000000
   }
 ];
 
@@ -3088,10 +3108,15 @@ async function loadPortfolio() {
     try {
       const parsed = JSON.parse(localData);
       if (Array.isArray(parsed) && parsed.length > 0) {
-        PORTFOLIO = parsed;
-        renderAdminPortfolio();
-        updatePortfolioStats();
-        return;
+        const isLegacy = parsed.some(it => it.id === 'port-sovereign-garland' || !(it.linkUrl || '').includes('/reel/'));
+        if (!isLegacy) {
+          PORTFOLIO = parsed;
+          renderAdminPortfolio();
+          updatePortfolioStats();
+          return;
+        } else {
+          localStorage.removeItem('bloom_custom_portfolio');
+        }
       }
     } catch (e) {
       localStorage.removeItem('bloom_custom_portfolio');

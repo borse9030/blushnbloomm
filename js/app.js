@@ -1137,7 +1137,13 @@ function restoreCachedData() {
     const cPort = localStorage.getItem('bloom_custom_portfolio');
     if (cPort) {
       const parsed = JSON.parse(cPort);
-      if (Array.isArray(parsed) && parsed.length > 0) PORTFOLIO_ITEMS = parsed;
+      // Only keep if it is not the old mock data (which used port-sovereign-garland)
+      const isLegacy = Array.isArray(parsed) && parsed.some(it => it.id === 'port-sovereign-garland' || !it.linkUrl.includes('/reel/'));
+      if (Array.isArray(parsed) && parsed.length > 0 && !isLegacy) {
+        PORTFOLIO_ITEMS = parsed;
+      } else {
+        localStorage.removeItem('bloom_custom_portfolio');
+      }
     }
   } catch (e) {}
 
