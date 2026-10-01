@@ -4,8 +4,7 @@
   "description": "Bloom&blush Boutique Gifting & Floral Studio Showcase and Owner Portal",
   "scripts": {
     "dev": "node server.js",
-    "serve": "node server.js",
-    "build": "echo 'Static build ready'"
+    "serve": "node server.js"
   },
   "keywords": [
     "blushnbloomm",
