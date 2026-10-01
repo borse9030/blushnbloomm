@@ -392,20 +392,144 @@ function renderPortfolio(categoryFilter = 'all') {
 
   const instaIcon = `<svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`;
 
-  container.innerHTML = items.slice(0, 8).map(item => `
-    <a href="${item.linkUrl || CONFIG.instagramUrl}" target="_blank" rel="noopener noreferrer" class="portfolio-journal-card js-tilt-card js-instagram-link" aria-label="${escapeHtml(item.title)} on Instagram">
+  container.innerHTML = items.slice(0, 8).map(item => {
+    const isReel = (item.linkUrl && item.linkUrl.includes('/reel/')) || (item.tags && item.tags.some(t => t.toLowerCase().includes('reel') || t.toLowerCase().includes('video')));
+    const badgeType = isReel ? 'Reel' : 'Post';
+    return `
+    <div class="portfolio-journal-card js-tilt-card js-portfolio-item" data-id="${item.id}" role="button" tabindex="0" aria-label="${escapeHtml(item.title)} on Instagram">
       <img src="${item.image}" alt="${escapeHtml(item.title)} - Bloom&blush" loading="lazy">
       <div class="portfolio-insta-badge" aria-hidden="true">${instaIcon}</div>
       <div class="portfolio-card-overlay">
-        <span class="portfolio-overlay-cat">${escapeHtml(item.category)}</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+          <span class="portfolio-overlay-cat">${escapeHtml(item.category)}</span>
+          <span style="font-size: 0.7rem; background: rgba(0,0,0,0.5); padding: 2px 7px; border-radius: 10px; color: #FFF; font-weight: 600;">${badgeType}</span>
+        </div>
         <h4 class="portfolio-overlay-title">${escapeHtml(item.title)}</h4>
+        <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem; align-items: center;">
+          <span style="font-size: 0.72rem; color: var(--accent-gold-light); font-weight: 600;">View Story &bull; @blushnbloomm.in ↗</span>
+        </div>
       </div>
-    </a>
-  `).join('');
+    </div>
+  `}).join('');
+
+  // Bind click on portfolio cards to open Instagram modal
+  container.querySelectorAll('.js-portfolio-item').forEach(card => {
+    card.addEventListener('click', () => {
+      const id = card.dataset.id;
+      const found = items.find(it => it.id === id);
+      if (found) openInstagramModal(found);
+    });
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const id = card.dataset.id;
+        const found = items.find(it => it.id === id);
+        if (found) openInstagramModal(found);
+      }
+    });
+  });
 
   init3DTilt();
   refreshScrollToning();
 }
+
+function openInstagramModal(item) {
+  const modal = document.getElementById('insta-post-modal');
+  const body = document.getElementById('insta-modal-body');
+  if (!modal || !body) return;
+
+  const instaUrl = item.linkUrl || 'https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==';
+  const match = instaUrl.match(/\/(p|reel|tv)\/([a-zA-Z0-9_-]+)/);
+  const isEmbeddable = !!match;
+  const embedSrc = isEmbeddable ? `https://www.instagram.com/${match[1]}/${match[2]}/embed/captioned/` : null;
+
+  const waMsg = encodeURIComponent(`Hello Siddhi! I was viewing your creation "${item.title}" on Bloom&blush Instagram portfolio and would love to customize an order. Could you share pricing and dispatch options for Pimpri-Chinchwad / Pune?`);
+  const waUrl = `https://wa.me/918180879442?text=${waMsg}`;
+
+  body.innerHTML = `
+    <div style="flex: 1.2; background: #000; display: flex; align-items: center; justify-content: center; min-height: 380px; position: relative; overflow: hidden;">
+      ${embedSrc ? `
+        <iframe src="${embedSrc}" style="width: 100%; height: 100%; min-height: 480px; border: none;" allowtransparency="true" allow="encrypted-media"></iframe>
+      ` : `
+        <img src="${item.image}" alt="${escapeHtml(item.title)}" style="width: 100%; height: 100%; object-fit: contain; max-height: 70vh;">
+      `}
+    </div>
+
+    <div style="flex: 1; padding: 2rem; display: flex; flex-direction: column; justify-content: space-between; background: #FFFFFF; min-width: 300px;">
+      <div>
+        <div style="display: flex; align-items: center; gap: 0.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid rgba(0,0,0,0.08); margin-bottom: 1.25rem;">
+          <div style="width: 44px; height: 44px; border-radius: 50%; padding: 2px; background: linear-gradient(45deg, #F58529, #DD2A7B, #8134AF); display: flex;">
+            <img src="assets/images/web_logo.png" alt="Siddhi Kokate" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: #FFF;">
+          </div>
+          <div>
+            <div style="display: flex; align-items: center; gap: 0.35rem;">
+              <span style="font-weight: 700; font-size: 0.95rem; color: var(--burgundy-deep);">@blushnbloomm.in</span>
+              <svg viewBox="0 0 24 24" width="14" height="14" style="color: #0095F6;"><path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+            </div>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Siddhi Kokate &bull; Floral &amp; Gifting Studio</div>
+          </div>
+        </div>
+
+        <span style="display: inline-block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-gold); font-weight: 600; margin-bottom: 0.35rem;">
+          ${escapeHtml(item.category || 'Visual Story')}
+        </span>
+        <h3 style="font-family: var(--font-serif); font-size: 1.35rem; color: var(--burgundy-deep); margin-bottom: 0.75rem; line-height: 1.3;">
+          ${escapeHtml(item.title)}
+        </h3>
+
+        <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">
+          ${escapeHtml(item.caption || 'Handcrafted bespoke piece designed with fine floral artistry, zardozi brocade, and ceremonial grandeur at Bloom&blush studio in Pimpri-Chinchwad, Pune.')}
+        </p>
+
+        ${Array.isArray(item.tags) && item.tags.length > 0 ? `
+          <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem;">
+            ${item.tags.map(t => `<span style="font-size: 0.74rem; background: var(--cream-ivory); border: 1px solid rgba(197, 168, 128, 0.3); padding: 3px 9px; border-radius: 12px; color: var(--text-secondary);">#${escapeHtml(t)}</span>`).join('')}
+          </div>
+        ` : ''}
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 0.65rem; margin-top: 1rem; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 1.25rem;">
+        <a href="${instaUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary js-instagram-link" style="width: 100%; justify-content: center; text-align: center; gap: 0.5rem;">
+          <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          <span>Open on Instagram (@blushnbloomm.in)</span>
+        </a>
+
+        <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width: 100%; justify-content: center; text-align: center; gap: 0.5rem; background: #25D366; border-color: #25D366; color: #FFF;">
+          <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2z"/></svg>
+          <span>Inquire About This Creation</span>
+        </a>
+      </div>
+    </div>
+  `;
+
+  modal.style.display = 'flex';
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+
+  const closeBtn = document.getElementById('btn-close-insta-modal');
+  if (closeBtn) {
+    closeBtn.onclick = closeInstagramModal;
+  }
+  modal.onclick = (e) => {
+    if (e.target === modal) closeInstagramModal();
+  };
+}
+
+function closeInstagramModal() {
+  const modal = document.getElementById('insta-post-modal');
+  if (modal) {
+    modal.style.display = 'none';
+    modal.setAttribute('aria-hidden', 'true');
+    const body = document.getElementById('insta-modal-body');
+    if (body) body.innerHTML = '';
+  }
+  document.body.style.overflow = '';
+}
+
+// Global escape listener for modal
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeInstagramModal();
+});
 
 /**
  * 07. Achievements Section (Panel 07 - KPI Stats & 4 Milestones)
