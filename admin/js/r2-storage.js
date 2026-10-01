@@ -10,11 +10,11 @@ const R2Storage = (() => {
 
   // Default / cached configuration
   let config = {
-    accountId: '',
+    accountId: 'fe55d9a781822b063a8e6a697ae6136b',
     accessKeyId: '',
     secretAccessKey: '',
     bucketName: 'blushnbloomm-media',
-    publicDomain: '', // e.g. https://pub-xxxx.r2.dev or https://media.blushnbloomm.in
+    publicDomain: 'https://pub-91be6110e6d34a3bafea471d064d1b49.r2.dev',
     workerUrl: ''     // Optional Cloudflare Worker upload proxy
   };
 

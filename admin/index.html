@@ -103,7 +103,7 @@
 
         <button type="button" class="admin-tab-btn" data-tab="settings" id="tab-nav-settings">
           <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
-          <span>Cloud &amp; R2 Settings</span>
+          <span>Studio &amp; Cloud Settings</span>
         </button>
       </div>
     </div>
@@ -476,71 +476,85 @@
     <div id="view-settings" class="tab-view" style="display: none;">
 
       <div class="settings-grid">
-        <!-- Card 1: Cloudflare R2 Media Storage -->
+        <!-- Card 1: Cloud Media Storage (Automated for Owner) -->
         <div class="settings-card">
           <div class="settings-card-header">
             <div class="settings-card-icon" style="background: rgba(243, 128, 32, 0.1); color: #F38020;">
               <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
             </div>
             <div>
-              <h3>Cloudflare R2 Media Storage</h3>
-              <p>Direct S3-compatible fast global cloud storage for all photos and videos.</p>
+              <h3>Cloud Media &amp; Image Storage</h3>
+              <p>Automated cloud CDN for high-resolution creations, bouquets, and reels.</p>
             </div>
-            <span id="r2-status-badge" class="badge-status-pill badge-idle">Ready</span>
+            <span id="r2-status-badge" class="badge-status-pill badge-active">Automated &amp; Active</span>
           </div>
 
           <div class="settings-card-body">
-            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.25rem;">
-              When configured, any photo or video you select is automatically compressed to high-quality WebP and uploaded straight to your Cloudflare R2 bucket.
+            <p style="font-size: 0.92rem; color: var(--text-color); margin-bottom: 1.25rem; line-height: 1.6;">
+              Cloud storage is fully automated and connected. Whenever you upload photos or videos of your garlands, bouquets, and hampers, they are automatically compressed into high-speed WebP format and saved directly to your cloud bucket without needing any manual setup.
             </p>
 
-            <form id="form-r2-settings" class="form-grid">
-              <div class="form-group form-full">
-                <label class="form-label" for="r2-account-id">Cloudflare Account ID *</label>
-                <input type="text" id="r2-account-id" class="form-control" placeholder="e.g. 5d9b7a4f912c478e1b..." autocomplete="off">
+            <div class="cloud-features-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem;">
+              <div style="background: var(--cream-ivory, #FCFAF6); border: 1px solid rgba(128,35,54,0.1); border-radius: 8px; padding: 1rem;">
+                <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 600;">Dedicated Storage Bucket</div>
+                <div style="font-family: var(--font-serif); font-size: 1.1rem; color: var(--burgundy-deep); font-weight: 600; margin-top: 0.25rem;">blushnbloomm-media</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">100% separate from other projects</div>
               </div>
 
-              <div class="form-group">
-                <label class="form-label" for="r2-access-key">R2 Access Key ID *</label>
-                <input type="text" id="r2-access-key" class="form-control" placeholder="e.g. 8f6b..." autocomplete="off">
+              <div style="background: var(--cream-ivory, #FCFAF6); border: 1px solid rgba(128,35,54,0.1); border-radius: 8px; padding: 1rem;">
+                <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 600;">Public Media CDN</div>
+                <div style="font-family: monospace; font-size: 0.88rem; color: #15803d; font-weight: 600; margin-top: 0.25rem; word-break: break-all;">pub-91be6110e6d3...r2.dev</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Global high-speed content delivery</div>
               </div>
 
-              <div class="form-group">
-                <label class="form-label" for="r2-secret-key">R2 Secret Access Key *</label>
-                <input type="password" id="r2-secret-key" class="form-control" placeholder="••••••••••••••••••••••••" autocomplete="off">
+              <div style="background: var(--cream-ivory, #FCFAF6); border: 1px solid rgba(128,35,54,0.1); border-radius: 8px; padding: 1rem;">
+                <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 600;">Smart Compression</div>
+                <div style="font-family: var(--font-serif); font-size: 1.1rem; color: var(--burgundy-deep); font-weight: 600; margin-top: 0.25rem;">Auto-WebP (~80% lighter)</div>
+                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">Preserves studio luxury detail</div>
               </div>
+            </div>
 
-              <div class="form-group">
-                <label class="form-label" for="r2-bucket-name">Bucket Name *</label>
-                <input type="text" id="r2-bucket-name" class="form-control" placeholder="blushnbloomm-media" value="blushnbloomm-media">
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="r2-public-domain">
-                  <span>Public Media Domain</span>
-                  <span class="helper">Custom Domain or r2.dev</span>
-                </label>
-                <input type="url" id="r2-public-domain" class="form-control" placeholder="https://media.blushnbloomm.in or https://pub-xxxx.r2.dev">
-              </div>
-
-              <div class="form-group form-full">
-                <label class="form-label" for="r2-worker-url">
-                  <span>Cloudflare Worker Proxy (Optional)</span>
-                  <span class="helper">If uploading via Cloudflare Worker</span>
-                </label>
-                <input type="url" id="r2-worker-url" class="form-control" placeholder="https://upload.blushnbloomm.workers.dev">
-              </div>
-
-              <div class="form-group form-full" style="display: flex; gap: 0.75rem; align-items: center; margin-top: 0.5rem; flex-wrap: wrap;">
-                <button type="submit" class="btn btn-primary" id="btn-save-r2-settings">
-                  Save R2 Credentials
-                </button>
-                <button type="button" class="btn btn-outline-gold" id="btn-test-r2-conn">
-                  Probe / Test Connection
-                </button>
-                <span id="r2-test-msg" style="font-size: 0.85rem; font-weight: 600;"></span>
-              </div>
-            </form>
+            <!-- Optional Collapsible Developer Settings (Hidden by default so owner never gets confused) -->
+            <details style="margin-top: 1rem; border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 0.75rem;">
+              <summary style="font-size: 0.82rem; color: var(--text-muted); cursor: pointer; user-select: none;">
+                ⚙️ Advanced Technical Configuration (Developer Only)
+              </summary>
+              <form id="form-r2-settings" class="form-grid" style="margin-top: 1rem;">
+                <div class="form-group form-full">
+                  <label class="form-label" for="r2-account-id">Cloudflare Account ID</label>
+                  <input type="text" id="r2-account-id" class="form-control" placeholder="fe55d9a781822b063a8e6a697ae6136b" value="fe55d9a781822b063a8e6a697ae6136b" autocomplete="off">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="r2-access-key">R2 Access Key ID</label>
+                  <input type="text" id="r2-access-key" class="form-control" placeholder="Optional" autocomplete="off">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="r2-secret-key">R2 Secret Access Key</label>
+                  <input type="password" id="r2-secret-key" class="form-control" placeholder="••••••••••••••••••••••••" autocomplete="off">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="r2-bucket-name">Bucket Name</label>
+                  <input type="text" id="r2-bucket-name" class="form-control" placeholder="blushnbloomm-media" value="blushnbloomm-media">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="r2-public-domain">Public Media Domain</label>
+                  <input type="url" id="r2-public-domain" class="form-control" placeholder="https://pub-91be6110e6d34a3bafea471d064d1b49.r2.dev" value="https://pub-91be6110e6d34a3bafea471d064d1b49.r2.dev">
+                </div>
+                <div class="form-group form-full">
+                  <label class="form-label" for="r2-worker-url">Cloudflare Worker Proxy (Optional)</label>
+                  <input type="url" id="r2-worker-url" class="form-control" placeholder="https://upload.blushnbloomm.workers.dev">
+                </div>
+                <div class="form-group form-full" style="display: flex; gap: 0.75rem; align-items: center; margin-top: 0.5rem; flex-wrap: wrap;">
+                  <button type="submit" class="btn btn-primary" id="btn-save-r2-settings">
+                    Update Advanced Credentials
+                  </button>
+                  <button type="button" class="btn btn-outline-gold" id="btn-test-r2-conn">
+                    Probe Connection
+                  </button>
+                  <span id="r2-test-msg" style="font-size: 0.85rem; font-weight: 600;"></span>
+                </div>
+              </form>
+            </details>
           </div>
         </div>
 
