@@ -18,8 +18,8 @@ const CONFIG = {
   addressShort: "Pimpri-Chinchwad, Pune",
   // Active WhatsApp number (+91 81808 79442)
   whatsappNumber: "918180879442", 
-  instagramHandle: "@blushnbloomm",
-  instagramUrl: "https://www.instagram.com/blushnbloomm/",
+  instagramHandle: "@blushnbloomm.in",
+  instagramUrl: "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
   businessHours: "Monday to Sunday: 10:00 AM – 8:00 PM IST",
   // Configurable endpoint for syncing with your alternate admin website
   productsApiUrl: "products.json",
@@ -67,6 +67,14 @@ const COLLECTIONS = [
     description: "Handcrafted wooden keepsake boxes, calligraphy wax-sealed tokens, and celebratory favors customized with personal names and initials.",
     image: "assets/images/customized_gifts.jpg",
     itemCount: "Made-to-Order"
+  },
+  {
+    id: "luxury-addons",
+    title: "Luxury Add-ons",
+    subtitle: "Cloches, Accents & Keepsakes",
+    description: "Everlasting botanical domes, scented wax medallions, calligraphy keepsakes, and bespoke ceremonial accents.",
+    image: "assets/images/floral_dome.jpg",
+    itemCount: "Artisanal Accents"
   }
 ];
 
@@ -176,6 +184,30 @@ let PRODUCTS = [
       "Handcrafted In": "Pimpri-Chinchwad, Pune",
       "Materials": "Hardwood frame, micro-velvet lining, heritage zari lace",
       "Care": "Includes protective dust cover for long-term preservation"
+    },
+    image: "assets/images/wedding_trousseau.jpg"
+  },
+  {
+    id: "royal-wedding-mandap-decor",
+    name: "Royal Wedding Mandap Decor",
+    collectionId: "wedding-gifting",
+    category: "Wedding & Celebration",
+    badge: "Bespoke Styling",
+    price: 12500,
+    priceFormatted: "Starting at ₹12,500",
+    priceNote: "Floral & Silk Draping Ensemble",
+    shortDesc: "Majestic floral chandeliers, velvet and gold draping, and auspicious ceremonial accents for wedding mandaps.",
+    detailedDesc: "Tailored ceremonial mandap decor harmonizing traditional Maharashtrian floral splendor with contemporary boutique aesthetics.",
+    customizationOptions: [
+      "Custom botanical selections (Mogra, Tuberoses, Roses, Exotic Orchids)",
+      "Zari brocade and silk fabric draping options",
+      "Coordination with bride & groom wedding stage themes"
+    ],
+    suitableOccasions: ["Weddings & Baraat", "Grand Mandap Ceremonies", "Reception Stages"],
+    details: {
+      "Price Guidance": "Starting at ₹12,500 based on venue dimensions",
+      "Crafting Time": "Advance booking recommended",
+      "Handcrafted In": "Pimpri-Chinchwad, Pune"
     },
     image: "assets/images/wedding_trousseau.jpg"
   },
@@ -371,3 +403,69 @@ const PORTFOLIO_ITEMS = [
     span: "col-span-1 row-span-1"
   }
 ];
+
+const DEFAULT_ACHIEVEMENTS = [
+  {
+    id: "ach-featured-local-media",
+    title: "Featured in Local Media",
+    category: "Press & Features",
+    mediaType: "image",
+    mediaUrl: "assets/images/customized_gifts.jpg",
+    thumbnailUrl: "assets/images/customized_gifts.jpg",
+    date: "Press Spotlight",
+    badge: "📰 Media Spotlight",
+    description: "Honored by regional wedding editorials for our signature damage-free folded currency garlands and artisanal boutique presentation.",
+    featured: true,
+    linkUrl: "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
+    createdAt: 1738100000000
+  },
+  {
+    id: "ach-lalbaugcha-raja-garland-1",
+    title: "Ganesh Utsav Special",
+    category: "Milestone Event",
+    mediaType: "video",
+    mediaUrl: "/public/snapgram.io_398718527598.mp4",
+    thumbnailUrl: "/public/reel_garland_preview.jpg",
+    date: "Sacred Lalbaugcha Raja",
+    badge: "👑 Divine Milestone",
+    description: "An unforgettable blessed honor for Bloom&blush — our handcrafted auspicious ceremonial garland adorned on the sacred idol of Lalbaugcha Raja, Mumbai.",
+    featured: true,
+    duration: "0:29",
+    aspect: "9:16",
+    linkUrl: "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
+    createdAt: 1738000000000
+  },
+  {
+    id: "ach-wedding-season-2025",
+    title: "Wedding Season 2025",
+    category: "Featured Collection",
+    mediaType: "image",
+    mediaUrl: "assets/images/wedding_trousseau.jpg",
+    thumbnailUrl: "assets/images/wedding_trousseau.jpg",
+    date: "Bridal Showcase",
+    badge: "💍 Bridal Suite",
+    description: "Bespoke trousseau trays, money garlands, and luxury presentation hampers curated for grand weddings across Pune and Maharashtra.",
+    featured: true,
+    linkUrl: "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
+    createdAt: 1737950000000
+  },
+  {
+    id: "ach-client-love",
+    title: "Client Love",
+    category: "Happy Moments",
+    mediaType: "video",
+    mediaUrl: "/public/snapgram.io_399154073737.mp4",
+    thumbnailUrl: "/public/reel_styling_preview.jpg",
+    date: "Celebration Dispatches",
+    badge: "🌸 Heartfelt Smiles",
+    description: "Touching dispatches and genuine client gratitude from brides, families, and couples celebrating their most sacred milestones with Bloom&blush.",
+    featured: true,
+    duration: "0:45",
+    aspect: "9:16",
+    linkUrl: "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
+    createdAt: 1737900000000
+  }
+];
+
+let ACHIEVEMENTS = [...DEFAULT_ACHIEVEMENTS];
+

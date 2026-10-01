@@ -13,7 +13,70 @@ let SORT_BY = 'default';
 let EDITING_PRODUCT_ID = null;
 let broadcastSyncChannel = null;
 
-// Default bundled product fallback in case of local file:// fetch restrictions
+// Global State: Studio Achievements
+let ACHIEVEMENTS = [];
+let ACTIVE_ACHIEVE_FILTER = 'all';
+let ACHIEVE_SEARCH_QUERY = '';
+let ACHIEVE_SORT_BY = 'newest';
+let EDITING_ACHIEVE_ID = null;
+let DELETING_ACHIEVE_ID = null;
+let CURRENT_ACTIVE_TAB = 'products';
+let broadcastAchieveChannel = null;
+
+// Default bundled achievements fallback - strictly authentic milestones
+const DEFAULT_FALLBACK_ACHIEVEMENTS = [
+  {
+    "id": "ach-lalbaugcha-raja-garland-1",
+    "title": "Sacred Garland Offering at Lalbaugcha Raja, Mumbai",
+    "category": "Milestone Reel",
+    "mediaType": "video",
+    "mediaUrl": "/public/snapgram.io_398718527598.mp4",
+    "thumbnailUrl": "/public/reel_garland_preview.jpg",
+    "date": "Ganesh Utsav Milestone",
+    "badge": "👑 Divine Milestone",
+    "description": "An unforgettable blessed honor for Bloom&blush — our handcrafted auspicious ceremonial garland adorned on the sacred idol of Lalbaugcha Raja, Mumbai in the presence of millions of devotees.",
+    "featured": true,
+    "duration": "0:29",
+    "aspect": "9:16",
+    "linkUrl": "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
+    "createdAt": 1738000000000
+  },
+  {
+    "id": "ach-lalbaugcha-raja-garland-2",
+    "title": "3rd Auspicious Garland Adorned on Lalbaugcha Raja (तिसरा हार अर्पित)",
+    "category": "Milestone Reel",
+    "mediaType": "video",
+    "mediaUrl": "/public/snapgram.io_399154073737.mp4",
+    "thumbnailUrl": "/public/reel_styling_preview.jpg",
+    "date": "Special Studio Dispatch",
+    "badge": "🌸 Sacred Devotion",
+    "description": "Handcrafted with heartfelt devotion and artisanal perfection in Pimpri-Chinchwad, Pune — our third ceremonial garland offering gracefully draped on Mumbai's iconic Lalbaugcha Raja.",
+    "featured": true,
+    "duration": "0:45",
+    "aspect": "9:16",
+    "linkUrl": "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
+    "createdAt": 1737900000000
+  }
+];
+
+// Helper to identify and purge obsolete fake/mock achievement records
+const FAKE_ACHIEVE_IDS = new Set([
+  'ach-money-garlands-500',
+  'ach-bridal-masterclass-reel',
+  'ach-pune-wedding-expo',
+  'ach-luxury-hampers-curation',
+  'ach-preserved-roses-100',
+  'ach-artisan-workshop'
+]);
+
+function isFakeAchievement(item) {
+  if (!item) return true;
+  if (FAKE_ACHIEVE_IDS.has(item.id)) return true;
+  if (item.mediaUrl && (item.mediaUrl.includes('commondatastorage.googleapis.com') || item.mediaUrl.includes('ForBigger'))) return true;
+  return false;
+}
+
+// Default bundled product fallback matching the authentic 8 creations in products.json
 const DEFAULT_FALLBACK_PRODUCTS = [
   {
     "id": "royal-sovereign-money-garland",
@@ -115,66 +178,116 @@ const DEFAULT_FALLBACK_PRODUCTS = [
     ],
     "suitableOccasions": ["Wedding Trousseau Exchange", "Engagement Ring Ceremony", "Sangeet & Mehendi Gifting", "Bridal Welcome"],
     "details": {
-      "Price Guidance": "Starting at ₹5,200 for standard bridal trousseau suite",
-      "Crafting Time": "5 - 7 Business Days",
+      "Price Guidance": "Starting at ₹5,200 per tray (set discounts for 5+ trays)",
+      "Crafting Time": "4 - 7 Business Days",
       "Handcrafted In": "Pimpri-Chinchwad, Pune",
-      "Base Structure": "Engineered wood with pure silk velvet padding",
-      "Inclusions": "Tray + 2 Embroidered Batwas + Acrylic Monogram Crest"
+      "Materials": "Hardwood frame, micro-velvet lining, heritage zari lace",
+      "Care": "Includes protective dust cover for long-term preservation"
     },
     "image": "assets/images/wedding_trousseau.jpg"
-  },
-  {
-    "id": "gold-leaf-keepsake-box",
-    "name": "The Royal Monogram Keepsake Box",
-    "collectionId": "customized-gifts",
-    "category": "Customized Gifts",
-    "badge": "Personalized Keepsake",
-    "price": 1850,
-    "priceFormatted": "₹1,850",
-    "priceNote": "Personalized Laser Engraving Included",
-    "shortDesc": "Artisanal wooden keepsake treasure box with 24K gold foil trim, personalized initials, and velvet lining.",
-    "detailedDesc": "A heartfelt bespoke gift crafted in polished seasoned teakwood with hand-applied 24K gold foil leaf accents. Inside, the box is lined in plush champagne blush velvet with a discreet brass hinge and lock. The lid is custom engraved with the recipient's initials or a personalized message in elegant vintage script.",
-    "customizationOptions": [
-      "Custom laser engraving of names, wedding dates, or monograms",
-      "Wood finish choice (Natural Teak, Antique Walnut, or Rosewood)",
-      "Interior lining (Blush Champagne Velvet or Royal Burgundy Silk)",
-      "Complimentary wax-sealed personalized message parchment"
-    ],
-    "suitableOccasions": ["Bride & Groom Keepsake", "Bridesmaid Proposal Gift", "Anniversary Treasure", "Corporate Memento"],
-    "details": {
-      "Price Guidance": "₹1,850 inclusive of custom engraving & velvet gift pouch",
-      "Crafting Time": "2 - 3 Business Days",
-      "Handcrafted In": "Pimpri-Chinchwad, Pune",
-      "Dimensions": "8 × 6 × 3.5 inches",
-      "Care": "Wipe with soft dry microfiber cloth"
-    },
-    "image": "assets/images/customized_gifts.jpg"
   },
   {
     "id": "eternal-rose-glass-cloche",
     "name": "The Eternal Burgundy Rose Cloche",
     "collectionId": "bouquets",
     "category": "Artisanal Bouquets",
-    "badge": "Preserved Florals",
+    "badge": "Everlasting",
     "price": 2800,
     "priceFormatted": "₹2,800",
-    "priceNote": "Lasts 3+ Years with Zero Water",
-    "shortDesc": "Real preserved Ecuadorian deep wine rose preserved under a luxury borosilicate glass dome with micro fairy lights.",
-    "detailedDesc": "A timeless symbol of enduring affection inspired by fairytale romance. An authentic Grade-A Ecuadorian rose preserved at the absolute peak of bloom using bio-friendly preservation methods, enclosed under a crystal-clear borosilicate glass bell jar on a solid polished mahogany wooden pedestal. Features delicate warm fairy lights battery operated inside.",
+    "priceNote": "Lasts 3+ Years without water",
+    "shortDesc": "Real preserved Ecuadorian burgundy and blush roses under an antique brass glass cloche dome.",
+    "detailedDesc": "A timeless token of romance that lasts for over 3 years without water or sunlight. A 100% natural, preserved deep burgundy rose and blush companion rose are delicately arranged with preserved baby's breath and eucalyptus inside a crystal-clear glass cloche dome on a solid walnut and antique brass pedestal.",
     "customizationOptions": [
-      "Rose color choice (Deep Burgundy Wine, Blush Pink, or Champagne Gold)",
-      "Engraved brass plaque on wooden pedestal with custom date or quote",
-      "Addition of fallen rose petal arrangement at base",
-      "Gift packaging in satin ribboned luxury cylinder box"
+      "Engraved brass plaque on the base with date and custom message",
+      "Rose color combination (Burgundy, Dusty Rose, Champagne, or Royal White)",
+      "Addition of subtle warm micro-fairy lights with hidden battery switch"
     ],
-    "suitableOccasions": ["Romantic Proposals", "Valentine Celebrations", "Anniversary Milestones", "Bedside Décor Accent"],
+    "suitableOccasions": ["Anniversaries", "Valentine's & Proposals", "Birthday Keepsakes", "Luxury Desk / Bedside Decor"],
     "details": {
-      "Price Guidance": "₹2,800 inclusive of dome, LED lights & batteries",
-      "Lifespan": "3 to 5 years (Keep away from direct sunlight & high humidity)",
-      "Handcrafted In": "Pimpri-Chinchwad, Pune",
-      "Dimensions": "6.5 inches diameter × 9 inches height"
+      "Price Guidance": "₹2,800 (includes glass cloche, walnut base & gift box)",
+      "Longevity": "Preserved to remain pristine for 3+ years",
+      "Crafting Time": "Ready to dispatch in 24 - 48 Hours",
+      "Dimensions": "Height 8.5 inches × Diameter 5.5 inches",
+      "Packaging": "Delivered in signature Bloom&blush ivory gift box with satin bow"
     },
     "image": "assets/images/floral_dome.jpg"
+  },
+  {
+    "id": "pastel-bliss-ceremony-garland",
+    "name": "The Pastel Pearl Ceremony Garland",
+    "collectionId": "money-garlands",
+    "category": "Money Garlands",
+    "badge": "New Arrival",
+    "price": 3800,
+    "priceFormatted": "Starting at ₹3,800",
+    "priceNote": "+ Currency face value (Soft pastel aesthetic)",
+    "shortDesc": "Delicate baby pink and soft gold currency garland with silk rosebuds and cascading pearl drops.",
+    "detailedDesc": "Designed with a lighter, ethereal aesthetic for intimate ceremonies, morning celebrations, and baby milestones. Features origami pleated currency notes harmonized with delicate blush pink silk rosebuds, soft gold scallop lace, and cascading pearl clusters that drape effortlessly.",
+    "customizationOptions": [
+      "Choice of denomination (₹10, ₹20, ₹50, ₹100, ₹200, ₹500)",
+      "Pastel tone customization (Soft Pink, Mint Green, Peach, or Lilac)",
+      "Single garland or matching couple set for bride & groom"
+    ],
+    "suitableOccasions": ["Baby Naming Ceremonies (Barse)", "Dohale Jevan / Baby Showers", "Intimate Engagements", "Graduations"],
+    "details": {
+      "Price Guidance": "Starting at ₹3,800 crafting charge + selected currency amount",
+      "Crafting Time": "3 - 4 Business Days",
+      "Handcrafted In": "Pimpri-Chinchwad, Pune",
+      "Drape Length": "Customizable from 24 to 36 inches",
+      "Note Safety": "Guaranteed damage-free origami technique"
+    },
+    "image": "assets/images/pastel_garland.jpg"
+  },
+  {
+    "id": "bespoke-sandalwood-keepsake-box",
+    "name": "The Heirloom Carved Keepsake Box",
+    "collectionId": "customized-gifts",
+    "category": "Customized Gifts",
+    "badge": "Personalized",
+    "price": 1950,
+    "priceFormatted": "₹1,950",
+    "priceNote": "Includes custom calligraphy letter",
+    "shortDesc": "Hand-carved wooden keepsake box tied with deep wine silk ribbon, personalized calligraphy letter, and wax seal.",
+    "detailedDesc": "A gift of enduring sentiment. Hand-carved from solid seasoned wood with floral jaali filigree, tied with an opulent burgundy satin ribbon, and paired with an authentic hand-lettered calligraphy letter on deckle-edge cotton paper sealed with our signature floral wax stamp.",
+    "customizationOptions": [
+      "Custom initials or names carved onto the lid panel",
+      "Custom letter message scripted by hand in gold or walnut ink",
+      "Interior lining (Burgundy velvet, cream raw silk, or natural wood)"
+    ],
+    "suitableOccasions": ["Wedding Morning Letters", "Father of the Bride Gifts", "Keepsake Jewelry Storage", "Milestone Anniversaries"],
+    "details": {
+      "Price Guidance": "₹1,950 (includes wooden keepsake box & custom calligraphy letter)",
+      "Crafting Time": "3 - 5 Business Days",
+      "Handcrafted In": "Pimpri-Chinchwad, Pune",
+      "Dimensions": "9 × 6 × 3.5 inches",
+      "Finish": "Hand-buffed natural wax with floral filigree"
+    },
+    "image": "assets/images/customized_gifts.jpg"
+  },
+  {
+    "id": "celebration-floral-gift-suite",
+    "name": "The Bloom&blush Signature Suite",
+    "collectionId": "customized-hampers",
+    "category": "Customized Hampers",
+    "badge": "Grand Ensemble",
+    "price": 4900,
+    "priceFormatted": "₹4,900",
+    "priceNote": "Luxury Centerpiece & Gift Suite",
+    "shortDesc": "Complete festive suite featuring fresh garden roses, luxury gift box, perfume vial, and golden accents.",
+    "detailedDesc": "The quintessential Bloom&blush experience. A masterfully composed gifting suite that pairs an editorial fresh flower arrangement of burgundy English garden roses and cream ranunculus with a gold-trimmed gift box, artisanal fragrance, and bespoke greeting card on a warm linen presentation mat.",
+    "customizationOptions": [
+      "Custom floral selection based on recipient's favorite flowers",
+      "Inclusion of luxury perfume, artisanal chocolates, or precious trinkets",
+      "Theme styling for birthdays, corporate appreciation, or wedding anniversaries"
+    ],
+    "suitableOccasions": ["Grand Milestone Birthdays", "Golden Anniversaries", "Festive Celebrations", "Proposal Surprises"],
+    "details": {
+      "Price Guidance": "₹4,900 complete ensemble",
+      "Crafting Time": "2 Business Days",
+      "Handcrafted In": "Pimpri-Chinchwad, Pune",
+      "Includes": "Floral centerpiece, gold foil gift box, fragrance vial, greeting card"
+    },
+    "image": "assets/images/hero.jpg"
   }
 ];
 
@@ -228,11 +341,16 @@ const OCCASION_PRESETS = [
    =================================================================== */
 document.addEventListener('DOMContentLoaded', async () => {
   initSyncChannel();
+  initTabNavigation();
+  initStorageGuideModal();
+  initAchievementsAdmin();
   await loadProducts();
+  await loadAchievements();
   setupEventListeners();
   renderCategoryFilters();
   renderProducts();
   updateStats();
+  updateAchievementStats();
 });
 
 /**
@@ -244,8 +362,16 @@ function initSyncChannel() {
       broadcastSyncChannel = new BroadcastChannel('bloom_product_sync');
       broadcastSyncChannel.onmessage = (event) => {
         if (event.data && event.data.type === 'PRODUCTS_UPDATED') {
-          console.log('[Admin] Received sync update from another window');
+          console.log('[Admin] Received product sync update from another window');
           loadFromLocalStorage(false);
+        }
+      };
+
+      broadcastAchieveChannel = new BroadcastChannel('bloom_achievements_sync');
+      broadcastAchieveChannel.onmessage = (event) => {
+        if (event.data && event.data.type === 'ACHIEVEMENTS_UPDATED') {
+          console.log('[Admin] Received achievement sync update from another window');
+          loadAchievementsFromLocalStorage(false);
         }
       };
     } catch (e) {
@@ -261,18 +387,24 @@ async function loadProducts() {
   // 0. Connect to Firebase Firestore in real time with auto-sync
   startFirestoreSync();
 
-  // 1. Check localStorage first (fast local display)
+  // 1. Check localStorage first (and purge any legacy test items)
   const localData = localStorage.getItem('bloom_custom_products');
   if (localData) {
     try {
       const parsed = JSON.parse(localData);
       if (Array.isArray(parsed) && parsed.length > 0) {
-        PRODUCTS = parsed;
-        console.log('[Admin] Loaded from localStorage:', PRODUCTS.length, 'creations');
-        return;
+        // If local storage has test/fake items from previous sessions, clear it
+        if (parsed.some(p => p.id === 'gold-leaf-keepsake-box' || p.id.includes('copy') || p.id.includes('heritage-flora'))) {
+          console.log('[Admin] Sanitizing stale test products from local storage cache');
+          localStorage.removeItem('bloom_custom_products');
+        } else {
+          PRODUCTS = parsed;
+          console.log('[Admin] Loaded from localStorage cache:', PRODUCTS.length, 'creations');
+          return;
+        }
       }
     } catch (e) {
-      console.warn('Failed parsing localStorage products');
+      localStorage.removeItem('bloom_custom_products');
     }
   }
 
@@ -1385,3 +1517,822 @@ function updateFirebaseBadge(connected, count = 0, errorMsg = '') {
     if (pulseEl) pulseEl.style.backgroundColor = '#FFA000';
   }
 }
+
+/* ===================================================================
+   Tab Navigation (Creations vs Achievements)
+   =================================================================== */
+function initTabNavigation() {
+  const tabProducts = document.getElementById('tab-nav-products');
+  const tabAchievements = document.getElementById('tab-nav-achievements');
+  const viewProducts = document.getElementById('view-products');
+  const viewAchievements = document.getElementById('view-achievements');
+  const btnAddProduct = document.getElementById('btn-add-product');
+  const btnAddAchievement = document.getElementById('btn-add-achievement');
+
+  function switchTab(target) {
+    CURRENT_ACTIVE_TAB = target;
+    if (target === 'products') {
+      if (tabProducts) tabProducts.classList.add('active');
+      if (tabAchievements) tabAchievements.classList.remove('active');
+      if (viewProducts) viewProducts.style.display = 'block';
+      if (viewAchievements) viewAchievements.style.display = 'none';
+      if (btnAddProduct) btnAddProduct.style.display = 'inline-flex';
+      if (btnAddAchievement) btnAddAchievement.style.display = 'none';
+    } else {
+      if (tabAchievements) tabAchievements.classList.add('active');
+      if (tabProducts) tabProducts.classList.remove('active');
+      if (viewAchievements) viewAchievements.style.display = 'block';
+      if (viewProducts) viewProducts.style.display = 'none';
+      if (btnAddAchievement) btnAddAchievement.style.display = 'inline-flex';
+      if (btnAddProduct) btnAddProduct.style.display = 'none';
+      renderAdminAchievements();
+      updateAchievementStats();
+    }
+  }
+
+  if (tabProducts) tabProducts.addEventListener('click', () => switchTab('products'));
+  if (tabAchievements) tabAchievements.addEventListener('click', () => switchTab('achievements'));
+}
+
+/* ===================================================================
+   Free Media Storage Guide Modal
+   =================================================================== */
+function initStorageGuideModal() {
+  const guideModal = document.getElementById('storage-guide-modal');
+  const btnStorageGuide = document.getElementById('btn-storage-guide');
+
+  if (btnStorageGuide && guideModal) {
+    btnStorageGuide.addEventListener('click', () => {
+      guideModal.classList.add('active');
+    });
+  }
+
+  document.querySelectorAll('.js-open-storage-guide').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (guideModal) guideModal.classList.add('active');
+    });
+  });
+}
+
+/* ===================================================================
+   Studio Achievements Data Management & Sync
+   =================================================================== */
+async function loadAchievements() {
+  // 1. Connect Firestore collection in real-time
+  startFirestoreAchievementsSync();
+
+  // 2. Check localStorage
+  const localData = localStorage.getItem('bloom_custom_achievements');
+  if (localData) {
+    try {
+      let parsed = JSON.parse(localData);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        // Sanitize out any fake achievements cached in localStorage
+        parsed = parsed.filter(item => !isFakeAchievement(item));
+        DEFAULT_FALLBACK_ACHIEVEMENTS.forEach(def => {
+          if (!parsed.some(p => p.id === def.id)) {
+            parsed.unshift(def);
+          }
+        });
+        ACHIEVEMENTS = parsed;
+        saveAchievements(false);
+        renderAdminAchievements();
+        updateAchievementStats();
+        return;
+      }
+    } catch (e) {
+      localStorage.removeItem('bloom_custom_achievements');
+    }
+  }
+
+  // 3. Fetch ../achievements.json
+  try {
+    const res = await fetch('../achievements.json');
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0) {
+        ACHIEVEMENTS = data.filter(item => !isFakeAchievement(item));
+        saveAchievements(false);
+        renderAdminAchievements();
+        updateAchievementStats();
+        return;
+      }
+    }
+  } catch (err) {
+    console.info('[Admin] achievements.json fetch note: using fallback');
+  }
+
+  // 4. Fallback to bundled authentic achievements
+  ACHIEVEMENTS = [...DEFAULT_FALLBACK_ACHIEVEMENTS];
+  saveAchievements(false);
+  renderAdminAchievements();
+  updateAchievementStats();
+}
+
+function startFirestoreAchievementsSync() {
+  if (typeof firestoreDb === 'undefined' || !firestoreDb) return;
+
+  try {
+    firestoreDb.collection('achievements').onSnapshot((snapshot) => {
+      if (!snapshot.empty) {
+        const cloudAchievements = [];
+        snapshot.forEach(doc => {
+          const data = doc.data();
+          if (isFakeAchievement(data) || FAKE_ACHIEVE_IDS.has(doc.id)) {
+            // Delete obsolete fake achievement doc from Firestore cloud database
+            doc.ref.delete().catch(() => {});
+          } else {
+            cloudAchievements.push(data);
+          }
+        });
+        if (cloudAchievements.length > 0) {
+          ACHIEVEMENTS = cloudAchievements;
+          localStorage.setItem('bloom_custom_achievements', JSON.stringify(ACHIEVEMENTS));
+          renderAdminAchievements();
+          updateAchievementStats();
+          console.log('[Firebase] Achievements auto-sync:', cloudAchievements.length, 'active');
+          return;
+        }
+      } else {
+        // Auto-seed initial achievements if empty
+        console.log('[Firebase] Empty achievements collection detected. Auto-seeding initial achievements...');
+        const batch = firestoreDb.batch();
+        const catalogToUpload = (ACHIEVEMENTS && ACHIEVEMENTS.length > 0) ? ACHIEVEMENTS : DEFAULT_FALLBACK_ACHIEVEMENTS;
+        catalogToUpload.forEach(item => {
+          if (!isFakeAchievement(item)) {
+            batch.set(firestoreDb.collection('achievements').doc(item.id), item);
+          }
+        });
+        batch.commit().catch(err => console.warn('[Firebase] Achievements auto-seed error:', err));
+      }
+    }, (err) => {
+      console.warn('[Admin] Firestore achievements sync warning:', err);
+    });
+  } catch (e) {
+    console.warn('[Admin] startFirestoreAchievementsSync exception:', e);
+  }
+}
+
+function saveAchievements(notify = true) {
+  try {
+    localStorage.setItem('bloom_custom_achievements', JSON.stringify(ACHIEVEMENTS));
+
+    if (notify) {
+      if (broadcastAchieveChannel) {
+        broadcastAchieveChannel.postMessage({ type: 'ACHIEVEMENTS_UPDATED', achievements: ACHIEVEMENTS });
+      }
+      window.dispatchEvent(new Event('storage'));
+    }
+    updateAchievementStats();
+  } catch (err) {
+    console.error('Error saving achievements:', err);
+    showToast('Failed to save achievements to browser cache. Storage might be full.', 'error');
+  }
+}
+
+function loadAchievementsFromLocalStorage(render = true) {
+  const localData = localStorage.getItem('bloom_custom_achievements');
+  if (localData) {
+    try {
+      let parsed = JSON.parse(localData);
+      if (Array.isArray(parsed)) {
+        ACHIEVEMENTS = parsed.filter(item => !isFakeAchievement(item));
+      }
+      if (render) {
+        renderAdminAchievements();
+        updateAchievementStats();
+      }
+    } catch (e) {}
+  }
+}
+
+function updateAchievementStats() {
+  const totalEl = document.getElementById('stat-achieve-total');
+  const videosEl = document.getElementById('stat-achieve-videos');
+  const photosEl = document.getElementById('stat-achieve-photos');
+  const spotlightEl = document.getElementById('stat-achieve-spotlight');
+  const badgeAchieve = document.getElementById('tab-badge-achievements');
+  const badgeProducts = document.getElementById('tab-badge-products');
+
+  if (totalEl) totalEl.textContent = ACHIEVEMENTS.length;
+  if (videosEl) videosEl.textContent = ACHIEVEMENTS.filter(a => a.mediaType === 'video').length;
+  if (photosEl) photosEl.textContent = ACHIEVEMENTS.filter(a => a.mediaType === 'image').length;
+  if (spotlightEl) spotlightEl.textContent = ACHIEVEMENTS.filter(a => !!a.featured).length;
+
+  if (badgeAchieve) badgeAchieve.textContent = ACHIEVEMENTS.length;
+  if (badgeProducts) badgeProducts.textContent = PRODUCTS.length;
+}
+
+/* ===================================================================
+   Admin Achievements Rendering & Controls
+   =================================================================== */
+function renderAdminAchievements() {
+  const grid = document.getElementById('achievements-admin-grid');
+  const countEl = document.getElementById('achieve-filtered-count');
+  if (!grid) return;
+
+  let items = [...ACHIEVEMENTS];
+
+  // 1. Filter by category / type
+  if (ACTIVE_ACHIEVE_FILTER === 'video') {
+    items = items.filter(a => a.mediaType === 'video');
+  } else if (ACTIVE_ACHIEVE_FILTER === 'image') {
+    items = items.filter(a => a.mediaType === 'image');
+  } else if (ACTIVE_ACHIEVE_FILTER !== 'all') {
+    items = items.filter(a => (a.category || '').toLowerCase() === ACTIVE_ACHIEVE_FILTER.toLowerCase());
+  }
+
+  // 2. Filter by search query
+  if (ACHIEVE_SEARCH_QUERY) {
+    items = items.filter(a => {
+      const q = ACHIEVE_SEARCH_QUERY.toLowerCase();
+      return (
+        (a.title || '').toLowerCase().includes(q) ||
+        (a.description || '').toLowerCase().includes(q) ||
+        (a.category || '').toLowerCase().includes(q) ||
+        (a.badge || '').toLowerCase().includes(q)
+      );
+    });
+  }
+
+  // 3. Sort
+  if (ACHIEVE_SORT_BY === 'newest') {
+    items.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+  } else if (ACHIEVE_SORT_BY === 'oldest') {
+    items.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+  } else if (ACHIEVE_SORT_BY === 'title-asc') {
+    items.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+  }
+
+  if (countEl) {
+    countEl.textContent = `Showing ${items.length} of ${ACHIEVEMENTS.length} highlights`;
+  }
+
+  if (items.length === 0) {
+    grid.innerHTML = `
+      <div style="grid-column: 1/-1; text-align: center; padding: 3rem 1rem; background: #FFF; border-radius: var(--radius-md); border: 1px dashed var(--border-subtle);">
+        <p style="font-size: 1.1rem; color: var(--burgundy-800); font-weight: 600;">No achievements found.</p>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.35rem;">Click "+ Add Achievement" to publish your first studio highlight.</p>
+      </div>
+    `;
+    return;
+  }
+
+  grid.innerHTML = items.map(item => {
+    const isVideo = item.mediaType === 'video';
+    let thumb = item.thumbnailUrl || item.mediaUrl;
+    if (isVideo && item.mediaUrl) {
+      const ytMatch = item.mediaUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/i);
+      if (ytMatch && (!item.thumbnailUrl || item.thumbnailUrl.includes('assets/images/'))) {
+        thumb = `https://img.youtube.com/vi/${ytMatch[1]}/hqdefault.jpg`;
+      }
+    }
+
+    const typeLabel = isVideo ? '🎬 Video' : '📸 Photo';
+
+    return `
+      <div class="achieve-card-admin" data-id="${item.id}">
+        <div class="achieve-card-media">
+          <img src="${escapeHtml(thumb)}" alt="${escapeHtml(item.title)}" loading="lazy" onerror="this.src='../assets/images/hero.jpg'">
+          
+          <div class="achieve-card-badges">
+            <span class="achieve-card-badge">${typeLabel}</span>
+            ${item.featured ? `<span class="achieve-card-featured">Spotlight</span>` : ''}
+            ${item.badge ? `<span class="achieve-card-badge" style="background: rgba(128,35,54,0.9);">${escapeHtml(item.badge)}</span>` : ''}
+          </div>
+
+          ${item.date ? `<span class="achieve-card-date">${escapeHtml(item.date)}</span>` : ''}
+        </div>
+
+        <div class="achieve-card-body">
+          <span class="achieve-card-category">${escapeHtml(item.category || 'Milestone')}</span>
+          <h3 class="achieve-card-title">${escapeHtml(item.title)}</h3>
+          <p class="achieve-card-desc">${escapeHtml(item.description || '')}</p>
+
+          <div class="achieve-card-footer">
+            <div style="font-size: 0.75rem; color: var(--text-muted);">
+              ID: <code>${escapeHtml(item.id)}</code>
+            </div>
+
+            <div class="achieve-card-actions">
+              <button type="button" class="btn btn-outline-gold btn-sm js-edit-achieve" data-id="${item.id}" title="Edit achievement details">
+                Edit
+              </button>
+              <button type="button" class="btn btn-sm js-delete-achieve" data-id="${item.id}" style="color: var(--danger); border-color: var(--border-subtle); background: none;" title="Delete achievement">
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  // Attach event handlers
+  grid.querySelectorAll('.js-edit-achieve').forEach(btn => {
+    btn.addEventListener('click', () => {
+      openAchievementForm(btn.dataset.id);
+    });
+  });
+
+  grid.querySelectorAll('.js-delete-achieve').forEach(btn => {
+    btn.addEventListener('click', () => {
+      confirmDeleteAchievement(btn.dataset.id);
+    });
+  });
+}
+
+function initAchievementsAdmin() {
+  setupAchievementEventListeners();
+}
+
+function setupAchievementEventListeners() {
+  // Search
+  const searchInput = document.getElementById('achieve-search-input');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      ACHIEVE_SEARCH_QUERY = e.target.value.toLowerCase().trim();
+      renderAdminAchievements();
+    });
+  }
+
+  // Sort
+  const sortSelect = document.getElementById('achieve-sort-select');
+  if (sortSelect) {
+    sortSelect.addEventListener('change', (e) => {
+      ACHIEVE_SORT_BY = e.target.value;
+      renderAdminAchievements();
+    });
+  }
+
+  // Filter chips
+  const chipsContainer = document.getElementById('achieve-filter-chips');
+  if (chipsContainer) {
+    chipsContainer.querySelectorAll('.filter-chip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        chipsContainer.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        ACTIVE_ACHIEVE_FILTER = btn.dataset.filter;
+        renderAdminAchievements();
+      });
+    });
+  }
+
+  // Add Achievement button
+  const btnAdd = document.getElementById('btn-add-achievement');
+  if (btnAdd) {
+    btnAdd.addEventListener('click', () => {
+      openAchievementForm();
+    });
+  }
+
+  // Media Type buttons (Photo vs Video)
+  const btnTypePhoto = document.getElementById('btn-type-photo');
+  const btnTypeVideo = document.getElementById('btn-type-video');
+  const panelPhoto = document.getElementById('panel-media-photo');
+  const panelVideo = document.getElementById('panel-media-video');
+  const inputMediaType = document.getElementById('achieve-media-type');
+
+  function setMediaType(type) {
+    if (inputMediaType) inputMediaType.value = type;
+    if (type === 'image') {
+      if (btnTypePhoto) btnTypePhoto.classList.add('active');
+      if (btnTypeVideo) btnTypeVideo.classList.remove('active');
+      if (panelPhoto) panelPhoto.style.display = 'block';
+      if (panelVideo) panelVideo.style.display = 'none';
+    } else {
+      if (btnTypeVideo) btnTypeVideo.classList.add('active');
+      if (btnTypePhoto) btnTypePhoto.classList.remove('active');
+      if (panelVideo) panelVideo.style.display = 'block';
+      if (panelPhoto) panelPhoto.style.display = 'none';
+    }
+    updateAchieveLivePreview();
+  }
+
+  if (btnTypePhoto) btnTypePhoto.addEventListener('click', () => setMediaType('image'));
+  if (btnTypeVideo) btnTypeVideo.addEventListener('click', () => setMediaType('video'));
+
+  // Photo Source Tabs
+  if (panelPhoto) {
+    panelPhoto.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        panelPhoto.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const tab = btn.dataset.tab;
+        document.getElementById('subpanel-photo-upload').style.display = (tab === 'photo-upload') ? 'block' : 'none';
+        document.getElementById('subpanel-photo-url').style.display = (tab === 'photo-url') ? 'block' : 'none';
+        document.getElementById('subpanel-photo-asset').style.display = (tab === 'photo-asset') ? 'block' : 'none';
+      });
+    });
+  }
+
+  // Video Source Tabs
+  if (panelVideo) {
+    panelVideo.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        panelVideo.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const tab = btn.dataset.tab;
+        document.getElementById('subpanel-video-yt').style.display = (tab === 'video-yt') ? 'block' : 'none';
+        document.getElementById('subpanel-video-url').style.display = (tab === 'video-url') ? 'block' : 'none';
+        document.getElementById('subpanel-video-file').style.display = (tab === 'video-file') ? 'block' : 'none';
+      });
+    });
+  }
+
+  // Auto-generate Slug ID from Title
+  const titleInput = document.getElementById('achieve-title-input');
+  const idInput = document.getElementById('achieve-id-input');
+  if (titleInput && idInput) {
+    titleInput.addEventListener('input', () => {
+      if (!EDITING_ACHIEVE_ID) {
+        idInput.value = 'ach-' + titleInput.value.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      }
+    });
+  }
+
+  // Custom Category Toggle
+  const catSelect = document.getElementById('achieve-category-select');
+  const customCatWrap = document.getElementById('achieve-custom-category-wrapper');
+  if (catSelect && customCatWrap) {
+    catSelect.addEventListener('change', () => {
+      customCatWrap.style.display = (catSelect.value === '__custom__') ? 'block' : 'none';
+    });
+  }
+
+  // Populate Studio Asset Dropdown for Achievements
+  const photoAssetSelect = document.getElementById('achieve-photo-asset-select');
+  if (photoAssetSelect) {
+    const assets = [
+      { name: 'Money Garland Ceremonial', url: '../assets/images/money_garland.jpg' },
+      { name: 'Editorial Bridal Bouquet', url: '../assets/images/editorial_bouquet.jpg' },
+      { name: 'Luxury Celebration Hamper', url: '../assets/images/luxury_hamper.jpg' },
+      { name: 'Wedding Trousseau Platter', url: '../assets/images/wedding_trousseau.jpg' },
+      { name: 'Preserved Floral Cloche', url: '../assets/images/floral_dome.jpg' },
+      { name: 'Customized Keepsake Gifts', url: '../assets/images/customized_gifts.jpg' },
+      { name: 'Pastel Pearl Garland', url: '../assets/images/pastel_garland.jpg' },
+      { name: 'Studio Showcase Hero', url: '../assets/images/hero.jpg' }
+    ];
+    photoAssetSelect.innerHTML = assets.map(a => `<option value="${a.url}">${a.name}</option>`).join('');
+    photoAssetSelect.addEventListener('change', updateAchieveLivePreview);
+  }
+
+  // Inputs live preview triggers
+  const photoUrlInput = document.getElementById('achieve-photo-url');
+  const ytInput = document.getElementById('achieve-video-yt-input');
+  const directVideoInput = document.getElementById('achieve-video-direct-url');
+  const photoFileInput = document.getElementById('achieve-photo-file');
+  const videoFileInput = document.getElementById('achieve-video-file');
+
+  if (photoUrlInput) photoUrlInput.addEventListener('input', updateAchieveLivePreview);
+  if (ytInput) ytInput.addEventListener('input', updateAchieveLivePreview);
+  if (directVideoInput) directVideoInput.addEventListener('input', updateAchieveLivePreview);
+
+  if (photoFileInput) {
+    photoFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (re) => {
+          document.getElementById('achieve-media-final').value = re.target.result;
+          updateAchieveLivePreview();
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+
+  if (videoFileInput) {
+    videoFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const url = URL.createObjectURL(file);
+        document.getElementById('achieve-media-final').value = url;
+        updateAchieveLivePreview();
+      }
+    });
+  }
+
+  // Achievement Form Submit
+  const achieveForm = document.getElementById('achievement-form');
+  if (achieveForm) {
+    achieveForm.addEventListener('submit', handleAchievementFormSubmit);
+  }
+
+  // Confirm delete achievement button
+  const btnConfirmDelete = document.getElementById('btn-confirm-delete-achieve');
+  if (btnConfirmDelete) {
+    btnConfirmDelete.addEventListener('click', executeDeleteAchievement);
+  }
+}
+
+function updateAchieveLivePreview() {
+  const previewBox = document.getElementById('achieve-preview-box');
+  const previewRender = document.getElementById('achieve-preview-render');
+  const mediaType = document.getElementById('achieve-media-type')?.value || 'image';
+
+  if (!previewBox || !previewRender) return;
+
+  let mediaUrl = '';
+
+  if (mediaType === 'image') {
+    const activeTab = document.querySelector('#panel-media-photo .tab-btn.active')?.dataset.tab;
+    if (activeTab === 'photo-upload') {
+      mediaUrl = document.getElementById('achieve-media-final')?.value || '';
+    } else if (activeTab === 'photo-url') {
+      mediaUrl = document.getElementById('achieve-photo-url')?.value.trim() || '';
+    } else {
+      mediaUrl = document.getElementById('achieve-photo-asset-select')?.value || '';
+    }
+
+    if (mediaUrl) {
+      previewBox.style.display = 'block';
+      previewRender.innerHTML = `<img src="${escapeHtml(mediaUrl)}" style="max-height: 220px; width: 100%; object-fit: contain;">`;
+    } else {
+      previewBox.style.display = 'none';
+    }
+  } else {
+    // Video
+    const activeTab = document.querySelector('#panel-media-video .tab-btn.active')?.dataset.tab;
+    if (activeTab === 'video-yt') {
+      const ytUrl = document.getElementById('achieve-video-yt-input')?.value.trim() || '';
+      const ytMatch = ytUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/i);
+      if (ytMatch) {
+        previewBox.style.display = 'block';
+        previewRender.innerHTML = `
+          <iframe src="https://www.youtube.com/embed/${ytMatch[1]}" style="width: 100%; aspect-ratio: 16/9; min-height: 200px; border: none;" allowfullscreen></iframe>
+        `;
+        // Auto-suggest thumbnail if blank
+        const thumbInput = document.getElementById('achieve-video-thumb-input');
+        if (thumbInput && !thumbInput.value) {
+          thumbInput.placeholder = `https://img.youtube.com/vi/${ytMatch[1]}/hqdefault.jpg`;
+        }
+      } else {
+        previewBox.style.display = 'none';
+      }
+    } else if (activeTab === 'video-url') {
+      const url = document.getElementById('achieve-video-direct-url')?.value.trim() || '';
+      if (url) {
+        previewBox.style.display = 'block';
+        previewRender.innerHTML = `<video src="${escapeHtml(url)}" controls style="max-height: 220px; width: 100%;"></video>`;
+      } else {
+        previewBox.style.display = 'none';
+      }
+    } else {
+      const localUrl = document.getElementById('achieve-media-final')?.value || '';
+      if (localUrl) {
+        previewBox.style.display = 'block';
+        previewRender.innerHTML = `<video src="${escapeHtml(localUrl)}" controls style="max-height: 220px; width: 100%;"></video>`;
+      } else {
+        previewBox.style.display = 'none';
+      }
+    }
+  }
+}
+
+function openAchievementForm(achieveId = null) {
+  EDITING_ACHIEVE_ID = achieveId;
+  const modal = document.getElementById('achievement-modal');
+  const modalTitle = document.getElementById('modal-achieve-title');
+  const idInput = document.getElementById('achieve-id-input');
+  const titleInput = document.getElementById('achieve-title-input');
+  const catSelect = document.getElementById('achieve-category-select');
+  const customCatWrap = document.getElementById('achieve-custom-category-wrapper');
+  const customCatInput = document.getElementById('achieve-custom-category');
+  const dateInput = document.getElementById('achieve-date-input');
+  const badgeInput = document.getElementById('achieve-badge-input');
+  const descInput = document.getElementById('achieve-desc-input');
+  const linkInput = document.getElementById('achieve-link-input');
+  const featuredCheck = document.getElementById('achieve-featured-check');
+  const finalMediaInput = document.getElementById('achieve-media-final');
+  const previewBox = document.getElementById('achieve-preview-box');
+
+  if (!modal) return;
+
+  if (achieveId) {
+    const item = ACHIEVEMENTS.find(a => a.id === achieveId);
+    if (!item) return;
+
+    if (modalTitle) modalTitle.textContent = 'Edit Studio Achievement';
+    if (idInput) {
+      idInput.value = item.id;
+      idInput.readOnly = true;
+    }
+    if (titleInput) titleInput.value = item.title || '';
+    if (dateInput) dateInput.value = item.date || '';
+    if (badgeInput) badgeInput.value = item.badge || '';
+    if (descInput) descInput.value = item.description || '';
+    if (linkInput) linkInput.value = item.linkUrl || '';
+    if (featuredCheck) featuredCheck.checked = !!item.featured;
+    if (finalMediaInput) finalMediaInput.value = item.mediaUrl || '';
+
+    // Category
+    if (catSelect) {
+      const match = Array.from(catSelect.options).some(o => o.value === item.category);
+      if (match) {
+        catSelect.value = item.category;
+        if (customCatWrap) customCatWrap.style.display = 'none';
+      } else {
+        catSelect.value = '__custom__';
+        if (customCatWrap) customCatWrap.style.display = 'block';
+        if (customCatInput) customCatInput.value = item.category || '';
+      }
+    }
+
+    // Media Type
+    const isVideo = item.mediaType === 'video';
+    const btnTypePhoto = document.getElementById('btn-type-photo');
+    const btnTypeVideo = document.getElementById('btn-type-video');
+    const panelPhoto = document.getElementById('panel-media-photo');
+    const panelVideo = document.getElementById('panel-media-video');
+    const inputMediaType = document.getElementById('achieve-media-type');
+
+    if (inputMediaType) inputMediaType.value = isVideo ? 'video' : 'image';
+    if (isVideo) {
+      if (btnTypeVideo) btnTypeVideo.classList.add('active');
+      if (btnTypePhoto) btnTypePhoto.classList.remove('active');
+      if (panelVideo) panelVideo.style.display = 'block';
+      if (panelPhoto) panelPhoto.style.display = 'none';
+
+      const ytMatch = (item.mediaUrl || '').match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/i);
+      if (ytMatch) {
+        document.getElementById('achieve-video-yt-input').value = item.mediaUrl;
+      } else {
+        document.getElementById('achieve-video-direct-url').value = item.mediaUrl || '';
+      }
+      if (item.thumbnailUrl) {
+        document.getElementById('achieve-video-thumb-input').value = item.thumbnailUrl;
+      }
+    } else {
+      if (btnTypePhoto) btnTypePhoto.classList.add('active');
+      if (btnTypeVideo) btnTypeVideo.classList.remove('active');
+      if (panelPhoto) panelPhoto.style.display = 'block';
+      if (panelVideo) panelVideo.style.display = 'none';
+      if (document.getElementById('achieve-photo-url')) {
+        document.getElementById('achieve-photo-url').value = item.mediaUrl || '';
+      }
+    }
+  } else {
+    // New item
+    if (modalTitle) modalTitle.textContent = 'Add Studio Achievement';
+    if (idInput) {
+      idInput.value = 'ach-' + Date.now();
+      idInput.readOnly = false;
+    }
+    if (titleInput) titleInput.value = '';
+    if (dateInput) dateInput.value = '2026';
+    if (badgeInput) badgeInput.value = 'Milestone Highlight';
+    if (descInput) descInput.value = '';
+    if (linkInput) linkInput.value = '';
+    if (featuredCheck) featuredCheck.checked = false;
+    if (finalMediaInput) finalMediaInput.value = '';
+
+    if (catSelect) catSelect.value = 'Milestone';
+    if (customCatWrap) customCatWrap.style.display = 'none';
+
+    // Reset to photo default
+    const btnTypePhoto = document.getElementById('btn-type-photo');
+    const btnTypeVideo = document.getElementById('btn-type-video');
+    const panelPhoto = document.getElementById('panel-media-photo');
+    const panelVideo = document.getElementById('panel-media-video');
+    const inputMediaType = document.getElementById('achieve-media-type');
+
+    if (inputMediaType) inputMediaType.value = 'image';
+    if (btnTypePhoto) btnTypePhoto.classList.add('active');
+    if (btnTypeVideo) btnTypeVideo.classList.remove('active');
+    if (panelPhoto) panelPhoto.style.display = 'block';
+    if (panelVideo) panelVideo.style.display = 'none';
+
+    if (previewBox) previewBox.style.display = 'none';
+  }
+
+  updateAchieveLivePreview();
+  modal.classList.add('active');
+}
+
+function handleAchievementFormSubmit(e) {
+  e.preventDefault();
+
+  const id = document.getElementById('achieve-id-input').value.trim();
+  const title = document.getElementById('achieve-title-input').value.trim();
+  const catSelectVal = document.getElementById('achieve-category-select').value;
+  const customCatVal = document.getElementById('achieve-custom-category')?.value.trim();
+  const category = (catSelectVal === '__custom__' && customCatVal) ? customCatVal : catSelectVal;
+  const date = document.getElementById('achieve-date-input').value.trim();
+  const badge = document.getElementById('achieve-badge-input').value.trim();
+  const description = document.getElementById('achieve-desc-input').value.trim();
+  const linkUrl = document.getElementById('achieve-link-input').value.trim();
+  const featured = document.getElementById('achieve-featured-check').checked;
+  const mediaType = document.getElementById('achieve-media-type').value;
+
+  let mediaUrl = '';
+  let thumbnailUrl = '';
+
+  if (mediaType === 'image') {
+    const activeTab = document.querySelector('#panel-media-photo .tab-btn.active')?.dataset.tab;
+    if (activeTab === 'photo-upload') {
+      mediaUrl = document.getElementById('achieve-media-final')?.value || '';
+    } else if (activeTab === 'photo-url') {
+      mediaUrl = document.getElementById('achieve-photo-url')?.value.trim() || '';
+    } else {
+      mediaUrl = document.getElementById('achieve-photo-asset-select')?.value || '';
+    }
+    thumbnailUrl = mediaUrl;
+  } else {
+    // Video
+    const activeTab = document.querySelector('#panel-media-video .tab-btn.active')?.dataset.tab;
+    if (activeTab === 'video-yt') {
+      mediaUrl = document.getElementById('achieve-video-yt-input')?.value.trim() || '';
+      const ytMatch = mediaUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/i);
+      if (ytMatch) {
+        thumbnailUrl = `https://img.youtube.com/vi/${ytMatch[1]}/hqdefault.jpg`;
+      }
+    } else if (activeTab === 'video-url') {
+      mediaUrl = document.getElementById('achieve-video-direct-url')?.value.trim() || '';
+    } else {
+      mediaUrl = document.getElementById('achieve-media-final')?.value || '';
+    }
+
+    const customThumb = document.getElementById('achieve-video-thumb-input')?.value.trim();
+    if (customThumb) {
+      thumbnailUrl = customThumb;
+    }
+  }
+
+  if (!mediaUrl) {
+    showToast('Please provide a photo or video URL/file.', 'error');
+    return;
+  }
+
+  const achievementObj = {
+    id: id || ('ach-' + Date.now()),
+    title: title,
+    category: category,
+    mediaType: mediaType,
+    mediaUrl: mediaUrl,
+    thumbnailUrl: thumbnailUrl || mediaUrl,
+    date: date,
+    badge: badge,
+    description: description,
+    featured: featured,
+    linkUrl: linkUrl,
+    createdAt: Date.now()
+  };
+
+  const existingIdx = ACHIEVEMENTS.findIndex(a => a.id === achievementObj.id);
+  if (existingIdx >= 0) {
+    achievementObj.createdAt = ACHIEVEMENTS[existingIdx].createdAt || Date.now();
+    ACHIEVEMENTS[existingIdx] = achievementObj;
+    showToast(`Achievement "${title}" updated successfully!`, 'success');
+  } else {
+    ACHIEVEMENTS.unshift(achievementObj);
+    showToast(`Achievement "${title}" added to showcase!`, 'success');
+  }
+
+  // Persist
+  saveAchievements(true);
+
+  // Sync to Firestore
+  if (typeof firestoreDb !== 'undefined' && firestoreDb) {
+    firestoreDb.collection('achievements').doc(achievementObj.id).set(achievementObj)
+      .then(() => console.log('[Firebase] Achievement synced live:', achievementObj.id))
+      .catch(err => console.warn('[Firebase] Firestore achievement error:', err));
+  }
+
+  renderAdminAchievements();
+  updateAchievementStats();
+  closeAllModals();
+}
+
+function confirmDeleteAchievement(achieveId) {
+  DELETING_ACHIEVE_ID = achieveId;
+  const item = ACHIEVEMENTS.find(a => a.id === achieveId);
+  const nameEl = document.getElementById('delete-achieve-name');
+  const modal = document.getElementById('delete-achieve-modal');
+
+  if (nameEl) nameEl.textContent = item ? `"${item.title}"` : 'this achievement';
+  if (modal) modal.classList.add('active');
+}
+
+function executeDeleteAchievement() {
+  if (!DELETING_ACHIEVE_ID) return;
+
+  const id = DELETING_ACHIEVE_ID;
+  ACHIEVEMENTS = ACHIEVEMENTS.filter(a => a.id !== id);
+
+  saveAchievements(true);
+
+  // Delete from Firestore
+  if (typeof firestoreDb !== 'undefined' && firestoreDb) {
+    firestoreDb.collection('achievements').doc(id).delete()
+      .then(() => console.log('[Firebase] Achievement doc deleted:', id))
+      .catch(err => console.warn('[Firebase] Delete achievement error:', err));
+  }
+
+  renderAdminAchievements();
+  updateAchievementStats();
+  closeAllModals();
+  showToast('Achievement removed from showcase.', 'info');
+  DELETING_ACHIEVE_ID = null;
+}
+

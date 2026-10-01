@@ -27,7 +27,12 @@
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/images/web_logo.png">
 
-  <!-- Stylesheet -->
+  <!-- Google Fonts: Cormorant Garamond, Playfair Display, Pinyon Script & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Pinyon+Script&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Main Stylesheet -->
   <link rel="stylesheet" href="css/style.css">
 
   <!-- Structured Data: Schema.org LocalBusiness & Florist -->
@@ -51,7 +56,7 @@
     "priceRange": "$$",
     "openingHours": "Mo-Su 10:00-20:00",
     "sameAs": [
-      "https://www.instagram.com/blushnbloomm/"
+      "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA=="
     ]
   }
   </script>
@@ -59,28 +64,31 @@
 <body>
 
   <!-- ===================================================================
-       Header & Navigation
+       Header & Navigation (Sticky & Translucent)
        =================================================================== -->
   <header class="header" id="main-header">
     <div class="container header-inner">
       <a href="#home" class="brand-logo-link" aria-label="Bloom&amp;blush Homepage">
-        <img src="assets/images/web_logo.png" alt="Bloom&amp;blush Logo" class="brand-logo-img">
+        <div class="brand-monogram-badge">B&amp;b</div>
         <span class="brand-name-header">Bloom&amp;blush</span>
       </a>
 
       <nav class="desktop-nav" aria-label="Main Navigation">
-        <a href="#home" class="nav-link active">Home</a>
         <a href="#collections" class="nav-link">Collections</a>
         <a href="#featured" class="nav-link">Creations</a>
         <a href="#about" class="nav-link">About</a>
+        <a href="#achievements" class="nav-link">Achievements</a>
         <a href="#occasions" class="nav-link">Occasions</a>
         <a href="#portfolio" class="nav-link">Portfolio</a>
         <a href="#contact" class="nav-link">Contact</a>
       </nav>
 
       <div class="nav-cta">
-        <a href="#" id="header-wa-btn" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
-          <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.23 8.23 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.03-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.78 2.72 4.31 3.81.6.26 1.07.41 1.44.53.61.19 1.16.17 1.6.1.49-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.29z"/></svg>
+        <a href="https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==" target="_blank" rel="noopener noreferrer" class="btn-icon-insta js-instagram-link" aria-label="Follow Bloom&amp;blush on Instagram (@blushnbloomm.in)" title="Follow @blushnbloomm.in on Instagram">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </a>
+        <a href="#" id="header-wa-btn" target="_blank" rel="noopener noreferrer" class="btn-header-wa">
+          <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.23 8.23 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.03-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.78 2.72 4.31 3.81.6.26 1.07.41 1.44.53.61.19 1.16.17 1.6.1.49-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.29z"/></svg>
           <span>WhatsApp Us</span>
         </a>
       </div>
@@ -99,7 +107,7 @@
     <div>
       <div class="mobile-drawer-header">
         <div style="display: flex; align-items: center; gap: 0.75rem;">
-          <img src="assets/images/web_logo.png" alt="Bloom&amp;blush" class="brand-logo-img">
+          <div class="brand-monogram-badge">B&amp;b</div>
           <span class="brand-name-header" style="font-size: 1.4rem;">Bloom&amp;blush</span>
         </div>
         <button type="button" class="mobile-close-btn" id="mobile-close-btn" aria-label="Close menu">&times;</button>
@@ -109,46 +117,67 @@
         <a href="#collections" class="nav-link">Collections</a>
         <a href="#featured" class="nav-link">Creations</a>
         <a href="#about" class="nav-link">About Bloom&amp;blush</a>
+        <a href="#achievements" class="nav-link">Achievements</a>
         <a href="#occasions" class="nav-link">Occasions</a>
         <a href="#portfolio" class="nav-link">Portfolio</a>
         <a href="#contact" class="nav-link">Contact</a>
       </nav>
     </div>
     <div class="mobile-drawer-footer">
-      <a href="#" id="drawer-wa-btn" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp" style="width: 100%;">
-        <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.23 8.23 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.03-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.78 2.72 4.31 3.81.6.26 1.07.41 1.44.53.61.19 1.16.17 1.6.1.49-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.29z"/></svg>
-        <span>Enquire on WhatsApp</span>
-      </a>
+      <div style="display: flex; gap: 0.75rem; margin-bottom: 0.75rem;">
+        <a href="#" id="drawer-wa-btn" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp" style="flex: 1;">
+          <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.23 8.23 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.03-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.78 2.72 4.31 3.81.6.26 1.07.41 1.44.53.61.19 1.16.17 1.6.1.49-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.29z"/></svg>
+          <span>WhatsApp</span>
+        </a>
+        <a href="https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==" target="_blank" rel="noopener noreferrer" class="btn btn-secondary js-instagram-link" style="padding: 0 1.1rem; display: inline-flex; align-items: center; justify-content: center;" aria-label="Visit Instagram (@blushnbloomm.in)">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        </a>
+      </div>
       <p class="text-center js-business-location">Pimpri-Chinchwad, Pune</p>
     </div>
   </aside>
 
   <!-- ===================================================================
-       Hero Section - Option 1: Clean Boutique Showcase
+       01. HOME HERO SECTION (Luxury Editorial 2-Column with 3D Depth)
        =================================================================== -->
-  <section class="hero" id="home">
-    <div class="container">
-      <div class="hero-clean-container">
-        <div class="hero-badge">
-          <span class="hero-badge-dot"></span>
+  <section class="hero-section" id="home">
+    <!-- Subtle Botanical Vector Flourishes in Background -->
+    <div class="botanical-flourish botanical-hero-left" aria-hidden="true">
+      <img src="assets/images/botanical-rose-branch.svg" alt="">
+    </div>
+    <div class="botanical-flourish botanical-hero-right" aria-hidden="true">
+      <img src="assets/images/botanical-eucalyptus.svg" alt="">
+    </div>
+
+    <div class="container hero-editorial-grid">
+      <!-- Left Column: Typography, CTAs & Value Propositions -->
+      <div class="hero-content-col">
+        <div class="hero-studio-pill">
+          <span class="hero-pill-dot"></span>
           <span>Boutique Floral &amp; Luxury Gifting Studio</span>
         </div>
-        <h1 class="hero-title-opt1">
-          Thoughtfully Crafted.<br>
-          <em>Beautifully Presented.</em>
+
+        <h1 class="hero-editorial-title">
+          Thoughtfully<br>
+          Crafted.<br>
+          <span class="hero-title-italic">Beautifully<br>Presented.</span>
         </h1>
-        <p class="hero-desc-opt1">
+
+        <p class="hero-editorial-desc">
           Discover curated luxury for moments that matter. We handcraft bespoke money garlands, artisanal bouquets, luxury hampers, and celebration gifting in Pimpri-Chinchwad, Pune.
         </p>
-        <div class="hero-actions-opt1">
-          <a href="#collections" class="btn btn-primary">
-            Shop Collections
+
+        <div class="hero-editorial-actions">
+          <a href="#collections" class="btn-editorial-primary">
+            <span>Shop Collections</span>
+            <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M5 12h14M12 5l7 7-7 7"/></svg>
           </a>
-          <a href="#" id="hero-wa-btn" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
-            <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.23 8.23 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.03-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.78 2.72 4.31 3.81.6.26 1.07.41 1.44.53.61.19 1.16.17 1.6.1.49-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.29z"/></svg>
+          <a href="#" id="hero-wa-btn" target="_blank" rel="noopener noreferrer" class="btn-editorial-secondary">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.23 8.23 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.03-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.78 2.72 4.31 3.81.6.26 1.07.41 1.44.53.61.19 1.16.17 1.6.1.49-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.29z"/></svg>
             <span>WhatsApp Consultation</span>
           </a>
         </div>
+
         <div class="hero-trust-bar">
           <div class="hero-trust-item">
             <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2L9.19 8.63L2 9.24l5.46 4.73L5.82 21L12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2z"/></svg>
@@ -163,218 +192,147 @@
             <span>Pimpri-Chinchwad, Pune</span>
           </div>
         </div>
+
+        <div class="hero-scroll-indicator">
+          <div class="mouse-scroll-icon">
+            <span class="mouse-wheel-dot"></span>
+          </div>
+          <span>SCROLL TO EXPLORE</span>
+        </div>
+      </div>
+
+      <!-- Right Column: Editorial Framed Image Composition with Calligraphy & Pagination -->
+      <div class="hero-media-col">
+        <div class="hero-media-frame js-tilt-card" id="hero-media-frame">
+          <img src="assets/images/hero.jpg" alt="Bloom&amp;blush Luxury Gifting and Floral Suite" class="hero-main-img" id="hero-carousel-img">
+          <div class="hero-script-ribbon">
+            Gifts<br>Flowers<br>Memories<br>Forever
+          </div>
+        </div>
+
+        <div class="hero-slider-bar">
+          <span class="hero-slide-counter" id="hero-slide-counter">01 / 03</span>
+          <div class="hero-slider-arrows">
+            <button type="button" class="hero-arrow-btn" id="hero-prev-btn" aria-label="Previous slide">&larr;</button>
+            <button type="button" class="hero-arrow-btn" id="hero-next-btn" aria-label="Next slide">&rarr;</button>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- ===================================================================
-       Our Collections Section (Directly below Hero - Option 1)
+       02. COLLECTIONS SECTION (6-Card Editorial Grid with Filter Pills)
        =================================================================== -->
   <section class="collections-section" id="collections">
     <div class="container">
-      <div class="collections-header text-center">
-        <span class="eyebrow">Curated Offerings</span>
-        <h2 class="section-title">Our Collections</h2>
-        <p class="section-subtitle">
+      <div class="editorial-section-header text-center">
+        <span class="editorial-eyebrow">&mdash; CURATED OFFERINGS &mdash;</span>
+        <h2 class="editorial-section-title">Our Collections</h2>
+        <p class="editorial-section-subtitle">
           Explore our signature categories designed to bring elegance and grandeur to every celebration.
         </p>
       </div>
 
-      <div class="collections-grid" id="collections-grid">
-        <!-- Rendered dynamically from data.js with direct WhatsApp actions -->
+      <!-- Collections Category Filter Bar -->
+      <div class="collections-filter-bar" id="collections-filter-bar">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+
+      <!-- 6-Card Editorial Grid -->
+      <div class="collections-editorial-grid" id="collections-grid">
+        <!-- Rendered dynamically from data.js & app.js -->
       </div>
     </div>
   </section>
 
   <!-- ===================================================================
-       Brand Introduction Section
-       =================================================================== -->
-  <section class="brand-intro">
-    <div class="container">
-      <div class="intro-grid">
-        <div class="intro-media">
-          <div class="intro-image-wrapper">
-            <img src="assets/images/customized_gifts.jpg" alt="Handcrafted luxury gifting detail by Bloom&amp;blush" loading="lazy">
-          </div>
-          <div class="intro-quote-badge">
-            <p>“Every celebration deserves something beautiful.”</p>
-            <span>— Siddhi Kokate</span>
-          </div>
-        </div>
-
-        <div class="intro-content">
-          <span class="eyebrow">Artisanal Philosophy</span>
-          <h2 class="intro-headline">Every celebration deserves something truly beautiful.</h2>
-          <p class="intro-lead">
-            At Bloom&amp;blush, we believe gifting is an art form—a tangible expression of love, honor, and heartfelt emotion that transforms fleeting moments into lifelong memories.
-          </p>
-          <p class="intro-body">
-            From our studio in Pimpri-Chinchwad, Pune, we create customized gifting pieces and handcrafted arrangements for weddings, baby showers, milestone anniversaries, and festive ceremonies. Every fold of our money garlands, every stem in our floral bouquets, and every element inside our luxury hampers is intentionally chosen and lovingly assembled by hand.
-          </p>
-
-          <div class="intro-pillars">
-            <div class="pillar-item">
-              <svg class="pillar-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2L9.19 8.63L2 9.24l5.46 4.73L5.82 21L12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2z"/></svg>
-              <div>
-                <h3 class="pillar-title">Origami Precision</h3>
-                <p class="pillar-desc">Damage-free folded currency garlands with immaculate symmetry.</p>
-              </div>
-            </div>
-            <div class="pillar-item">
-              <svg class="pillar-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-              <div>
-                <h3 class="pillar-title">Deep Personalization</h3>
-                <p class="pillar-desc">Custom color palettes, calligraphed cards, and tailored aesthetics.</p>
-              </div>
-            </div>
-            <div class="pillar-item">
-              <svg class="pillar-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg>
-              <div>
-                <h3 class="pillar-title">Pune Heritage</h3>
-                <p class="pillar-desc">Locally rooted, celebrating Maharashtrian and Indian wedding traditions.</p>
-              </div>
-            </div>
-            <div class="pillar-item">
-              <svg class="pillar-icon" viewBox="0 0 24 24"><path fill="currentColor" d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.65-.5-.65C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2z"/></svg>
-              <div>
-                <h3 class="pillar-title">Luxury Presentation</h3>
-                <p class="pillar-desc">Royal burgundy velvet, antique zari, and brass detailing.</p>
-              </div>
-            </div>
-          </div>
-
-          <a href="#about" class="btn-link">
-            Discover Our Story
-            <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================================================================
-       Featured Creations (Editorial Product Showcase)
+       03. FEATURED CREATIONS SECTION (Asymmetric Editorial Showcase)
        =================================================================== -->
   <section class="featured-section" id="featured">
     <div class="container">
-      <div class="featured-header text-center" style="margin-bottom: 2.5rem;">
-        <span class="eyebrow">Artisanal Portfolio</span>
-        <h2 class="section-title">Featured Creations</h2>
-        <p class="section-subtitle">
+      <div class="editorial-section-header text-center">
+        <span class="editorial-eyebrow">&mdash; ARTISANAL PORTFOLIO &mdash;</span>
+        <h2 class="editorial-section-title">Featured Creations</h2>
+        <p class="editorial-section-subtitle">
           Each piece is uniquely handcrafted upon order. Click any creation to view intricate craftsmanship details and enquire directly on WhatsApp.
         </p>
       </div>
 
-      <!-- Category Filter Bar -->
-      <div class="filter-bar" id="filter-bar">
-        <!-- Filter buttons populated by app.js -->
+      <!-- 2-Tier Category Filter Bar -->
+      <div class="creations-filter-bar" id="filter-bar">
+        <!-- Rendered dynamically by app.js -->
       </div>
 
-      <!-- Products Grid -->
-      <div class="products-grid" id="products-grid">
-        <!-- Rendered dynamically from data.js -->
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================================================================
-       Occasions Section
-       =================================================================== -->
-  <section class="occasions-section" id="occasions">
-    <div class="container">
-      <div class="occasions-header text-center">
-        <span class="eyebrow">Cherished Moments</span>
-        <h2 class="section-title">Crafted for Every Occasion</h2>
-        <p class="section-subtitle">
-          From grand wedding mandaps to intimate milestone celebrations, discover bespoke gifting tailored for your special days.
-        </p>
-      </div>
-
-      <div class="occasions-grid" id="occasions-grid">
-        <!-- Rendered dynamically from data.js -->
+      <!-- Editorial Creations Showcase -->
+      <div class="creations-display-container" id="products-grid">
+        <!-- Rendered dynamically from data.js & app.js -->
       </div>
     </div>
   </section>
 
   <!-- ===================================================================
-       Instagram-Inspired Portfolio Gallery
-       =================================================================== -->
-  <section class="portfolio-section" id="portfolio">
-    <div class="container">
-      <div class="portfolio-header text-center">
-        <span class="eyebrow">Visual Stories</span>
-        <h2 class="section-title">From Our Instagram Journal</h2>
-        <p class="section-subtitle">
-          A glimpse into recent custom creations, bridal dispatches, and handcrafted studio pieces from Pimpri-Chinchwad, Pune.
-        </p>
-      </div>
-
-      <div class="portfolio-gallery" id="portfolio-gallery">
-        <!-- Rendered dynamically from data.js -->
-      </div>
-
-      <div class="portfolio-footer-cta">
-        <a href="https://www.instagram.com/blushnbloomm/" target="_blank" rel="noopener noreferrer" class="btn btn-secondary js-instagram-link">
-          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-          <span>Follow Us on Instagram</span>
-        </a>
-        <span class="instagram-handle-badge">Follow <strong class="js-instagram-handle">@blushnbloomm</strong> for daily design inspirations</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================================================================
-       About Section
+       04. ABOUT SECTION (2-Column Luxury Story & Craftsmanship Pillars)
        =================================================================== -->
   <section class="about-section" id="about">
+    <div class="botanical-flourish botanical-about-top" aria-hidden="true">
+      <img src="assets/images/botanical-rose-branch.svg" alt="">
+    </div>
+    <div class="botanical-flourish botanical-about-bottom" aria-hidden="true">
+      <img src="assets/images/botanical-eucalyptus.svg" alt="">
+    </div>
+
     <div class="container">
-      <div class="about-grid">
-        <div class="about-media">
-          <div class="about-image-card">
-            <img src="assets/images/wedding_trousseau.jpg" alt="Siddhi Kokate - Founder of Bloom&amp;blush Pimpri-Chinchwad, Pune" loading="lazy">
-          </div>
-          <div class="about-experience-badge">
-            <h4>Boutique Studio</h4>
-            <p>Handcrafting memories in Pimpri-Chinchwad, Pune.</p>
+      <div class="about-editorial-grid">
+        <!-- Left: Large Craftsmanship Photography / Video Frame with Play Overlay -->
+        <div class="about-media-col">
+          <div class="about-image-card js-tilt-card">
+            <img src="assets/images/wedding_trousseau.jpg" alt="Siddhi Kokate - Founder &amp; Creative Lead of Bloom&amp;blush Pimpri-Chinchwad, Pune" loading="lazy">
+            <button type="button" class="about-play-overlay" id="btn-about-play" aria-label="Play Studio Craftsmanship Video">
+              <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+            </button>
+            <div class="about-experience-badge">
+              <h4>Boutique Studio</h4>
+              <p>Crafting memories in Pimpri-Chinchwad, Pune.</p>
+            </div>
           </div>
         </div>
 
-        <div class="about-content">
-          <span class="eyebrow">The Artisan Behind the Brand</span>
-          <p class="about-founder-tag">Founder &amp; Creative Lead</p>
+        <!-- Right: Brand Philosophy & Values -->
+        <div class="about-content-col">
+          <span class="editorial-eyebrow">THE ARTISAN BEHIND THE BRAND</span>
+          <p class="about-founder-tag">FOUNDER &amp; CREATIVE LEAD</p>
           <h2 class="about-headline">About Bloom&amp;blush</h2>
 
           <p class="about-p">
             Welcome to <strong>Bloom&amp;blush</strong>, an intimate boutique gifting and floral studio founded by <strong>Siddhi Kokate</strong>, based in <strong>Pimpri-Chinchwad, Pune</strong>.
           </p>
           <p class="about-p">
-            Born out of a deep reverence for the beauty of Indian celebrations and a passion for tactile craftsmanship, Bloom&amp;blush bridges traditional ceremonial gifting with contemporary editorial elegance. We understand that whether it's a groom's grand baraat garland, a bespoke engagement ring tray, or a luxurious festive hamper for family, each creation carries immense emotion.
+            Born out of a deep reverence for the beauty of Indian celebrations and a passion for tactile craftsmanship, Bloom&amp;blush bridges traditional ceremonial gifting with contemporary editorial elegance.
           </p>
           <p class="about-p">
-            Unlike commercial factories or mass-market websites, every single Bloom&amp;blush arrangement is personally styled, meticulously crafted, and quality-inspected by Siddhi Kokate. We work closely with our clients over WhatsApp to understand their color palette, preferred flowers, family traditions, and sentimental nuances.
+            Every arrangement is personally styled, meticulously crafted, and quality-inspected to ensure it carries immense emotion.
           </p>
 
-          <div class="about-values-list">
-            <div class="about-value-item">
-              <span class="about-value-bullet"></span>
-              <div class="about-value-text">
-                <h5>Uncompromising Craftsmanship</h5>
-                <p>We use damage-free note-folding methods for money garlands and the freshest, premium botanical stems.</p>
+          <!-- 3 Value Pillars -->
+          <div class="about-values-row">
+            <div class="about-pillar-pill">
+              <div class="about-pillar-icon">
+                <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2L9.19 8.63L2 9.24l5.46 4.73L5.82 21L12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2z"/></svg>
               </div>
+              <span>Uncompromising Craftsmanship</span>
             </div>
-            <div class="about-value-item">
-              <span class="about-value-bullet"></span>
-              <div class="about-value-text">
-                <h5>Bespoke Consultations</h5>
-                <p>One-on-one personalized WhatsApp guidance to ensure your gifting perfectly matches your celebration theme.</p>
+            <div class="about-pillar-pill">
+              <div class="about-pillar-icon">
+                <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
               </div>
+              <span>Bespoke Consultations</span>
             </div>
-            <div class="about-value-item">
-              <span class="about-value-bullet"></span>
-              <div class="about-value-text">
-                <h5>Proudly Crafted in Pune</h5>
-                <p>Serving discerning families, brides, and businesses across Pimpri-Chinchwad, Pune, and Maharashtra.</p>
+            <div class="about-pillar-pill">
+              <div class="about-pillar-icon">
+                <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg>
               </div>
+              <span>Personalized Approach</span>
             </div>
           </div>
         </div>
@@ -383,65 +341,214 @@
   </section>
 
   <!-- ===================================================================
-       Contact & WhatsApp Consultation Section
+       05. OCCASIONS SECTION (5 Tall Portrait Cards with Circle Arrows)
+       =================================================================== -->
+  <section class="occasions-section" id="occasions">
+    <div class="container">
+      <div class="editorial-section-header text-center">
+        <span class="editorial-eyebrow">&mdash; CHERISHED MOMENTS &mdash;</span>
+        <h2 class="editorial-section-title">Crafted for Every Occasion</h2>
+        <p class="editorial-section-subtitle">
+          From grand weddings to intimate milestone celebrations, discover bespoke gifting tailored for your special days.
+        </p>
+      </div>
+
+      <!-- 5 Tall Portrait Cards Container -->
+      <div class="occasions-gallery-grid" id="occasions-grid">
+        <!-- Rendered dynamically from data.js & app.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       06. PORTFOLIO / INSTAGRAM SECTION (Visual Stories & Corner Badges)
+       =================================================================== -->
+  <section class="portfolio-section" id="portfolio">
+    <div class="container">
+      <div class="editorial-section-header text-center">
+        <span class="editorial-eyebrow">&mdash; VISUAL STORIES &mdash;</span>
+        <h2 class="editorial-section-title">From Our Instagram Journal</h2>
+        <p class="editorial-section-subtitle">
+          A glimpse into recent custom creations, bridal dispatches, and handcrafted studio pieces from Pimpri-Chinchwad, Pune.
+        </p>
+      </div>
+
+      <!-- Instagram Journal Category Filter Pills -->
+      <div class="portfolio-filter-bar" id="portfolio-filter-bar">
+        <button type="button" class="port-filter-pill active" data-filter="all">All Posts</button>
+        <button type="button" class="port-filter-pill" data-filter="Bridal">Bridal</button>
+        <button type="button" class="port-filter-pill" data-filter="Hampers">Hampers</button>
+        <button type="button" class="port-filter-pill" data-filter="Garlands">Garlands</button>
+        <button type="button" class="port-filter-pill" data-filter="Decor">Decor</button>
+        <button type="button" class="port-filter-pill" data-filter="Behind the Scenes">Behind the Scenes</button>
+      </div>
+
+      <!-- Editorial Image Grid with Instagram Corner Badges -->
+      <div class="portfolio-editorial-grid" id="portfolio-gallery">
+        <!-- Rendered dynamically from data.js & app.js -->
+      </div>
+
+      <div class="portfolio-footer-cta text-center">
+        <a href="https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==" target="_blank" rel="noopener noreferrer" class="btn-editorial-primary js-instagram-link">
+          <span>Follow on Instagram</span>
+          <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       07. ACHIEVEMENTS SECTION (KPI Stats Banner & Milestone Cards)
+       =================================================================== -->
+  <section class="achievements-section" id="achievements">
+    <div class="botanical-flourish botanical-achieve-bg" aria-hidden="true">
+      <img src="assets/images/botanical-corner-wreath.svg" alt="">
+    </div>
+
+    <div class="container">
+      <div class="editorial-section-header text-center">
+        <span class="editorial-eyebrow">MILESTONES &amp; MOMENTS</span>
+        <h2 class="editorial-section-title">Studio Achievements &amp; Highlights</h2>
+        <p class="editorial-section-subtitle">
+          A journey of trust, craftsmanship, and love &mdash; here are some of our proudest moments.
+        </p>
+      </div>
+
+      <!-- 4 Stats Cards Banner -->
+      <div class="achievements-kpi-grid">
+        <div class="kpi-stat-card">
+          <div class="kpi-icon-wrap">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+          </div>
+          <div class="kpi-stat-number" data-target="500">500+</div>
+          <div class="kpi-stat-label">Happy Clients</div>
+        </div>
+
+        <div class="kpi-stat-card">
+          <div class="kpi-icon-wrap">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          </div>
+          <div class="kpi-stat-number" data-target="3">3+</div>
+          <div class="kpi-stat-label">Years of Craftsmanship</div>
+        </div>
+
+        <div class="kpi-stat-card">
+          <div class="kpi-icon-wrap">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.65-.5-.65C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2z"/></svg>
+          </div>
+          <div class="kpi-stat-number" data-target="1000">1000+</div>
+          <div class="kpi-stat-label">Unique Creations</div>
+        </div>
+
+        <div class="kpi-stat-card">
+          <div class="kpi-icon-wrap">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+          </div>
+          <div class="kpi-stat-number">4.9&starf;</div>
+          <div class="kpi-stat-label">Client Satisfaction</div>
+        </div>
+      </div>
+
+      <!-- 4 Milestone Cards Grid -->
+      <div class="achievements-editorial-grid" id="achievements-grid">
+        <!-- Rendered dynamically from data.js & app.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================
+       08. CONTACT SECTION (2-Column Luxury Consultation & WhatsApp Form)
        =================================================================== -->
   <section class="contact-section" id="contact">
+    <div class="botanical-flourish botanical-contact-left" aria-hidden="true">
+      <img src="assets/images/botanical-rose-branch.svg" alt="">
+    </div>
+
     <div class="container">
-      <div class="contact-card-wrapper">
-        <div class="contact-grid">
-          <div class="contact-info">
-            <span class="eyebrow">Personalized Service</span>
-            <h3>Let’s Create Something Memorable</h3>
-            <p>
-              Have an upcoming wedding, birthday, anniversary, or festive celebration? We’d love to craft something bespoke for your special moment. Reach out directly via WhatsApp or Instagram.
-            </p>
+      <div class="contact-editorial-layout">
+        <!-- Left: Studio Details & Direct Channels -->
+        <div class="contact-details-col">
+          <span class="editorial-eyebrow">PERSONALIZED SERVICE</span>
+          <h2 class="contact-editorial-title">Let&rsquo;s Create Something Memorable</h2>
+          <p class="contact-editorial-lead">
+            Have an upcoming wedding, birthday, anniversary, or festive celebration? We&rsquo;d love to craft something bespoke for your special moment.
+          </p>
 
-            <div class="contact-details-box">
-              <div class="contact-detail-row">
-                <div class="contact-icon">
-                  <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
-                </div>
-                <div>
-                  <span class="contact-label">Studio Location</span>
-                  <div class="contact-val js-business-location">Pimpri-Chinchwad, Pune, Maharashtra</div>
-                </div>
+          <div class="contact-info-list">
+            <div class="contact-info-item">
+              <div class="contact-round-icon">
+                <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
               </div>
-
-              <div class="contact-detail-row">
-                <div class="contact-icon">
-                  <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.23 8.23 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.03-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.78 2.72 4.31 3.81.6.26 1.07.41 1.44.53.61.19 1.16.17 1.6.1.49-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.29z"/></svg>
-                </div>
-                <div>
-                  <span class="contact-label">WhatsApp Consultation</span>
-                  <div class="contact-val js-whatsapp-number">+91 81808 79442</div>
-                </div>
-              </div>
-
-              <div class="contact-detail-row">
-                <div class="contact-icon">
-                  <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                </div>
-                <div>
-                  <span class="contact-label">Instagram Journal</span>
-                  <div class="contact-val js-instagram-handle">@blushnbloomm</div>
-                </div>
+              <div class="contact-text-group">
+                <span class="contact-meta-label">Studio Location</span>
+                <span class="contact-meta-val js-business-location">Pimpri-Chinchwad, Pune, Maharashtra</span>
               </div>
             </div>
+
+            <a href="#" id="contact-details-wa-link" target="_blank" rel="noopener noreferrer" class="contact-info-item">
+              <div class="contact-round-icon">
+                <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.23 8.23 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.03-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.78 2.72 4.31 3.81.6.26 1.07.41 1.44.53.61.19 1.16.17 1.6.1.49-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.29z"/></svg>
+              </div>
+              <div class="contact-text-group">
+                <span class="contact-meta-label">WhatsApp Consultation</span>
+                <span class="contact-meta-val js-whatsapp-number">+91 81808 79442</span>
+              </div>
+            </a>
+
+            <a href="https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==" target="_blank" rel="noopener noreferrer" class="contact-info-item js-instagram-link">
+              <div class="contact-round-icon">
+                <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              </div>
+              <div class="contact-text-group">
+                <span class="contact-meta-label">Instagram Journal</span>
+                <span class="contact-meta-val js-instagram-handle">@blushnbloomm.in</span>
+              </div>
+            </a>
           </div>
+        </div>
 
-          <div class="contact-actions-box">
-            <h4>Ready to Enquire?</h4>
-            <p>Connect directly with Siddhi Kokate on WhatsApp to discuss your design preferences, timelines, and pricing.</p>
+        <!-- Right: Dedicated "Send an Enquiry" Consultation Card -->
+        <div class="contact-form-col">
+          <div class="consultation-form-card js-tilt-card">
+            <h3 class="consultation-card-title">Send an Enquiry</h3>
             
-            <a href="#" id="contact-wa-btn" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp" style="width: 100%;">
-              <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.23 8.23 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.03-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.78 2.72 4.31 3.81.6.26 1.07.41 1.44.53.61.19 1.16.17 1.6.1.49-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.29z"/></svg>
-              <span>Chat With Us on WhatsApp</span>
-            </a>
+            <form id="consultation-enquiry-form" class="consultation-form">
+              <div class="form-group">
+                <label for="enquiry-name">Your Name</label>
+                <input type="text" id="enquiry-name" name="name" placeholder="e.g. Radhika Sharma" required>
+              </div>
 
-            <a href="https://www.instagram.com/blushnbloomm/" target="_blank" rel="noopener noreferrer" class="btn btn-secondary js-instagram-link" style="width: 100%;">
-              <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-              <span>Follow Us on Instagram</span>
-            </a>
+              <div class="form-group">
+                <label for="enquiry-phone">Phone Number</label>
+                <input type="tel" id="enquiry-phone" name="phone" placeholder="e.g. +91 98765 43210" required>
+              </div>
+
+              <div class="form-group">
+                <label for="enquiry-occasion">Occasion</label>
+                <select id="enquiry-occasion" name="occasion" required>
+                  <option value="" disabled selected>Select Celebration Occasion</option>
+                  <option value="Weddings & Baraat">Weddings &amp; Baraat</option>
+                  <option value="Engagements & Roka">Engagements &amp; Roka</option>
+                  <option value="Milestone Birthday">Milestone Birthday</option>
+                  <option value="Anniversary">Anniversary</option>
+                  <option value="Baby Shower / Naming">Baby Shower / Naming Ceremony</option>
+                  <option value="Festive Celebrations">Festive Celebrations (Ganesh Utsav, Diwali)</option>
+                  <option value="Customized Gifting">Bespoke Personalized Gifting</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="enquiry-message">Your Message</label>
+                <textarea id="enquiry-message" name="message" rows="3" placeholder="Share your date, preferred style, or specific questions..."></textarea>
+              </div>
+
+              <button type="submit" class="btn-enquiry-submit">
+                <span>Send on WhatsApp</span>
+                <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </form>
+
+            <p class="enquiry-helper-note">We&rsquo;ll get back to you within 1-2 hours.</p>
           </div>
         </div>
       </div>
@@ -455,12 +562,17 @@
     <div class="container">
       <div class="footer-top">
         <div class="footer-brand">
-          <img src="assets/images/web_logo.png" alt="Bloom&amp;blush" style="height: 52px; width: 52px; border-radius: 8px; margin-bottom: 1rem; box-shadow: 0 4px 14px rgba(0,0,0,0.25);">
+          <div class="brand-monogram-badge" style="width: 48px; height: 48px; font-size: 1.3rem; margin-bottom: 1rem;">B&amp;b</div>
           <h3>Bloom&amp;blush</h3>
-          <p class="footer-tagline">“Thoughtfully Crafted. Beautifully Presented.”</p>
+          <p class="footer-tagline">&ldquo;Thoughtfully Crafted. Beautifully Presented.&rdquo;</p>
           <p class="footer-desc">
             A boutique gifting and floral studio by Siddhi Kokate based in Pimpri-Chinchwad, Pune. Handcrafting memories through bespoke currency garlands, luxury hampers, and artisanal floral arrangements.
           </p>
+          <div style="margin-top: 1rem;">
+            <a href="https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==" target="_blank" rel="noopener noreferrer" class="btn-icon-insta js-instagram-link" style="background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.2); color: var(--cream-ivory);" aria-label="Visit Instagram (@blushnbloomm.in)" title="Follow @blushnbloomm.in on Instagram">
+              <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+          </div>
         </div>
 
         <div class="footer-col">
@@ -470,6 +582,7 @@
             <li><a href="#collections">Collections</a></li>
             <li><a href="#featured">Featured Creations</a></li>
             <li><a href="#about">About Siddhi Kokate</a></li>
+            <li><a href="#achievements">Studio Achievements</a></li>
             <li><a href="#occasions">Celebration Occasions</a></li>
             <li><a href="#portfolio">Instagram Portfolio</a></li>
           </ul>
@@ -478,7 +591,7 @@
         <div class="footer-col">
           <h4>Connect</h4>
           <ul class="footer-links">
-            <li><a href="https://www.instagram.com/blushnbloomm/" target="_blank" rel="noopener noreferrer" class="js-instagram-link">Instagram (@blushnbloomm)</a></li>
+            <li><a href="https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==" target="_blank" rel="noopener noreferrer" class="js-instagram-link">Instagram (@blushnbloomm.in)</a></li>
             <li><a href="#" id="footer-wa-btn" class="js-whatsapp-number">+91 81808 79442</a></li>
             <li><span style="color: rgba(253, 251, 247, 0.6); font-size: 0.85rem;" class="js-business-location">Pimpri-Chinchwad, Pune</span></li>
           </ul>
@@ -540,17 +653,52 @@
     </div>
   </div>
 
-  <!-- Mobile Sticky Bottom WhatsApp Bar (when product modal active) -->
+  <!-- ===================================================================
+       Achievement Media Modal (Video & Photo Lightbox)
+       =================================================================== -->
+  <div class="achievement-modal-backdrop" id="achievement-modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="achieve-modal-title">
+    <div class="achievement-modal-dialog">
+      <button type="button" class="modal-close-btn" id="achieve-modal-close-btn" aria-label="Close achievement media">&times;</button>
+      
+      <div class="achieve-modal-content">
+        <!-- Media Container (Video Player or High-Res Image) -->
+        <div class="achieve-modal-media-wrapper" id="achieve-modal-media-wrapper">
+          <!-- Populated dynamically: HTML5 <video>, YouTube embed, or <img> -->
+        </div>
+
+        <div class="achieve-modal-details">
+          <div class="achieve-modal-meta">
+            <span class="achieve-modal-badge" id="achieve-modal-badge">Milestone</span>
+            <span class="achieve-modal-category" id="achieve-modal-category"></span>
+            <span class="achieve-modal-date" id="achieve-modal-date"></span>
+          </div>
+
+          <h3 class="achieve-modal-title" id="achieve-modal-title"></h3>
+          <p class="achieve-modal-desc" id="achieve-modal-desc"></p>
+
+          <div class="achieve-modal-actions">
+            <a href="#" id="achieve-modal-wa-btn" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
+              <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.23 8.23 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.03-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.78 2.72 4.31 3.81.6.26 1.07.41 1.44.53.61.19 1.16.17 1.6.1.49-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.29z"/></svg>
+              <span>Enquire with Siddhi on WhatsApp</span>
+            </a>
+            <a href="#" id="achieve-modal-ext-link" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" style="display: none;">
+              <span>View Source / Video Link &rarr;</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Sticky Bottom WhatsApp Bar -->
   <div class="mobile-sticky-enquiry" id="mobile-sticky-enquiry">
     <a href="#" id="mobile-sticky-wa-btn" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
       <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.23 8.23 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.03-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.78 2.72 4.31 3.81.6.26 1.07.41 1.44.53.61.19 1.16.17 1.6.1.49-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.29z"/></svg>
-      <span>I'm Interested on WhatsApp</span>
+      <span>WhatsApp Consultation</span>
     </a>
   </div>
 
-  <!-- ===================================================================
-       Floating WhatsApp Consultation Button
-       =================================================================== -->
+  <!-- Floating WhatsApp Consultation Button for Desktop -->
   <a href="#" class="floating-whatsapp" id="floating-wa-btn" target="_blank" rel="noopener noreferrer" aria-label="Chat with Bloom&amp;blush on WhatsApp">
     <div class="floating-wa-icon">
       <svg viewBox="0 0 24 24"><path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.23 8.23 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.03-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.78 2.72 4.31 3.81.6.26 1.07.41 1.44.53.61.19 1.16.17 1.6.1.49-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.29z"/></svg>

@@ -1,283 +1,164 @@
 /**
  * ===================================================================
  * Bloom&blush - Boutique Gifting & Floral Studio
- * Client-Side Application Logic & WhatsApp Integration
+ * Client-Side Application Logic & Luxury Editorial Experience
+ * Location: Pimpri-Chinchwad, Pune, Maharashtra
  * ===================================================================
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Initialize Application Components
+  // Initialize Core Application Components
   initBrandMeta();
+  initHeroSlider();
   renderCollections();
   renderProducts('all');
-  renderOccasions();
-  renderPortfolio();
   initCategoryFilters();
+  renderOccasions();
+  renderPortfolio('all');
+  initPortfolioFilters();
+  renderAchievements('all');
   initProductModal();
+  initAchievementModal();
   initMobileNav();
   initScrollEffects();
   initWhatsAppButtons();
+  initConsultationForm();
+  initCounters();
+  init3DTilt();
+  initAboutVideoTrigger();
   handleUrlHashRouting();
+  initScrollToning();
+  initButtonPops();
 
-  // Load / Sync products dynamically from products.json or alternate website
+  // Load & Sync products and achievements dynamically
   loadProductsData();
+  loadAchievementsData();
   setupSyncListeners();
 });
 
 /**
- * Sync with Firebase Firestore / alternate website / products.json
+ * 01. Hero Slider Component (01 / 03 Controls)
  */
-async function loadProductsData() {
-  // 1. If Firebase Firestore is initialized, listen for real-time updates!
-  if (typeof firestoreDb !== 'undefined' && firestoreDb) {
-    try {
-      firestoreDb.collection('products').onSnapshot((snapshot) => {
-        if (!snapshot.empty) {
-          const cloudProducts = [];
-          snapshot.forEach(doc => {
-            cloudProducts.push(doc.data());
-          });
-          if (cloudProducts.length > 0) {
-            PRODUCTS = cloudProducts;
-            renderProducts('all');
-            initCategoryFilters();
-            console.log('[Firebase] Real-time synced', cloudProducts.length, 'products from Firestore!');
-            return;
-          }
-        }
-      }, (err) => {
-        console.warn('[Firebase] Firestore onSnapshot warning:', err);
-      });
-    } catch (e) {
-      console.warn('[Firebase] Error setting up Firestore listener:', e);
-    }
+function initHeroSlider() {
+  const slides = [
+    'assets/images/hero.jpg',
+    'assets/images/wedding_trousseau.jpg',
+    'assets/images/money_garland_model.jpg'
+  ];
+
+  let currentSlide = 0;
+  const imgEl = document.getElementById('hero-carousel-img');
+  const counterEl = document.getElementById('hero-slide-counter');
+  const prevBtn = document.getElementById('hero-prev-btn');
+  const nextBtn = document.getElementById('hero-next-btn');
+
+  if (!imgEl || !counterEl) return;
+
+  function setSlide(idx) {
+    currentSlide = (idx + slides.length) % slides.length;
+    imgEl.style.transition = 'opacity 0.45s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)';
+    imgEl.style.opacity = '0.3';
+    imgEl.style.transform = 'scale(0.98)';
+    setTimeout(() => {
+      imgEl.src = slides[currentSlide];
+      imgEl.style.opacity = '1';
+      imgEl.style.transform = 'scale(1)';
+    }, 200);
+    counterEl.textContent = `0${currentSlide + 1} / 03`;
   }
 
-  try {
-    // 2. Check if alternate admin website saved products into localStorage
-    const localData = localStorage.getItem('bloom_custom_products');
-    if (localData) {
-      const parsed = JSON.parse(localData);
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        PRODUCTS = parsed;
-        renderProducts('all');
-        initCategoryFilters();
-        return;
-      }
-    }
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => setSlide(currentSlide - 1));
+  }
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => setSlide(currentSlide + 1));
+  }
 
-    // 3. Fetch from products.json or configured API endpoint
-    const endpoint = CONFIG.productsApiUrl || 'products.json';
-    const res = await fetch(endpoint);
-    if (res.ok) {
-      const data = await res.json();
-      if (Array.isArray(data) && data.length > 0) {
-        PRODUCTS = data;
-        renderProducts('all');
-        initCategoryFilters();
-      }
-    }
-  } catch (err) {
-    // Fall back gracefully to PRODUCTS in data.js
-    console.info('Using bundled PRODUCTS data.');
+  // Auto advance every 7s
+  let timer = setInterval(() => setSlide(currentSlide + 1), 7000);
+  const frame = document.getElementById('hero-media-frame');
+  if (frame) {
+    frame.addEventListener('mouseenter', () => clearInterval(timer));
+    frame.addEventListener('mouseleave', () => {
+      clearInterval(timer);
+      timer = setInterval(() => setSlide(currentSlide + 1), 7000);
+    });
   }
 }
 
 /**
- * Listen for live updates from alternate website via localStorage or postMessage
- */
-function setupSyncListeners() {
-  window.addEventListener('storage', (e) => {
-    if (e.key === 'bloom_custom_products' && e.newValue) {
-      try {
-        const parsed = JSON.parse(e.newValue);
-        if (Array.isArray(parsed)) {
-          PRODUCTS = parsed;
-          renderProducts('all');
-          initCategoryFilters();
-        }
-      } catch (err) {}
-    }
-  });
-
-  window.addEventListener('message', (e) => {
-    if (e.data && e.data.type === 'SYNC_PRODUCTS' && Array.isArray(e.data.products)) {
-      PRODUCTS = e.data.products;
-      localStorage.setItem('bloom_custom_products', JSON.stringify(PRODUCTS));
-      renderProducts('all');
-      initCategoryFilters();
-    }
-  });
-
-  // Cross-tab / cross-window BroadcastChannel sync with Owner Portal
-  if ('BroadcastChannel' in window) {
-    try {
-      const channel = new BroadcastChannel('bloom_product_sync');
-      channel.onmessage = (e) => {
-        if (e.data && e.data.type === 'PRODUCTS_UPDATED' && Array.isArray(e.data.products)) {
-          PRODUCTS = e.data.products;
-          renderProducts('all');
-          initCategoryFilters();
-        }
-      };
-    } catch (err) {}
-  }
-
-  // Global programmatic sync API for alternate website, headless CMS, or admin panel
-  window.bloomSyncProducts = function(newProducts) {
-    if (Array.isArray(newProducts)) {
-      PRODUCTS = newProducts;
-      localStorage.setItem('bloom_custom_products', JSON.stringify(PRODUCTS));
-      renderProducts('all');
-      initCategoryFilters();
-      console.log('Bloom&blush products synced successfully:', PRODUCTS.length, 'items');
-      return true;
-    }
-    return false;
-  };
-
-  window.bloomAddProduct = function(newProduct) {
-    if (newProduct && newProduct.name) {
-      if (!newProduct.id) {
-        newProduct.id = newProduct.name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-      }
-      const existingIdx = PRODUCTS.findIndex(p => p.id === newProduct.id);
-      if (existingIdx >= 0) {
-        PRODUCTS[existingIdx] = newProduct;
-      } else {
-        PRODUCTS.unshift(newProduct);
-      }
-      localStorage.setItem('bloom_custom_products', JSON.stringify(PRODUCTS));
-      renderProducts('all');
-      initCategoryFilters();
-      console.log('Bloom&blush product added/updated:', newProduct.name);
-      return true;
-    }
-    return false;
-  };
-}
-
-/**
- * Populate dynamic brand metadata from CONFIG
- */
-function initBrandMeta() {
-  // Update year
-  const yearEl = document.getElementById('current-year');
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-  // Update Instagram handles
-  document.querySelectorAll('.js-instagram-handle').forEach(el => {
-    el.textContent = CONFIG.instagramHandle;
-  });
-
-  // Update Instagram links
-  document.querySelectorAll('.js-instagram-link').forEach(el => {
-    el.href = CONFIG.instagramUrl;
-  });
-
-  // Update WhatsApp numbers & display
-  document.querySelectorAll('.js-whatsapp-number').forEach(el => {
-    el.textContent = `+${CONFIG.whatsappNumber.replace(/(\d{2})(\d{5})(\d{5})/, '$1 $2 $3')}`;
-  });
-
-  // Update short address
-  document.querySelectorAll('.js-business-location').forEach(el => {
-    el.textContent = CONFIG.location;
-  });
-}
-
-/**
- * Generate standard WhatsApp URL with pre-filled message including price
- */
-function getWhatsAppProductUrl(productName, price) {
-  const priceSnippet = price ? ` (${price})` : '';
-  const message = `Hello Siddhi, I am interested in the *${productName}*${priceSnippet} from Bloom&blush. Could you please share details regarding customization options and availability? Thank you!`;
-  return `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(message)}`;
-}
-
-function getWhatsAppCollectionUrl(collectionName) {
-  const message = `Hello Siddhi, I am interested in exploring your *${collectionName}* collection from Bloom&blush. Could you please share more details, pricing, and availability? Thank you!`;
-  return `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(message)}`;
-}
-
-function getWhatsAppGeneralUrl() {
-  const message = `Hello Siddhi, I came across Bloom&blush and would love to enquire about your customized gifting and floral arrangements.`;
-  return `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(message)}`;
-}
-
-/**
- * Setup general WhatsApp CTA buttons
- */
-function initWhatsAppButtons() {
-  const generalUrl = getWhatsAppGeneralUrl();
-
-  const heroWaBtn = document.getElementById('hero-wa-btn');
-  if (heroWaBtn) heroWaBtn.href = generalUrl;
-
-  const headerWaBtn = document.getElementById('header-wa-btn');
-  if (headerWaBtn) headerWaBtn.href = generalUrl;
-
-  const contactWaBtn = document.getElementById('contact-wa-btn');
-  if (contactWaBtn) contactWaBtn.href = generalUrl;
-
-  const floatingWaBtn = document.getElementById('floating-wa-btn');
-  if (floatingWaBtn) floatingWaBtn.href = generalUrl;
-
-  const drawerWaBtn = document.getElementById('drawer-wa-btn');
-  if (drawerWaBtn) drawerWaBtn.href = generalUrl;
-
-  const footerWaBtn = document.getElementById('footer-wa-btn');
-  if (footerWaBtn) footerWaBtn.href = generalUrl;
-}
-
-/**
- * Render Collections Section (Option 1 Clean Boutique Style)
+ * 02. Curated Collections Rendering (Panel 02)
  */
 function renderCollections() {
   const container = document.getElementById('collections-grid');
+  const filterBar = document.getElementById('collections-filter-bar');
   if (!container) return;
 
-  const waIcon = `<svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.23 8.23 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.03-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.78 2.72 4.31 3.81.6.26 1.07.41 1.44.53.61.19 1.16.17 1.6.1.49-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.29z"/></svg>`;
+  // Render Filter Pills in Collections Bar
+  if (filterBar) {
+    filterBar.innerHTML = [
+      `<button type="button" class="col-filter-pill active" data-col="all">All Collections</button>`,
+      ...COLLECTIONS.map(c => `
+        <button type="button" class="col-filter-pill" data-col="${c.id}">${c.title}</button>
+      `)
+    ].join('');
 
-  container.innerHTML = COLLECTIONS.map(col => `
-    <article class="collection-card" data-collection-id="${col.id}">
-      <div class="collection-image-box">
+    filterBar.querySelectorAll('.col-filter-pill').forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBar.querySelectorAll('.col-filter-pill').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const colId = btn.dataset.col;
+        renderCollectionsGrid(colId);
+      });
+    });
+  }
+
+  renderCollectionsGrid('all');
+}
+
+function renderCollectionsGrid(selectedId = 'all') {
+  const container = document.getElementById('collections-grid');
+  if (!container) return;
+
+  const items = selectedId === 'all' 
+    ? COLLECTIONS 
+    : COLLECTIONS.filter(c => c.id === selectedId);
+
+  container.innerHTML = items.map(col => `
+    <article class="collection-editorial-card js-tilt-card js-explore-col" data-collection="${col.id}">
+      <div class="col-card-media">
         <img src="${col.image}" alt="${col.title} - Bloom&blush Pune" loading="lazy">
-        <span class="collection-badge">${col.subtitle}</span>
       </div>
-      <div class="collection-body">
-        <h3 class="collection-title">${col.title}</h3>
-        <p class="collection-desc">${col.description}</p>
-        <div class="collection-actions-bar">
-          <a href="${getWhatsAppCollectionUrl(col.title)}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp-action" title="Enquire about ${col.title}">
-            ${waIcon}
-            <span>Chat on Enquiry</span>
-          </a>
-          <button type="button" class="btn-link js-explore-collection" data-collection="${col.id}">
-            Explore
-            <svg viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </button>
-        </div>
+      <div class="col-card-footer">
+        <h3 class="col-card-title">${col.title}</h3>
+        <button type="button" class="btn-circle-arrow js-col-arrow" data-collection="${col.id}" aria-label="Explore ${col.title}">
+          &rarr;
+        </button>
       </div>
     </article>
   `).join('');
 
-  // Handle "Explore" click -> filter products and scroll
-  container.querySelectorAll('.js-explore-collection').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      const colId = btn.dataset.collection;
-      filterProductsByCollection(colId);
-      const featuredSec = document.getElementById('featured');
-      if (featuredSec) {
-        featuredSec.scrollIntoView({ behavior: 'smooth' });
+  // Handle click on collection card -> scroll to featured and filter creations
+  container.querySelectorAll('.js-explore-col, .js-col-arrow').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const colId = el.dataset.collection || (el.closest('.collection-editorial-card') ? el.closest('.collection-editorial-card').dataset.collection : null);
+      if (colId) {
+        filterProductsByCollection(colId);
+        const featuredSec = document.getElementById('featured');
+        if (featuredSec) {
+          featuredSec.scrollIntoView({ behavior: 'smooth' });
+        }
       }
     });
   });
+
+  init3DTilt();
+  refreshScrollToning();
 }
 
 /**
- * Render Products in Featured Section (Option 1 Clean Grid Style)
+ * 03. Featured Creations Rendering (Panel 03 - Asymmetric Editorial Showcase)
  */
 function renderProducts(filterCollectionId = 'all') {
   const container = document.getElementById('products-grid');
@@ -289,67 +170,114 @@ function renderProducts(filterCollectionId = 'all') {
 
   if (filtered.length === 0) {
     container.innerHTML = `
-      <div style="grid-column: 1/-1; text-align: center; padding: 3rem 1rem;">
-        <p style="font-family: var(--font-serif); font-size: 1.5rem; color: var(--burgundy-deep);">No creations found in this collection.</p>
-        <p style="font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem;">Please check another category or contact us for bespoke commissions.</p>
+      <div style="text-align: center; padding: 4rem 1rem;">
+        <p style="font-family: var(--font-serif); font-size: 1.6rem; color: var(--burgundy-deep);">No creations found in this collection.</p>
+        <p style="font-size: 0.92rem; color: var(--text-muted); margin-top: 0.5rem;">Select "All Creations" above or chat with Siddhi Kokate on WhatsApp for bespoke orders.</p>
       </div>
     `;
     return;
   }
 
-  const waIcon = `<svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42a8.23 8.23 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.03-1.25-.75-.67-1.26-1.5-1.41-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.38-.44.12-.14.17-.25.25-.42.08-.17.04-.31-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.78 2.72 4.31 3.81.6.26 1.07.41 1.44.53.61.19 1.16.17 1.6.1.49-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.23-.17-.48-.29z"/></svg>`;
+  // When "All Creations" is selected, render the signature Asymmetric Editorial Showcase matching Panel 03
+  if (filterCollectionId === 'all') {
+    // 1. Featured left item: "The Blush & Wine Bridal Bouquet" (or first item with 'Bridal Favorite' / featured)
+    const featuredProduct = filtered.find(p => p.id === 'blush-petal-bridal-bouquet' || (p.badge && p.badge.toLowerCase().includes('bridal'))) || filtered[0];
+    
+    // 2. Three right stacked compact items matching Panel 03:
+    // "The Heirloom Keepsake Box", "Royal Wedding Mandap Decor", "Elegant Currency Garland"
+    const compactProducts = [
+      filtered.find(p => p.id === 'bespoke-sandalwood-keepsake-box') || filtered.find(p => p.category === 'Customized Gifts') || filtered[1],
+      filtered.find(p => p.id === 'royal-wedding-mandap-decor') || filtered.find(p => p.category.includes('Wedding')) || filtered[2],
+      filtered.find(p => p.id === 'grand-rajputana-money-garland') || filtered.find(p => p.category === 'Money Garlands') || filtered[3]
+    ].filter(Boolean);
 
-  container.innerHTML = filtered.map(product => `
-    <article class="product-card" data-product-id="${product.id}">
-      <div class="product-media">
-        <img src="${product.image}" alt="${product.name} - Bloom&blush" loading="lazy">
-        ${product.badge ? `<span class="product-badge-tag">${product.badge}</span>` : ''}
-      </div>
-      <div class="product-info">
-        <span class="product-category">${product.category}</span>
-        <h3 class="product-name">${product.name}</h3>
-        <div class="product-price-row">
-          <span class="product-price">${product.priceFormatted || '₹' + product.price}</span>
-          ${product.priceNote ? `<span class="product-price-note">${product.priceNote}</span>` : ''}
-        </div>
-        <p class="product-short-desc">${product.shortDesc}</p>
-        <div class="product-actions-bar">
-          <a href="${getWhatsAppProductUrl(product.name, product.priceFormatted)}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp-card" title="WhatsApp Enquiry for ${product.name}">
-            ${waIcon}
-            <span>WhatsApp Enquire</span>
-          </a>
-          <button type="button" class="btn-link js-open-product" data-product-id="${product.id}">
-            View Details
-          </button>
-        </div>
-      </div>
-    </article>
-  `).join('');
+    container.innerHTML = `
+      <div class="featured-creations-editorial-grid">
+        <!-- Left: Large Featured Highlight -->
+        <article class="creation-featured-large js-tilt-card js-open-product" data-product-id="${featuredProduct.id}">
+          <div class="creation-featured-media">
+            <span class="featured-badge-overlay">${featuredProduct.badge || 'Bridal Favorite'}</span>
+            <img src="${featuredProduct.image}" alt="${featuredProduct.name} - Bloom&blush" loading="lazy">
+          </div>
+          <div class="creation-card-info">
+            <h3 class="creation-card-title">${featuredProduct.name}</h3>
+            <p class="creation-card-desc">${featuredProduct.shortDesc}</p>
+            <button type="button" class="btn-editorial-pill js-open-product-btn" data-product-id="${featuredProduct.id}">
+              <span>View Details</span>
+              <svg viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </article>
 
-  // Bind Open Product triggers on button, image, and title for intuitive user experience
-  container.querySelectorAll('.js-open-product, .product-media, .product-name').forEach(el => {
-    el.style.cursor = 'pointer';
+        <!-- Right: 3 Stacked Editorial Creations -->
+        <div class="creations-sub-grid">
+          ${compactProducts.map(p => `
+            <article class="creation-editorial-compact js-tilt-card js-open-product" data-product-id="${p.id}">
+              <img src="${p.image}" alt="${p.name} - Bloom&blush" class="compact-thumb" loading="lazy">
+              <div class="compact-info">
+                <span class="compact-category">${p.category}</span>
+                <h4 class="compact-title">${p.name}</h4>
+              </div>
+              <button type="button" class="btn-circle-arrow js-open-product-btn" data-product-id="${p.id}" aria-label="View ${p.name}">
+                &rarr;
+              </button>
+            </article>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  } else {
+    // When filtered by specific collection, render a spacious editorial 3-column grid
+    container.innerHTML = `
+      <div class="creations-filtered-grid">
+        ${filtered.map(p => `
+          <article class="collection-editorial-card js-tilt-card js-open-product" data-product-id="${p.id}">
+            <div class="col-card-media">
+              ${p.badge ? `<span class="featured-badge-overlay" style="top:10px;left:10px;">${p.badge}</span>` : ''}
+              <img src="${p.image}" alt="${p.name} - Bloom&blush" loading="lazy">
+            </div>
+            <div class="col-card-footer" style="flex-direction: column; align-items: flex-start; gap: 0.5rem;">
+              <span class="compact-category">${p.category}</span>
+              <h3 class="col-card-title">${p.name}</h3>
+              <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; margin-top: 0.5rem;">
+                <span style="font-family: var(--font-serif); font-size: 1.15rem; color: var(--burgundy-deep); font-weight: 600;">
+                  ${p.priceFormatted || (p.price ? '₹' + p.price : 'Custom')}
+                </span>
+                <button type="button" class="btn-circle-arrow js-open-product-btn" data-product-id="${p.id}" aria-label="View details of ${p.name}">
+                  &rarr;
+                </button>
+              </div>
+            </div>
+          </article>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  // Bind Open Product triggers on cards and buttons
+  container.querySelectorAll('.js-open-product, .js-open-product-btn').forEach(el => {
     el.addEventListener('click', (e) => {
-      if (e.target.closest('a')) return;
-      const card = el.closest('.product-card');
-      const pId = el.dataset.productId || (card ? card.dataset.productId : null);
+      e.stopPropagation();
+      const pId = el.dataset.productId || (el.closest('[data-product-id]') ? el.closest('[data-product-id]').dataset.productId : null);
       if (pId) openProductModal(pId);
     });
   });
+
+  init3DTilt();
+  refreshScrollToning();
 }
 
 /**
- * Filter button interactions
+ * Filter button interactions for Featured Creations
  */
 function initCategoryFilters() {
   const filterContainer = document.getElementById('filter-bar');
   if (!filterContainer) return;
 
-  // Build filter buttons
   const buttonsHtml = [
-    `<button class="filter-btn active" data-filter="all">All Creations</button>`,
+    `<button type="button" class="filter-btn active" data-filter="all">All Creations</button>`,
     ...COLLECTIONS.map(col => `
-      <button class="filter-btn" data-filter="${col.id}">${col.title}</button>
+      <button type="button" class="filter-btn" data-filter="${col.id}">${col.title}</button>
     `)
   ].join('');
 
@@ -380,41 +308,439 @@ function filterProductsByCollection(colId) {
 }
 
 /**
- * Render Occasions
+ * 05. Occasions Section (Panel 05 - 5 Tall Portrait Cards)
  */
 function renderOccasions() {
   const container = document.getElementById('occasions-grid');
   if (!container) return;
 
-  container.innerHTML = OCCASIONS.map(occ => `
-    <div class="occasion-card">
-      <div class="occasion-image">
+  // 5 Canonical Occasions matching Panel 05
+  const displayOccasions = [
+    { title: 'Weddings & Baraat', image: 'assets/images/money_garland.jpg' },
+    { title: 'Engagements & Roka', image: 'assets/images/editorial_bouquet.jpg' },
+    { title: 'Milestone Birthdays', image: 'assets/images/luxury_hamper.jpg' },
+    { title: 'Anniversaries', image: 'assets/images/floral_dome.jpg' },
+    { title: 'Festive Celebrations', image: 'assets/images/pastel_garland.jpg' }
+  ];
+
+  container.innerHTML = displayOccasions.map(occ => `
+    <article class="occasion-editorial-card js-tilt-card js-occasion-action" data-occasion="${occ.title}">
+      <div class="occasion-card-media">
         <img src="${occ.image}" alt="${occ.title} - Bloom&blush Gifting Pune" loading="lazy">
       </div>
-      <div class="occasion-content">
-        <h3 class="occasion-title">${occ.title}</h3>
-        <p class="occasion-desc">${occ.description}</p>
+      <div class="occasion-card-footer">
+        <h3 class="occasion-card-title">${occ.title}</h3>
+        <button type="button" class="btn-circle-arrow js-occ-btn" data-occasion="${occ.title}" aria-label="Enquire for ${occ.title}">
+          &rarr;
+        </button>
       </div>
-    </div>
+    </article>
   `).join('');
+
+  container.querySelectorAll('.js-occasion-action, .js-occ-btn').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const occName = el.dataset.occasion || (el.closest('[data-occasion]') ? el.closest('[data-occasion]').dataset.occasion : '');
+      const text = `Hello Siddhi, I am planning for a *${occName}* celebration and would love to enquire about Bloom&blush bespoke creations.`;
+      const url = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(text)}`;
+      window.open(url, '_blank');
+    });
+  });
+
+  init3DTilt();
+  refreshScrollToning();
 }
 
 /**
- * Render Portfolio Gallery
+ * 06. Portfolio / Instagram Section (Panel 06 - Visual Stories)
  */
-function renderPortfolio() {
+function initPortfolioFilters() {
+  const filterBar = document.getElementById('portfolio-filter-bar');
+  if (!filterBar) return;
+
+  filterBar.querySelectorAll('.port-filter-pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBar.querySelectorAll('.port-filter-pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      renderPortfolio(filter);
+    });
+  });
+}
+
+function renderPortfolio(categoryFilter = 'all') {
   const container = document.getElementById('portfolio-gallery');
   if (!container) return;
 
-  container.innerHTML = PORTFOLIO_ITEMS.map(item => `
-    <div class="portfolio-item">
-      <img src="${item.image}" alt="${item.title} - Bloom&blush Instagram Portfolio" loading="lazy">
-      <div class="portfolio-overlay">
-        <span class="portfolio-cat">${item.category}</span>
-        <h4 class="portfolio-title">${item.title}</h4>
+  let items = [...PORTFOLIO_ITEMS];
+  if (categoryFilter !== 'all') {
+    items = items.filter(item => {
+      const cat = (item.category || '').toLowerCase();
+      const tag = (item.tags || []).map(t => t.toLowerCase());
+      const f = categoryFilter.toLowerCase();
+      return cat.includes(f) || tag.includes(f);
+    });
+  }
+
+  // Fallback to all items if filtered subset is empty
+  if (items.length === 0) items = PORTFOLIO_ITEMS;
+
+  const instaIcon = `<svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`;
+
+  container.innerHTML = items.slice(0, 8).map(item => `
+    <a href="${item.linkUrl || CONFIG.instagramUrl}" target="_blank" rel="noopener noreferrer" class="portfolio-journal-card js-tilt-card js-instagram-link" aria-label="${escapeHtml(item.title)} on Instagram">
+      <img src="${item.image}" alt="${escapeHtml(item.title)} - Bloom&blush" loading="lazy">
+      <div class="portfolio-insta-badge" aria-hidden="true">${instaIcon}</div>
+      <div class="portfolio-card-overlay">
+        <span class="portfolio-overlay-cat">${escapeHtml(item.category)}</span>
+        <h4 class="portfolio-overlay-title">${escapeHtml(item.title)}</h4>
       </div>
-    </div>
+    </a>
   `).join('');
+
+  init3DTilt();
+  refreshScrollToning();
+}
+
+/**
+ * 07. Achievements Section (Panel 07 - KPI Stats & 4 Milestones)
+ */
+function renderAchievements(filter = 'all') {
+  const container = document.getElementById('achievements-grid');
+  if (!container) return;
+
+  // The 4 Milestones exactly matching Panel 07:
+  // 1. Featured in Local Media (Press & Features)
+  // 2. Ganesh Utsav Special (Milestone Event)
+  // 3. Wedding Season 2025 (Featured Collection)
+  // 4. Client Love (Happy Moments)
+  const milestoneRecords = [
+    {
+      id: 'ach-media-press',
+      title: 'Featured in Local Media',
+      category: 'Press & Features',
+      image: 'assets/images/customized_gifts.jpg',
+      mediaType: 'image'
+    },
+    {
+      id: 'ach-ganesh-utsav',
+      title: 'Ganesh Utsav Special',
+      category: 'Milestone Event',
+      image: 'assets/images/pastel_garland.jpg',
+      mediaType: 'image'
+    },
+    {
+      id: 'ach-wedding-season',
+      title: 'Wedding Season 2025',
+      category: 'Featured Collection',
+      image: 'assets/images/wedding_trousseau.jpg',
+      mediaType: 'image'
+    },
+    {
+      id: 'ach-client-love',
+      title: 'Client Love',
+      category: 'Happy Moments',
+      image: 'assets/images/money_garland.jpg',
+      mediaType: 'image'
+    }
+  ];
+
+  const displayItems = milestoneRecords;
+
+  container.innerHTML = displayItems.map(item => {
+    const thumb = item.thumbnailUrl || item.mediaUrl || item.image;
+    const isVideo = item.mediaType === 'video';
+
+    return `
+      <article class="milestone-editorial-card js-tilt-card js-open-achieve" data-achieve-id="${item.id}">
+        <div class="milestone-media">
+          <img src="${escapeHtml(thumb)}" alt="${escapeHtml(item.title)} - Bloom&blush" loading="lazy">
+          ${isVideo ? `
+            <div class="about-play-overlay" style="width:48px;height:48px;" title="Watch Video">
+              <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+            </div>
+          ` : ''}
+        </div>
+        <div class="milestone-body">
+          <span class="milestone-cat">${escapeHtml(item.category || 'Studio Milestone')}</span>
+          <h4 class="milestone-title">${escapeHtml(item.title)}</h4>
+        </div>
+      </article>
+    `;
+  }).join('');
+
+  container.querySelectorAll('.js-open-achieve').forEach(el => {
+    el.addEventListener('click', () => {
+      const achId = el.dataset.achieveId;
+      if (achId) openAchievementModal(achId);
+    });
+  });
+
+  init3DTilt();
+  refreshScrollToning();
+}
+
+/**
+ * 08. Contact Section Consultation Form Handler (Panel 08)
+ */
+function initConsultationForm() {
+  const form = document.getElementById('consultation-enquiry-form');
+  if (!form) return;
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = (form.name.value || '').trim();
+    const phone = (form.phone.value || '').trim();
+    const occasion = form.occasion.value || 'Celebration Gifting';
+    const message = (form.message.value || '').trim();
+
+    const formattedMessage = [
+      `Hello Siddhi, I would like to enquire about bespoke creations from Bloom&blush:`,
+      `• *Name:* ${name}`,
+      `• *Phone:* ${phone}`,
+      `• *Occasion:* ${occasion}`,
+      message ? `• *Message:* ${message}` : null,
+      `\nKindly let me know about availability and consultation.`
+    ].filter(Boolean).join('\n');
+
+    const whatsappUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(formattedMessage)}`;
+    window.open(whatsappUrl, '_blank');
+  });
+
+  const contactWaLink = document.getElementById('contact-details-wa-link');
+  if (contactWaLink) {
+    contactWaLink.href = getWhatsAppGeneralUrl();
+  }
+}
+
+/**
+ * About Craftsmanship Video Lightbox Trigger
+ */
+function initAboutVideoTrigger() {
+  const btnPlay = document.getElementById('btn-about-play');
+  if (!btnPlay) return;
+
+  btnPlay.addEventListener('click', () => {
+    // Open the studio reel / story modal
+    const videoItem = ACHIEVEMENTS.find(a => a.mediaType === 'video') || ACHIEVEMENTS[0];
+    if (videoItem) {
+      openAchievementModal(videoItem.id);
+    } else {
+      window.open(CONFIG.instagramUrl, '_blank');
+    }
+  });
+}
+
+/**
+ * Animated KPI Statistics Counter with Celebratory Pop
+ */
+function initCounters() {
+  const statNumbers = document.querySelectorAll('.kpi-stat-number[data-target]');
+  if (!statNumbers.length) return;
+
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        const target = parseInt(el.dataset.target, 10);
+        let start = 0;
+        const step = Math.max(1, Math.floor(target / 25));
+        const interval = setInterval(() => {
+          start += step;
+          if (start >= target) {
+            el.textContent = `${target}+`;
+            el.classList.add('popped');
+            clearInterval(interval);
+          } else {
+            el.textContent = `${start}+`;
+          }
+        }, 14);
+        obs.unobserve(el);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  statNumbers.forEach(el => observer.observe(el));
+
+  // Also pop the 4.9★ rating card when visible
+  const ratingEl = document.querySelector('.kpi-stat-number:not([data-target])');
+  if (ratingEl) {
+    const rObs = new IntersectionObserver((entries, obs) => {
+      if (entries[0] && entries[0].isIntersecting) {
+        ratingEl.classList.add('popped');
+        obs.unobserve(ratingEl);
+      }
+    }, { threshold: 0.5 });
+    rObs.observe(ratingEl);
+  }
+}
+
+/**
+ * Subtle 3D Perspective Tilt Interactivity
+ */
+function init3DTilt() {
+  // If device prefers reduced motion or is small mobile, skip heavy transforms
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || window.innerWidth <= 768) {
+    return;
+  }
+
+  const tiltCards = document.querySelectorAll('.js-tilt-card:not(.tilt-bound)');
+  tiltCards.forEach(card => {
+    card.classList.add('tilt-bound');
+    card.style.transformStyle = 'preserve-3d';
+    card.style.transition = 'transform 0.25s ease-out';
+
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = ((y - centerY) / centerY) * -5;
+      const rotateY = ((x - centerX) / centerX) * 5;
+
+      card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.015, 1.015, 1.015)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+    });
+  });
+}
+
+/**
+ * Smooth Toning Scroll-Triggered Reveal Animations
+ */
+let toningObserver = null;
+
+function initScrollToning() {
+  if (toningObserver) {
+    toningObserver.disconnect();
+  }
+
+  const elements = document.querySelectorAll(
+    '.editorial-section-header, .collection-editorial-card, .creation-featured-large, .creation-editorial-compact, .occasion-editorial-card, .portfolio-journal-card, .kpi-stat-card, .milestone-editorial-card, .contact-editorial-layout, .about-editorial-grid, .hero-trust-bar'
+  );
+
+  toningObserver = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('toned-in');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.08,
+    rootMargin: '0px 0px -20px 0px'
+  });
+
+  elements.forEach(el => {
+    if (!el.classList.contains('toned-in')) {
+      el.classList.add('tone-reveal');
+      toningObserver.observe(el);
+    }
+  });
+}
+
+function refreshScrollToning() {
+  setTimeout(() => {
+    initScrollToning();
+  }, 60);
+}
+
+/**
+ * Spring Popping Micro-interactions for Buttons & Triggers
+ */
+function initButtonPops() {
+  document.addEventListener('click', (e) => {
+    const trigger = e.target.closest(
+      '.btn, .btn-editorial-primary, .btn-editorial-secondary, .btn-editorial-pill, .btn-circle-arrow, .filter-btn, .col-filter-pill, .port-filter-pill, .btn-header-wa'
+    );
+    if (!trigger) return;
+
+    trigger.classList.remove('popped');
+    void trigger.offsetWidth; // Force DOM reflow to retrigger animation
+    trigger.classList.add('popped');
+    setTimeout(() => {
+      trigger.classList.remove('popped');
+    }, 380);
+  });
+}
+
+/**
+ * ===================================================================
+ * Modals & Dynamic Data Synchronization
+ * ===================================================================
+ */
+
+function escapeHtml(str) {
+  if (typeof str !== 'string') return str;
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function getWhatsAppProductUrl(productName, price) {
+  const priceSnippet = price ? ` (${price})` : '';
+  const message = `Hello Siddhi, I am interested in the *${productName}*${priceSnippet} from Bloom&blush. Could you please share details regarding customization options and availability? Thank you!`;
+  return `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(message)}`;
+}
+
+function getWhatsAppGeneralUrl() {
+  const message = `Hello Siddhi, I came across Bloom&blush and would love to enquire about your customized gifting and floral arrangements in Pune.`;
+  return `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(message)}`;
+}
+
+function getWhatsAppAchievementUrl(achievementTitle) {
+  const phone = CONFIG.whatsappNumber || '918180879442';
+  const text = `Hello Siddhi, I saw your studio highlight "${achievementTitle}" on Bloom&blush and would love to enquire!`;
+  return `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+}
+
+function initBrandMeta() {
+  const yearEl = document.getElementById('current-year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  document.querySelectorAll('.js-instagram-handle').forEach(el => {
+    el.textContent = CONFIG.instagramHandle;
+  });
+
+  document.querySelectorAll('.js-instagram-link').forEach(el => {
+    el.href = CONFIG.instagramUrl;
+  });
+
+  document.querySelectorAll('.js-whatsapp-number').forEach(el => {
+    el.textContent = `+${CONFIG.whatsappNumber.replace(/(\d{2})(\d{5})(\d{5})/, '$1 $2 $3')}`;
+  });
+
+  document.querySelectorAll('.js-business-location').forEach(el => {
+    el.textContent = CONFIG.location;
+  });
+}
+
+function initWhatsAppButtons() {
+  const generalUrl = getWhatsAppGeneralUrl();
+
+  const heroWaBtn = document.getElementById('hero-wa-btn');
+  if (heroWaBtn) heroWaBtn.href = generalUrl;
+
+  const headerWaBtn = document.getElementById('header-wa-btn');
+  if (headerWaBtn) headerWaBtn.href = generalUrl;
+
+  const floatingWaBtn = document.getElementById('floating-wa-btn');
+  if (floatingWaBtn) floatingWaBtn.href = generalUrl;
+
+  const drawerWaBtn = document.getElementById('drawer-wa-btn');
+  if (drawerWaBtn) drawerWaBtn.href = generalUrl;
+
+  const footerWaBtn = document.getElementById('footer-wa-btn');
+  if (footerWaBtn) footerWaBtn.href = generalUrl;
+
+  const mobileStickyWaBtn = document.getElementById('mobile-sticky-wa-btn');
+  if (mobileStickyWaBtn) mobileStickyWaBtn.href = generalUrl;
 }
 
 /**
@@ -429,17 +755,12 @@ function initProductModal() {
   if (closeBtn && backdrop) {
     closeBtn.addEventListener('click', closeProductModal);
     backdrop.addEventListener('click', (e) => {
-      if (e.target === backdrop) {
-        closeProductModal();
-      }
+      if (e.target === backdrop) closeProductModal();
     });
   }
 
-  // Escape key closes modal
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      closeProductModal();
-    }
+    if (e.key === 'Escape') closeProductModal();
   });
 }
 
@@ -450,7 +771,6 @@ function openProductModal(productId) {
   currentOpenProductId = productId;
   window.location.hash = `product-${productId}`;
 
-  // Populate modal data
   const modalImg = document.getElementById('modal-img');
   const modalCategory = document.getElementById('modal-category');
   const modalBadge = document.getElementById('modal-badge');
@@ -462,7 +782,6 @@ function openProductModal(productId) {
   const modalOccasionsTags = document.getElementById('modal-occasions-tags');
   const modalSpecsTable = document.getElementById('modal-specs-table');
   const modalWaBtn = document.getElementById('modal-wa-btn');
-  const mobileStickyBar = document.getElementById('mobile-sticky-enquiry');
   const mobileStickyWaBtn = document.getElementById('mobile-sticky-wa-btn');
 
   if (modalImg) {
@@ -480,93 +799,131 @@ function openProductModal(productId) {
   }
   if (modalTitle) modalTitle.textContent = product.name;
 
-  // Price & Price Note
   const formattedPrice = product.priceFormatted || (product.price ? `₹${product.price}` : '');
-  if (modalPrice) {
-    modalPrice.textContent = formattedPrice;
-  }
-  if (modalPriceNote) {
-    modalPriceNote.textContent = product.priceNote || 'Handcrafted on order';
-  }
-
+  if (modalPrice) modalPrice.textContent = formattedPrice;
+  if (modalPriceNote) modalPriceNote.textContent = product.priceNote || 'Handcrafted on order';
   if (modalDesc) modalDesc.textContent = product.detailedDesc;
 
-  // Customization list
-  if (modalCustomizationList) {
-    modalCustomizationList.innerHTML = product.customizationOptions.map(opt => `
-      <li>${opt}</li>
-    `).join('');
+  if (modalCustomizationList && product.customizationOptions) {
+    modalCustomizationList.innerHTML = product.customizationOptions.map(opt => `<li>${opt}</li>`).join('');
   }
 
-  // Occasions pills
-  if (modalOccasionsTags) {
-    modalOccasionsTags.innerHTML = product.suitableOccasions.map(occ => `
-      <span class="modal-occasion-pill">${occ}</span>
-    `).join('');
+  if (modalOccasionsTags && product.suitableOccasions) {
+    modalOccasionsTags.innerHTML = product.suitableOccasions.map(occ => `<span class="modal-occasion-pill">${occ}</span>`).join('');
   }
 
-  // Specs Table
-  if (modalSpecsTable) {
-    modalSpecsTable.innerHTML = Object.entries(product.details).map(([key, val]) => `
+  if (modalSpecsTable && product.details) {
+    modalSpecsTable.innerHTML = Object.entries(product.details).map(([k, v]) => `
       <tr>
-        <td>${key}</td>
-        <td>${val}</td>
+        <td>${k}</td>
+        <td>${v}</td>
       </tr>
     `).join('');
   }
 
-  // WhatsApp Enquiry Link with Product Name and Price
   const waUrl = getWhatsAppProductUrl(product.name, formattedPrice);
   if (modalWaBtn) modalWaBtn.href = waUrl;
   if (mobileStickyWaBtn) mobileStickyWaBtn.href = waUrl;
 
-  // Show modal
   const backdrop = document.getElementById('product-modal-backdrop');
   if (backdrop) backdrop.classList.add('open');
   document.body.classList.add('modal-open');
-
-  // Show mobile sticky CTA if screen is mobile
-  if (mobileStickyBar && window.innerWidth <= 768) {
-    mobileStickyBar.style.display = 'block';
-  }
 }
 
 function closeProductModal() {
   const backdrop = document.getElementById('product-modal-backdrop');
-  const mobileStickyBar = document.getElementById('mobile-sticky-enquiry');
-
   if (backdrop) backdrop.classList.remove('open');
   document.body.classList.remove('modal-open');
-  if (mobileStickyBar) mobileStickyBar.style.display = 'none';
-
   currentOpenProductId = null;
-  // Clean hash without causing jump
   if (window.location.hash.startsWith('#product-')) {
     history.pushState('', document.title, window.location.pathname + window.location.search);
   }
 }
 
 /**
- * Handle URL hash routing (e.g. direct product links or back button)
+ * Achievements Lightbox Modal
  */
-function handleUrlHashRouting() {
-  const checkHash = () => {
-    const hash = window.location.hash;
-    if (hash.startsWith('#product-')) {
-      const pId = hash.replace('#product-', '');
-      openProductModal(pId);
-    } else if (currentOpenProductId) {
-      closeProductModal();
+function initAchievementModal() {
+  const backdrop = document.getElementById('achievement-modal-backdrop');
+  const closeBtn = document.getElementById('achieve-modal-close-btn');
+
+  if (closeBtn && backdrop) {
+    closeBtn.addEventListener('click', closeAchievementModal);
+    backdrop.addEventListener('click', (e) => {
+      if (e.target === backdrop) closeAchievementModal();
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && backdrop && backdrop.classList.contains('active')) {
+      closeAchievementModal();
     }
+  });
+}
+
+function openAchievementModal(achieveId) {
+  const item = ACHIEVEMENTS.find(a => a.id === achieveId) || {
+    id: achieveId,
+    title: 'Studio Milestone',
+    category: 'Craftsmanship',
+    image: 'assets/images/hero.jpg',
+    mediaType: 'image',
+    description: 'Bespoke floral and celebration creations hand-delivered across Pune.'
   };
 
-  window.addEventListener('hashchange', checkHash);
-  // Check on initial page load
-  checkHash();
+  const backdrop = document.getElementById('achievement-modal-backdrop');
+  const mediaWrapper = document.getElementById('achieve-modal-media-wrapper');
+  const titleEl = document.getElementById('achieve-modal-title');
+  const descEl = document.getElementById('achieve-modal-desc');
+  const badgeEl = document.getElementById('achieve-modal-badge');
+  const catEl = document.getElementById('achieve-modal-category');
+  const dateEl = document.getElementById('achieve-modal-date');
+  const waBtn = document.getElementById('achieve-modal-wa-btn');
+
+  if (!backdrop || !mediaWrapper) return;
+
+  const isVideo = item.mediaType === 'video';
+  if (isVideo && item.mediaUrl) {
+    mediaWrapper.innerHTML = `
+      <video src="${escapeHtml(item.mediaUrl)}" controls autoplay playsinline loop preload="auto" poster="${escapeHtml(item.thumbnailUrl || '')}" style="max-height: 520px; width: 100%;"></video>
+    `;
+  } else {
+    mediaWrapper.innerHTML = `
+      <img src="${escapeHtml(item.thumbnailUrl || item.mediaUrl || item.image)}" alt="${escapeHtml(item.title)} - Bloom&blush" style="max-height: 520px; width: 100%; object-fit: contain;">
+    `;
+  }
+
+  if (titleEl) titleEl.textContent = item.title || '';
+  if (descEl) descEl.textContent = item.description || '';
+  if (badgeEl) badgeEl.textContent = item.badge || 'Studio Highlight';
+  if (catEl) catEl.textContent = item.category || 'Milestone';
+  if (dateEl) dateEl.textContent = item.date || '';
+
+  if (waBtn) waBtn.href = getWhatsAppAchievementUrl(item.title);
+
+  backdrop.classList.add('active');
+  document.body.classList.add('modal-open');
+}
+
+function closeAchievementModal() {
+  const backdrop = document.getElementById('achievement-modal-backdrop');
+  const mediaWrapper = document.getElementById('achieve-modal-media-wrapper');
+
+  if (backdrop) backdrop.classList.remove('active');
+  document.body.classList.remove('modal-open');
+
+  if (mediaWrapper) {
+    const video = mediaWrapper.querySelector('video');
+    if (video) {
+      video.pause();
+      video.src = '';
+    }
+    mediaWrapper.innerHTML = '';
+  }
 }
 
 /**
- * Mobile Drawer Navigation
+ * Mobile Navigation Drawer
  */
 function initMobileNav() {
   const menuBtn = document.getElementById('mobile-menu-btn');
@@ -591,28 +948,21 @@ function initMobileNav() {
   };
 
   menuBtn.addEventListener('click', () => {
-    if (drawer.classList.contains('open')) {
-      closeDrawer();
-    } else {
-      openDrawer();
-    }
+    if (drawer.classList.contains('open')) closeDrawer();
+    else openDrawer();
   });
 
   if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
   overlay.addEventListener('click', closeDrawer);
 
-  // Close drawer when any mobile nav link is clicked
-  drawer.querySelectorAll('a').forEach(link => {
-    link.addEventListener('click', closeDrawer);
-  });
+  drawer.querySelectorAll('a').forEach(link => link.addEventListener('click', closeDrawer));
 }
 
 /**
- * Scroll Effects (Sticky Header Compact & Scroll Spy)
+ * Scroll Effects: Sticky Header & Nav Spy
  */
 function initScrollEffects() {
   const header = document.getElementById('main-header');
-  
   window.addEventListener('scroll', () => {
     if (window.scrollY > 40) {
       header.classList.add('scrolled');
@@ -621,13 +971,12 @@ function initScrollEffects() {
     }
   }, { passive: true });
 
-  // Active Navigation link highlighter
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.desktop-nav .nav-link');
 
   window.addEventListener('scroll', () => {
     let current = '';
-    const scrollPos = window.scrollY + 120;
+    const scrollPos = window.scrollY + 140;
 
     sections.forEach(section => {
       const sectionTop = section.offsetTop;
@@ -644,4 +993,74 @@ function initScrollEffects() {
       }
     });
   }, { passive: true });
+}
+
+function handleUrlHashRouting() {
+  const checkHash = () => {
+    const hash = window.location.hash;
+    if (hash.startsWith('#product-')) {
+      const pId = hash.replace('#product-', '');
+      openProductModal(pId);
+    } else if (currentOpenProductId) {
+      closeProductModal();
+    }
+  };
+
+  window.addEventListener('hashchange', checkHash);
+  checkHash();
+}
+
+/**
+ * Data Synchronization (Firestore, localStorage, broadcast)
+ */
+async function loadProductsData() {
+  if (typeof firestoreDb !== 'undefined' && firestoreDb) {
+    try {
+      firestoreDb.collection('products').onSnapshot((snapshot) => {
+        if (!snapshot.empty) {
+          const cloudProducts = [];
+          snapshot.forEach(doc => cloudProducts.push(doc.data()));
+          if (cloudProducts.length > 0) {
+            PRODUCTS = cloudProducts;
+            localStorage.setItem('bloom_custom_products', JSON.stringify(PRODUCTS));
+            renderProducts('all');
+            initCategoryFilters();
+          }
+        }
+      });
+    } catch (e) {}
+  }
+}
+
+async function loadAchievementsData() {
+  if (typeof firestoreDb !== 'undefined' && firestoreDb) {
+    try {
+      firestoreDb.collection('achievements').onSnapshot((snapshot) => {
+        if (!snapshot.empty) {
+          const cloudAch = [];
+          snapshot.forEach(doc => cloudAch.push(doc.data()));
+          if (cloudAch.length > 0) {
+            ACHIEVEMENTS = cloudAch;
+            localStorage.setItem('bloom_custom_achievements', JSON.stringify(ACHIEVEMENTS));
+            renderAchievements('all');
+          }
+        }
+      });
+    } catch (e) {}
+  }
+}
+
+function setupSyncListeners() {
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'bloom_custom_products' && e.newValue) {
+      try {
+        const parsed = JSON.parse(e.newValue);
+        if (Array.isArray(parsed)) {
+          PRODUCTS = parsed;
+          renderProducts('all');
+          initCategoryFilters();
+        }
+      } catch (err) {}
+    }
+  });
 }
