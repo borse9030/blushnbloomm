@@ -8,17 +8,17 @@
 const R2Storage = (() => {
   const STORAGE_KEY = 'bloom_r2_config';
 
-  // Default / cached configuration
+  // Default / cached configuration pre-configured for blushnbloomm-media
   let config = {
     accountId: 'fe55d9a781822b063a8e6a697ae6136b',
-    accessKeyId: '',
-    secretAccessKey: '',
+    accessKeyId: 'b463c9cf5982333fefa19b78cf07a207',
+    secretAccessKey: '0b52e0182c0f07973680ad6304706eed4272930de0a1125c217aa545f435503f',
     bucketName: 'blushnbloomm-media',
     publicDomain: 'https://pub-91be6110e6d34a3bafea471d064d1b49.r2.dev',
     workerUrl: ''     // Optional Cloudflare Worker upload proxy
   };
 
-  // Load saved configuration from localStorage
+  // Load saved configuration from localStorage with defaults
   function loadConfig() {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
@@ -28,6 +28,12 @@ const R2Storage = (() => {
     } catch (e) {
       console.warn('[R2 Storage] Failed to load config:', e);
     }
+    // Ensure active credentials are always populated
+    if (!config.accountId) config.accountId = 'fe55d9a781822b063a8e6a697ae6136b';
+    if (!config.bucketName) config.bucketName = 'blushnbloomm-media';
+    if (!config.publicDomain) config.publicDomain = 'https://pub-91be6110e6d34a3bafea471d064d1b49.r2.dev';
+    if (!config.accessKeyId) config.accessKeyId = 'b463c9cf5982333fefa19b78cf07a207';
+    if (!config.secretAccessKey) config.secretAccessKey = '0b52e0182c0f07973680ad6304706eed4272930de0a1125c217aa545f435503f';
     return config;
   }
 
@@ -156,59 +162,64 @@ const R2Storage = (() => {
 
     // Option B: Direct S3 API to Cloudflare R2 via SigV4
     if (config.accountId && config.accessKeyId && config.secretAccessKey && config.bucketName) {
-      if (progressCallback) progressCallback(40, 'Signing R2 payload...');
+      try {
+        if (progressCallback) progressCallback(40, 'Signing R2 payload...');
 
-      const host = `${config.accountId}.r2.cloudflarestorage.com`;
-      const url = `https://${host}/${config.bucketName}/${objectKey}`;
-      const method = 'PUT';
-      const region = 'auto';
-      const service = 's3';
+        const host = `${config.accountId}.r2.cloudflarestorage.com`;
+        const url = `https://${host}/${config.bucketName}/${objectKey}`;
+        const method = 'PUT';
+        const region = 'auto';
+        const service = 's3';
 
-      const now = new Date();
-      const amzDate = now.toISOString().replace(/[:-]|\.\d{3}/g, '');
-      const dateStamp = amzDate.slice(0, 8);
+        const now = new Date();
+        const amzDate = now.toISOString().replace(/[:-]|\.\d{3}/g, '');
+        const dateStamp = amzDate.slice(0, 8);
 
-      const fileBuffer = await optimized.arrayBuffer();
-      const payloadHash = await sha256(fileBuffer);
+        const fileBuffer = await optimized.arrayBuffer();
+        const payloadHash = await sha256(fileBuffer);
 
-      const canonicalUri = `/${config.bucketName}/${encodeURI(objectKey)}`;
-      const canonicalHeaders = `host:${host}\nx-amz-content-sha256:${payloadHash}\nx-amz-date:${amzDate}\n`;
-      const signedHeaders = 'host;x-amz-content-sha256;x-amz-date';
+        const canonicalUri = `/${config.bucketName}/${encodeURI(objectKey)}`;
+        const canonicalHeaders = `host:${host}\nx-amz-content-sha256:${payloadHash}\nx-amz-date:${amzDate}\n`;
+        const signedHeaders = 'host;x-amz-content-sha256;x-amz-date';
 
-      const canonicalRequest = `${method}\n${canonicalUri}\n\n${canonicalHeaders}\n${signedHeaders}\n${payloadHash}`;
-      const credentialScope = `${dateStamp}/${region}/${service}/aws4_request`;
-      const stringToSign = `AWS4-HMAC-SHA256\n${amzDate}\n${credentialScope}\n${await sha256(canonicalRequest)}`;
+        const canonicalRequest = `${method}\n${canonicalUri}\n\n${canonicalHeaders}\n${signedHeaders}\n${payloadHash}`;
+        const credentialScope = `${dateStamp}/${region}/${service}/aws4_request`;
+        const stringToSign = `AWS4-HMAC-SHA256\n${amzDate}\n${credentialScope}\n${await sha256(canonicalRequest)}`;
 
-      const signingKey = await getSignatureKey(config.secretAccessKey, dateStamp, region, service);
-      const signatureBytes = await hmacSha256(signingKey, stringToSign);
-      const signature = Array.from(new Uint8Array(signatureBytes)).map(b => b.toString(16).padStart(2, '0')).join('');
+        const signingKey = await getSignatureKey(config.secretAccessKey, dateStamp, region, service);
+        const signatureBytes = await hmacSha256(signingKey, stringToSign);
+        const signature = Array.from(new Uint8Array(signatureBytes)).map(b => b.toString(16).padStart(2, '0')).join('');
 
-      const authHeader = `AWS4-HMAC-SHA256 Credential=${config.accessKeyId}/${credentialScope}, SignedHeaders=${signedHeaders}, Signature=${signature}`;
+        const authHeader = `AWS4-HMAC-SHA256 Credential=${config.accessKeyId}/${credentialScope}, SignedHeaders=${signedHeaders}, Signature=${signature}`;
 
-      if (progressCallback) progressCallback(70, 'Transmitting to Cloudflare R2...');
+        if (progressCallback) progressCallback(70, 'Transmitting to Cloudflare R2...');
 
-      const response = await fetch(url, {
-        method: 'PUT',
-        headers: {
-          'x-amz-date': amzDate,
-          'x-amz-content-sha256': payloadHash,
-          'Authorization': authHeader,
-          'Content-Type': optimized.type || 'application/octet-stream'
-        },
-        body: fileBuffer
-      });
+        const response = await fetch(url, {
+          method: 'PUT',
+          headers: {
+            'x-amz-date': amzDate,
+            'x-amz-content-sha256': payloadHash,
+            'Authorization': authHeader,
+            'Content-Type': optimized.type || 'application/octet-stream'
+          },
+          body: fileBuffer
+        });
 
-      if (!response.ok) {
-        const errText = await response.text();
-        throw new Error(`Cloudflare R2 returned ${response.status}: ${errText || response.statusText}`);
+        if (!response.ok) {
+          const errText = await response.text();
+          throw new Error(`Cloudflare R2 returned ${response.status}: ${errText || response.statusText}`);
+        }
+
+        if (progressCallback) progressCallback(100, 'Uploaded successfully to Cloudflare R2!');
+
+        if (config.publicDomain) {
+          return `${config.publicDomain}/${objectKey}`;
+        }
+        return url;
+      } catch (r2Err) {
+        console.warn('[R2 Storage] Direct R2 upload encountered an issue, seamlessly engaging Firebase Cloud Storage fallback:', r2Err.message);
+        if (progressCallback) progressCallback(50, 'Routing via Firebase Cloud Storage fallback...');
       }
-
-      if (progressCallback) progressCallback(100, 'Uploaded successfully!');
-
-      if (config.publicDomain) {
-        return `${config.publicDomain}/${objectKey}`;
-      }
-      return url;
     }
 
     // Option C: Fallback to Firebase Storage if R2 is not yet configured
