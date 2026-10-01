@@ -18,15 +18,22 @@ const firebaseConfig = {
 // Initialize Firebase (Compat SDK)
 let firebaseApp = null;
 let firestoreDb = null;
+let firebaseStorage = null;
+let firebaseAnalytics = null;
 
 try {
   if (typeof firebase !== 'undefined') {
     firebaseApp = firebase.initializeApp(firebaseConfig);
-    firestoreDb = firebase.firestore();
-    if (typeof firebase.analytics === 'function') {
-      firebase.analytics();
+    if (typeof firebase.firestore === 'function') {
+      firestoreDb = firebase.firestore();
     }
-    console.log('[Firebase] Successfully initialized Firestore for Bloom&blush');
+    if (typeof firebase.storage === 'function') {
+      firebaseStorage = firebase.storage();
+    }
+    if (typeof firebase.analytics === 'function') {
+      firebaseAnalytics = firebase.analytics();
+    }
+    console.log('[Firebase] Successfully initialized Firebase Services (Firestore, Storage, Analytics) for Bloom&blush (blushnbloomm-4c7b9)');
   }
 } catch (err) {
   console.warn('[Firebase] Initialization error or already initialized:', err);
