@@ -35,7 +35,7 @@ const server = http.createServer((req, res) => {
       try {
         const { filename, base64 } = JSON.parse(body);
         const data = base64.replace(/^data:image\/\w+;base64,/, '');
-        const target = path.join(ROOT, 'public', filename);
+        const target = path.join(ROOT, 'assets', 'images', filename);
         fs.writeFileSync(target, Buffer.from(data, 'base64'));
         res.writeHead(200, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ success: true, file: target }));
