@@ -1,0 +1,50 @@
+[
+  {
+    "id": "money-garlands",
+    "title": "Money Garlands",
+    "shortDesc": "Bespoke origami currency garlands handcrafted for grooms, baraat, and milestone ceremonies.",
+    "image": "assets/images/money_garland.jpg",
+    "displayOrder": 1,
+    "itemCount": 2
+  },
+  {
+    "id": "bouquets",
+    "title": "Artisanal Bouquets",
+    "shortDesc": "Fresh and eternal preserved floral arrangements curated with deep wine garden roses.",
+    "image": "assets/images/editorial_bouquet.jpg",
+    "displayOrder": 2,
+    "itemCount": 2
+  },
+  {
+    "id": "customized-hampers",
+    "title": "Customized Hampers",
+    "shortDesc": "Rich burgundy velvet trunks with brass canisters, gourmet treats, and soy candles.",
+    "image": "assets/images/luxury_hamper.jpg",
+    "displayOrder": 3,
+    "itemCount": 2
+  },
+  {
+    "id": "wedding-gifting",
+    "title": "Wedding & Celebration Gifting",
+    "shortDesc": "Opulent trousseau presentation trays, zardozi potlis, and ceremonial platters.",
+    "image": "assets/images/wedding_trousseau.jpg",
+    "displayOrder": 4,
+    "itemCount": 1
+  },
+  {
+    "id": "customized-gifts",
+    "title": "Customized Gifts",
+    "shortDesc": "Hand-carved wooden keepsake boxes paired with personalized calligraphy letters.",
+    "image": "assets/images/customized_gifts.jpg",
+    "displayOrder": 5,
+    "itemCount": 1
+  },
+  {
+    "id": "luxury-addons",
+    "title": "Luxury Add-ons",
+    "shortDesc": "Real preserved Ecuadorian rose cloches, fragrance vials, and mandap decor accents.",
+    "image": "assets/images/floral_dome.jpg",
+    "displayOrder": 6,
+    "itemCount": 1
+  }
+]

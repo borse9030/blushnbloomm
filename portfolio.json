@@ -1,0 +1,86 @@
+[
+  {
+    "id": "port-sovereign-garland",
+    "title": "The Royal Sovereign Money Garland",
+    "category": "Money Garlands",
+    "image": "assets/images/money_garland.jpg",
+    "linkUrl": "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
+    "caption": "Handcrafted currency garland with rich burgundy roses and zari brocade for grand Maharashtrian wedding entry.",
+    "tags": ["Money Garlands", "Wedding", "Groom Styling"],
+    "span": "col-span-2 row-span-2",
+    "featured": true,
+    "createdAt": 1738100000000
+  },
+  {
+    "id": "port-bridal-trousseau",
+    "title": "Raas Velvet Trousseau Suite",
+    "category": "Wedding & Celebration Gifting",
+    "image": "assets/images/wedding_trousseau.jpg",
+    "linkUrl": "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
+    "caption": "Opulent burgundy velvet ceremonial trays with antique zardozi borders and Kundan brooch pins.",
+    "tags": ["Trousseau", "Bridal", "Ceremonial"],
+    "span": "col-span-1 row-span-1",
+    "featured": true,
+    "createdAt": 1738050000000
+  },
+  {
+    "id": "port-rose-cloche",
+    "title": "Eternal Burgundy Rose Cloche",
+    "category": "Bouquets",
+    "image": "assets/images/floral_dome.jpg",
+    "linkUrl": "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
+    "caption": "Natural preserved deep wine rose under brass glass dome that lasts 3+ years.",
+    "tags": ["Preserved Florals", "Keepsake", "Anniversary"],
+    "span": "col-span-1 row-span-1",
+    "featured": true,
+    "createdAt": 1738000000000
+  },
+  {
+    "id": "port-luxe-hamper",
+    "title": "Velvet Reverie Celebration Hamper",
+    "category": "Customized Hampers",
+    "image": "assets/images/luxury_hamper.jpg",
+    "linkUrl": "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
+    "caption": "Rigid velvet trunk with brass canisters, scented wood-wick candle, and wax-sealed greeting.",
+    "tags": ["Hampers", "Festive", "Luxury Gifting"],
+    "span": "col-span-1 row-span-2",
+    "featured": true,
+    "createdAt": 1737950000000
+  },
+  {
+    "id": "port-wine-posy",
+    "title": "Wine & Blush Bridal Posy",
+    "category": "Bouquets",
+    "image": "assets/images/editorial_bouquet.jpg",
+    "linkUrl": "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
+    "caption": "Garden roses and ranunculus bound with trailing hand-dyed burgundy silk velvet ribbons.",
+    "tags": ["Bouquets", "Bridal", "Fresh Florals"],
+    "span": "col-span-1 row-span-1",
+    "featured": true,
+    "createdAt": 1737900000000
+  },
+  {
+    "id": "port-pastel-garland",
+    "title": "Pastel Pearl Ceremony Garland",
+    "category": "Money Garlands",
+    "image": "assets/images/pastel_garland.jpg",
+    "linkUrl": "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
+    "caption": "Soft blush and pearl draping for baby naming ceremonies and morning engagements.",
+    "tags": ["Money Garlands", "Baby Shower", "Pastel"],
+    "span": "col-span-1 row-span-1",
+    "featured": true,
+    "createdAt": 1737850000000
+  },
+  {
+    "id": "port-keepsake-box",
+    "title": "Hand-Carved Keepsake Letter Box",
+    "category": "Customized Gifts",
+    "image": "assets/images/customized_gifts.jpg",
+    "linkUrl": "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
+    "caption": "Seasoned wood filigree casket with deckle-edge calligraphy love note and wax seal.",
+    "tags": ["Customized Gifts", "Personalized", "Keepsake"],
+    "span": "col-span-1 row-span-1",
+    "featured": true,
+    "createdAt": 1737800000000
+  }
+]

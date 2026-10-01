@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <base href="/">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Owner Studio Portal | Bloom&amp;blush</title>
@@ -13,8 +14,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
   <!-- Admin Stylesheet -->
-  <link rel="stylesheet" href="css/admin.css">
-  <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg">
+  <link rel="stylesheet" href="admin/css/admin.css">
+  <link rel="icon" type="image/png" href="assets/images/web_logo.png">
 </head>
 <body>
 
@@ -23,7 +24,7 @@
        =================================================================== -->
   <header class="admin-navbar">
     <div class="nav-container">
-      <a href="index.html" class="brand-section">
+      <a href="admin/" class="brand-section">
         <div class="brand-logo-badge">B</div>
         <div class="brand-title-group">
           <h1>Bloom&amp;blush</h1>
@@ -32,19 +33,34 @@
       </a>
 
       <div class="nav-actions">
+        <div id="cloud-sync-pill" class="cloud-status-pill" title="Live Cloud Synchronization Status">
+          <span class="pulse-dot"></span>
+          <span id="cloud-pill-text">Cloud Sync: Active</span>
+        </div>
+
         <button type="button" class="btn btn-outline-gold" id="btn-storage-guide" title="Recommended Free Cloud Storage for Videos &amp; Photos">
           <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
           <span>Free Storage Guide</span>
         </button>
 
-        <a href="../index.html" target="_blank" rel="noopener noreferrer" class="btn btn-outline-gold" title="Open main website in a new window to see live preview">
+        <a href="./" target="_blank" rel="noopener noreferrer" class="btn btn-outline-gold" title="Open main website in a new window to see live preview">
           <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
           <span>View Main Website</span>
         </a>
 
+        <button type="button" class="btn btn-primary" id="btn-add-collection" style="display: none;">
+          <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+          <span>+ Add Collection</span>
+        </button>
+
         <button type="button" class="btn btn-primary" id="btn-add-product">
           <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
           <span>+ Add Creation</span>
+        </button>
+
+        <button type="button" class="btn btn-primary" id="btn-add-portfolio" style="display: none;">
+          <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+          <span>+ Add Portfolio Story</span>
         </button>
 
         <button type="button" class="btn btn-primary" id="btn-add-achievement" style="display: none; background: var(--burgundy-700);">
@@ -56,20 +72,38 @@
   </header>
 
   <!-- ===================================================================
-       Owner Tab Navigation: Creations vs Achievements
+       Owner Tab Navigation: 5 Boutique Studio Management Sections
        =================================================================== -->
   <nav class="admin-subnav-bar">
     <div class="subnav-container">
       <div class="admin-tabs-list">
+        <button type="button" class="admin-tab-btn" data-tab="collections" id="tab-nav-collections">
+          <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
+          <span>Collections &amp; Categories</span>
+          <span class="tab-badge" id="tab-badge-collections">--</span>
+        </button>
+
         <button type="button" class="admin-tab-btn active" data-tab="products" id="tab-nav-products">
           <svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
           <span>Creations Catalog</span>
           <span class="tab-badge" id="tab-badge-products">--</span>
         </button>
+
+        <button type="button" class="admin-tab-btn" data-tab="portfolio" id="tab-nav-portfolio">
+          <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          <span>Instagram Portfolio</span>
+          <span class="tab-badge" id="tab-badge-portfolio">--</span>
+        </button>
+
         <button type="button" class="admin-tab-btn" data-tab="achievements" id="tab-nav-achievements">
           <svg viewBox="0 0 24 24"><path d="M12 2L9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2z"/></svg>
           <span>Studio Achievements &amp; Media</span>
           <span class="tab-badge" id="tab-badge-achievements">--</span>
+        </button>
+
+        <button type="button" class="admin-tab-btn" data-tab="settings" id="tab-nav-settings">
+          <svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>
+          <span>Cloud &amp; R2 Settings</span>
         </button>
       </div>
     </div>
@@ -79,6 +113,90 @@
        Main Dashboard Body
        =================================================================== -->
   <main class="admin-main">
+
+    <!-- ===============================================================
+         VIEW 0: COLLECTIONS & CATEGORIES
+         =============================================================== -->
+    <div id="view-collections" class="tab-view" style="display: none;">
+
+      <!-- Collections Stats Banner -->
+      <section class="stats-banner">
+        <div class="stat-card">
+          <div class="stat-icon-wrapper" style="background: rgba(128, 35, 54, 0.1); color: var(--burgundy-700);">
+            <svg viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
+          </div>
+          <div class="stat-content">
+            <div class="stat-label">Active Collections</div>
+            <div class="stat-value" id="stat-col-total">--</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrapper" style="background: rgba(212, 175, 55, 0.15); color: var(--gold-700);">
+            <svg viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
+          </div>
+          <div class="stat-content">
+            <div class="stat-label">Linked Creations</div>
+            <div class="stat-value" id="stat-col-products">--</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrapper" style="background: rgba(43, 114, 186, 0.1); color: #2B72BA;">
+            <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          </div>
+          <div class="stat-content">
+            <div class="stat-label">Customizable Lines</div>
+            <div class="stat-value" id="stat-col-custom">6 Signature</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrapper" style="background: rgba(46, 125, 50, 0.1); color: #2E7D32;">
+            <svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+          </div>
+          <div class="stat-content">
+            <div class="stat-label">Cloud Sync</div>
+            <div class="stat-value" style="font-size: 1.05rem; color: #2E7D32;">Live Firestore</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Collections Real-Time Sync Indicator -->
+      <div class="sync-status-bar">
+        <div class="sync-status-left">
+          <span class="sync-pulse"></span>
+          <span><strong>Category Sync:</strong> Categories defined here automatically power collection filters, product assignment dropdowns, and live website navigation.</span>
+        </div>
+      </div>
+
+      <!-- Search & Action Toolbar -->
+      <div class="toolbar-card">
+        <div class="toolbar-top">
+          <div class="search-box-wrapper">
+            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <input type="search" id="col-search-input" class="search-input" placeholder="Search boutique collections &amp; categories...">
+          </div>
+          <div class="toolbar-buttons">
+            <button type="button" class="btn btn-primary" id="btn-col-add-inline">
+              <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+              <span>+ New Collection</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section Header -->
+      <div class="products-view-header">
+        <h2 class="products-view-title">Boutique Collections &amp; Categories</h2>
+        <span id="col-filtered-count" style="font-size: 0.85rem; color: var(--text-muted);">Loading collections...</span>
+      </div>
+
+      <!-- Collections Admin Grid -->
+      <div class="collections-admin-grid" id="collections-admin-grid">
+        <!-- Rendered dynamically by admin.js -->
+      </div>
+    </div>
 
     <!-- ===============================================================
          VIEW 1: PRODUCTS / CREATIONS CATALOG
@@ -274,6 +392,235 @@
         <!-- Rendered dynamically by admin.js -->
       </div>
 
+    </div>
+
+    <!-- ===============================================================
+         VIEW 2: INSTAGRAM PORTFOLIO & STORIES
+         =============================================================== -->
+    <div id="view-portfolio" class="tab-view" style="display: none;">
+
+      <!-- Portfolio Stats Banner -->
+      <section class="stats-banner">
+        <div class="stat-card">
+          <div class="stat-icon-wrapper" style="background: rgba(128, 35, 54, 0.1); color: var(--burgundy-700);">
+            <svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          </div>
+          <div class="stat-content">
+            <div class="stat-label">Total Portfolio Stories</div>
+            <div class="stat-value" id="stat-port-total">--</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrapper" style="background: rgba(225, 48, 108, 0.1); color: #E1306C;">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </div>
+          <div class="stat-content">
+            <div class="stat-label">Instagram Connected</div>
+            <div class="stat-value">@blushnbloomm.in</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrapper" style="background: rgba(212, 175, 55, 0.15); color: var(--gold-700);">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z"/></svg>
+          </div>
+          <div class="stat-content">
+            <div class="stat-label">Featured Highlights</div>
+            <div class="stat-value" id="stat-port-featured">--</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrapper" style="background: rgba(46, 125, 50, 0.1); color: #2E7D32;">
+            <svg viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>
+          </div>
+          <div class="stat-content">
+            <div class="stat-label">Cloud Sync</div>
+            <div class="stat-value" style="font-size: 1.05rem; color: #2E7D32;">Real-Time</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Toolbar -->
+      <div class="toolbar-card">
+        <div class="toolbar-top">
+          <div class="search-box-wrapper">
+            <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+            <input type="search" id="port-search-input" class="search-input" placeholder="Search portfolio journal stories...">
+          </div>
+          <div class="toolbar-buttons">
+            <button type="button" class="btn btn-primary" id="btn-port-add-inline">
+              <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+              <span>+ New Portfolio Story</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section Header -->
+      <div class="products-view-header">
+        <h2 class="products-view-title">Instagram Journal &amp; Stories Showcase</h2>
+        <span id="port-filtered-count" style="font-size: 0.85rem; color: var(--text-muted);">Loading stories...</span>
+      </div>
+
+      <!-- Portfolio Grid -->
+      <div class="products-grid" id="portfolio-admin-grid">
+        <!-- Rendered dynamically by admin.js -->
+      </div>
+    </div>
+
+    <!-- ===============================================================
+         VIEW 4: CLOUD & CLOUDFLARE R2 SETTINGS
+         =============================================================== -->
+    <div id="view-settings" class="tab-view" style="display: none;">
+
+      <div class="settings-grid">
+        <!-- Card 1: Cloudflare R2 Media Storage -->
+        <div class="settings-card">
+          <div class="settings-card-header">
+            <div class="settings-card-icon" style="background: rgba(243, 128, 32, 0.1); color: #F38020;">
+              <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
+            </div>
+            <div>
+              <h3>Cloudflare R2 Media Storage</h3>
+              <p>Direct S3-compatible fast global cloud storage for all photos and videos.</p>
+            </div>
+            <span id="r2-status-badge" class="badge-status-pill badge-idle">Ready</span>
+          </div>
+
+          <div class="settings-card-body">
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1.25rem;">
+              When configured, any photo or video you select is automatically compressed to high-quality WebP and uploaded straight to your Cloudflare R2 bucket.
+            </p>
+
+            <form id="form-r2-settings" class="form-grid">
+              <div class="form-group form-full">
+                <label class="form-label" for="r2-account-id">Cloudflare Account ID *</label>
+                <input type="text" id="r2-account-id" class="form-control" placeholder="e.g. 5d9b7a4f912c478e1b..." autocomplete="off">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="r2-access-key">R2 Access Key ID *</label>
+                <input type="text" id="r2-access-key" class="form-control" placeholder="e.g. 8f6b..." autocomplete="off">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="r2-secret-key">R2 Secret Access Key *</label>
+                <input type="password" id="r2-secret-key" class="form-control" placeholder="••••••••••••••••••••••••" autocomplete="off">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="r2-bucket-name">Bucket Name *</label>
+                <input type="text" id="r2-bucket-name" class="form-control" placeholder="blushnbloomm-media" value="blushnbloomm-media">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="r2-public-domain">
+                  <span>Public Media Domain</span>
+                  <span class="helper">Custom Domain or r2.dev</span>
+                </label>
+                <input type="url" id="r2-public-domain" class="form-control" placeholder="https://media.blushnbloomm.in or https://pub-xxxx.r2.dev">
+              </div>
+
+              <div class="form-group form-full">
+                <label class="form-label" for="r2-worker-url">
+                  <span>Cloudflare Worker Proxy (Optional)</span>
+                  <span class="helper">If uploading via Cloudflare Worker</span>
+                </label>
+                <input type="url" id="r2-worker-url" class="form-control" placeholder="https://upload.blushnbloomm.workers.dev">
+              </div>
+
+              <div class="form-group form-full" style="display: flex; gap: 0.75rem; align-items: center; margin-top: 0.5rem; flex-wrap: wrap;">
+                <button type="submit" class="btn btn-primary" id="btn-save-r2-settings">
+                  Save R2 Credentials
+                </button>
+                <button type="button" class="btn btn-outline-gold" id="btn-test-r2-conn">
+                  Probe / Test Connection
+                </button>
+                <span id="r2-test-msg" style="font-size: 0.85rem; font-weight: 600;"></span>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Card 2: Google Firebase Cloud Database -->
+        <div class="settings-card">
+          <div class="settings-card-header">
+            <div class="settings-card-icon" style="background: rgba(255, 202, 40, 0.15); color: #B28704;">
+              <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M3.89 15.672L6.255.461A.542.542 0 0 1 7.27.288l2.543 4.771zm16.794 3.692l-2.25-14a.54.54 0 0 0-.919-.267L3.316 19.364l7.865 4.417a1.789 1.789 0 0 0 1.735 0z"/></svg>
+            </div>
+            <div>
+              <h3>Google Firebase Firestore Database</h3>
+              <p>Real-time bidirectional document database (Project: blushnbloomm-4c7b9).</p>
+            </div>
+            <span class="badge-status-pill badge-active">Live Connected</span>
+          </div>
+
+          <div class="settings-card-body">
+            <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 1rem;">
+              Changes made in this owner studio portal are synced directly to Google Firestore, which instantly updates all visitors on the main website without page reload.
+            </p>
+
+            <div class="db-stats-list">
+              <div class="db-stat-row">
+                <span>Collections &amp; Categories Synced:</span>
+                <strong id="db-count-collections">--</strong>
+              </div>
+              <div class="db-stat-row">
+                <span>Creations (Products) Synced:</span>
+                <strong id="db-count-products">--</strong>
+              </div>
+              <div class="db-stat-row">
+                <span>Instagram Portfolio Stories:</span>
+                <strong id="db-count-portfolio">--</strong>
+              </div>
+              <div class="db-stat-row">
+                <span>Studio Achievements &amp; Reels:</span>
+                <strong id="db-count-achievements">--</strong>
+              </div>
+            </div>
+
+            <!-- Seed / Clean Fake Data Banner -->
+            <div class="seed-catalog-box">
+              <div class="seed-box-text">
+                <h4>🚀 One-Click Catalog Seed &amp; Fake Data Purge</h4>
+                <p>
+                  Populate Firestore with authentic Bloom&amp;blush catalog data (canonical collections, creations, portfolio stories, and authentic Lalbaugcha Raja reels) and permanently purge any old mock/fake test data.
+                </p>
+              </div>
+              <button type="button" class="btn btn-burgundy" id="btn-open-seed-catalog" style="white-space: nowrap;">
+                Seed / Sync Authentic Data to Cloud &rarr;
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Studio Backup & Restore -->
+        <div class="settings-card">
+          <div class="settings-card-header">
+            <div class="settings-card-icon" style="background: rgba(3, 102, 214, 0.1); color: #0366D6;">
+              <svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+            </div>
+            <div>
+              <h3>Studio Catalog Backups</h3>
+              <p>Export or restore all studio data in clean JSON format for offline safety.</p>
+            </div>
+          </div>
+          <div class="settings-card-body" style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+            <button type="button" class="btn btn-outline-gold" id="btn-download-studio-backup">
+              <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+              <span>Download Full Studio JSON Backup</span>
+            </button>
+
+            <label class="btn btn-secondary" style="cursor: pointer; margin: 0;">
+              <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
+              <span>Import &amp; Restore JSON File</span>
+              <input type="file" id="file-import-studio-json" accept=".json" style="display: none;">
+            </label>
+          </div>
+        </div>
+      </div>
     </div>
 
   </main>
@@ -685,6 +1032,311 @@
   </div>
 
   <!-- ===================================================================
+       Modal: Add / Edit Collection Category Form
+       =================================================================== -->
+  <div class="modal-overlay" id="collection-modal">
+    <div class="modal-card" style="max-width: 680px;">
+      <div class="modal-header" style="background: var(--burgundy-900);">
+        <h2 id="modal-col-title">Add Boutique Collection</h2>
+        <button type="button" class="modal-close-btn js-close-modal" aria-label="Close modal">&times;</button>
+      </div>
+
+      <form id="collection-form" class="modal-body">
+        <div class="form-grid">
+
+          <!-- Collection Title -->
+          <div class="form-group form-full">
+            <label class="form-label" for="col-title-input">Collection Title *</label>
+            <input type="text" id="col-title-input" class="form-control" placeholder="e.g. Money Garlands or Artisanal Bouquets" required>
+          </div>
+
+          <!-- Collection Slug ID -->
+          <div class="form-group">
+            <label class="form-label" for="col-id-input">
+              <span>Collection ID (Slug) *</span>
+              <span class="helper">Auto-generated</span>
+            </label>
+            <input type="text" id="col-id-input" class="form-control" placeholder="e.g. money-garlands" required>
+          </div>
+
+          <!-- Display Order -->
+          <div class="form-group">
+            <label class="form-label" for="col-order-input">Display Order</label>
+            <input type="number" id="col-order-input" class="form-control" placeholder="1" value="1" min="1">
+          </div>
+
+          <!-- Subtitle / Tagline -->
+          <div class="form-group">
+            <label class="form-label" for="col-subtitle-input">Subtitle / Tagline</label>
+            <input type="text" id="col-subtitle-input" class="form-control" placeholder="e.g. Auspicious &amp; Ceremonial">
+          </div>
+
+          <!-- Item Count / Badge Note -->
+          <div class="form-group">
+            <label class="form-label" for="col-count-input">Item Count / Pricing Note</label>
+            <input type="text" id="col-count-input" class="form-control" placeholder="e.g. Custom Denominations Available">
+          </div>
+
+          <!-- Description -->
+          <div class="form-group form-full">
+            <label class="form-label" for="col-desc-input">Collection Narrative Description *</label>
+            <textarea id="col-desc-input" class="form-control" rows="3" placeholder="Artistic description shown on collection cards and main website..." required></textarea>
+          </div>
+
+          <!-- Image Selector & R2 Upload -->
+          <div class="form-group form-full">
+            <label class="form-label">
+              <span>Cover Photography *</span>
+              <span class="helper">Upload local file (auto-stored in R2) or select asset</span>
+            </label>
+
+            <div class="image-source-tabs">
+              <button type="button" class="tab-btn active" data-tab="col-img-upload">Upload Local Photo (Cloudflare R2)</button>
+              <button type="button" class="tab-btn" data-tab="col-img-asset">Studio Asset</button>
+              <button type="button" class="tab-btn" data-tab="col-img-url">Direct Image Web URL</button>
+            </div>
+
+            <!-- Upload File -->
+            <div id="panel-col-img-upload">
+              <input type="file" id="col-image-file" class="form-control" accept="image/*">
+            </div>
+
+            <!-- Studio Asset Gallery -->
+            <div id="panel-col-img-asset" style="display: none;">
+              <select id="col-asset-select" class="form-control"></select>
+            </div>
+
+            <!-- Web URL -->
+            <div id="panel-col-img-url" style="display: none;">
+              <input type="url" id="col-image-url" class="form-control" placeholder="https://media.blushnbloomm.in/...">
+            </div>
+
+            <!-- Upload Progress Bar -->
+            <div id="col-upload-progress" class="upload-progress-box" style="display: none;">
+              <div class="upload-bar"><div class="upload-fill"></div></div>
+              <span class="upload-text">Uploading to Cloudflare R2...</span>
+            </div>
+
+            <!-- Hidden input holding final image string -->
+            <input type="hidden" id="col-image-final">
+
+            <!-- Image Preview Box -->
+            <div id="col-image-preview-container" class="image-preview-container" style="display: none; margin-top: 0.75rem;">
+              <img id="col-img-preview-thumb" class="image-preview-thumb" src="" alt="Preview">
+              <div class="image-preview-info">
+                <strong id="col-img-preview-label">Image Selected</strong>
+                <p style="font-size: 0.75rem; color: var(--text-muted);">This cover will represent the collection across the platform.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer" style="margin-top: 1.5rem; padding: 1rem 0 0 0; background: none;">
+          <button type="button" class="btn btn-secondary js-close-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="background: var(--burgundy-900);">Save Collection</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       Modal: Confirm Collection Deletion
+       =================================================================== -->
+  <div class="modal-overlay" id="delete-collection-modal">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-header" style="background: #5E0D18;">
+        <h2>Delete Collection</h2>
+        <button type="button" class="modal-close-btn js-close-modal" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 1.5rem;">
+        <p style="font-size: 0.95rem; margin-bottom: 1rem;">Are you sure you want to remove <strong id="delete-collection-name">this collection</strong>?</p>
+        <p style="font-size: 0.82rem; color: var(--text-muted);">Any creations linked to this category will remain safe in your catalog.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary js-close-modal">Cancel</button>
+        <button type="button" class="btn btn-burgundy" id="btn-confirm-delete-col" style="background: var(--danger); border-color: var(--danger);">Yes, Delete Collection</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       Modal: Add / Edit Instagram Portfolio Story
+       =================================================================== -->
+  <div class="modal-overlay" id="portfolio-modal">
+    <div class="modal-card" style="max-width: 680px;">
+      <div class="modal-header" style="background: var(--burgundy-800);">
+        <h2 id="modal-port-title">Add Instagram Portfolio Story</h2>
+        <button type="button" class="modal-close-btn js-close-modal" aria-label="Close modal">&times;</button>
+      </div>
+
+      <form id="portfolio-form" class="modal-body">
+        <div class="form-grid">
+
+          <!-- Story Title -->
+          <div class="form-group form-full">
+            <label class="form-label" for="port-title-input">Story / Creation Title *</label>
+            <input type="text" id="port-title-input" class="form-control" placeholder="e.g. Royal Sovereign Money Garland for Grand Baraat" required>
+          </div>
+
+          <!-- Story ID -->
+          <div class="form-group">
+            <label class="form-label" for="port-id-input">
+              <span>Story ID (Slug) *</span>
+              <span class="helper">Auto-generated</span>
+            </label>
+            <input type="text" id="port-id-input" class="form-control" placeholder="e.g. port-sovereign-garland" required>
+          </div>
+
+          <!-- Category Select (Dynamically loaded from Collections) -->
+          <div class="form-group">
+            <label class="form-label" for="port-category-select">Category / Collection *</label>
+            <select id="port-category-select" class="form-control" required></select>
+          </div>
+
+          <!-- Instagram Post URL -->
+          <div class="form-group form-full">
+            <label class="form-label" for="port-link-input">
+              <span>Instagram Post / Reel Link *</span>
+              <span class="helper">Direct link to @blushnbloomm.in</span>
+            </label>
+            <input type="url" id="port-link-input" class="form-control" placeholder="https://www.instagram.com/blushnbloomm.in?..." required>
+          </div>
+
+          <!-- Caption -->
+          <div class="form-group form-full">
+            <label class="form-label" for="port-caption-input">Story Caption / Editorial Note</label>
+            <textarea id="port-caption-input" class="form-control" rows="2" placeholder="Brief story describing the creation, celebration, or styling details..."></textarea>
+          </div>
+
+          <!-- Tags -->
+          <div class="form-group">
+            <label class="form-label" for="port-tags-input">Tags (Comma-separated)</label>
+            <input type="text" id="port-tags-input" class="form-control" placeholder="e.g. Money Garlands, Wedding, Groom Styling">
+          </div>
+
+          <!-- Grid Span -->
+          <div class="form-group">
+            <label class="form-label" for="port-span-select">Gallery Grid Size</label>
+            <select id="port-span-select" class="form-control">
+              <option value="col-span-1 row-span-1">Standard (1x1 Square)</option>
+              <option value="col-span-2 row-span-2">Feature (2x2 Large)</option>
+              <option value="col-span-1 row-span-2">Portrait Tall (1x2)</option>
+            </select>
+          </div>
+
+          <!-- Image Upload / R2 -->
+          <div class="form-group form-full">
+            <label class="form-label">
+              <span>Story Image Photography *</span>
+              <span class="helper">Choose file (auto-uploaded to R2) or web URL</span>
+            </label>
+
+            <div class="image-source-tabs">
+              <button type="button" class="tab-btn active" data-tab="port-img-upload">Upload Local Photo (R2)</button>
+              <button type="button" class="tab-btn" data-tab="port-img-asset">Studio Asset</button>
+              <button type="button" class="tab-btn" data-tab="port-img-url">Direct Image Web URL</button>
+            </div>
+
+            <!-- Upload File -->
+            <div id="panel-port-img-upload">
+              <input type="file" id="port-image-file" class="form-control" accept="image/*">
+            </div>
+
+            <!-- Studio Asset Gallery -->
+            <div id="panel-port-img-asset" style="display: none;">
+              <select id="port-asset-select" class="form-control"></select>
+            </div>
+
+            <!-- Web URL -->
+            <div id="panel-port-img-url" style="display: none;">
+              <input type="url" id="port-image-url" class="form-control" placeholder="https://media.blushnbloomm.in/...">
+            </div>
+
+            <!-- Upload Progress Bar -->
+            <div id="port-upload-progress" class="upload-progress-box" style="display: none;">
+              <div class="upload-bar"><div class="upload-fill"></div></div>
+              <span class="upload-text">Uploading to Cloudflare R2...</span>
+            </div>
+
+            <!-- Hidden input holding final image string -->
+            <input type="hidden" id="port-image-final">
+
+            <!-- Image Preview Box -->
+            <div id="port-image-preview-container" class="image-preview-container" style="display: none; margin-top: 0.75rem;">
+              <img id="port-img-preview-thumb" class="image-preview-thumb" src="" alt="Preview">
+              <div class="image-preview-info">
+                <strong id="port-img-preview-label">Image Selected</strong>
+                <p style="font-size: 0.75rem; color: var(--text-muted);">Displays in the Instagram journal feed.</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer" style="margin-top: 1.5rem; padding: 1rem 0 0 0; background: none;">
+          <button type="button" class="btn btn-secondary js-close-modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="background: var(--burgundy-800);">Save Portfolio Story</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       Modal: Confirm Portfolio Deletion
+       =================================================================== -->
+  <div class="modal-overlay" id="delete-portfolio-modal">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-header" style="background: #5E0D18;">
+        <h2>Delete Portfolio Story</h2>
+        <button type="button" class="modal-close-btn js-close-modal" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 1.5rem;">
+        <p style="font-size: 0.95rem; margin-bottom: 1rem;">Are you sure you want to remove <strong id="delete-portfolio-name">this story</strong>?</p>
+        <p style="font-size: 0.82rem; color: var(--text-muted);">This action will remove it from the live Instagram journal showcase.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary js-close-modal">Cancel</button>
+        <button type="button" class="btn btn-burgundy" id="btn-confirm-delete-port" style="background: var(--danger); border-color: var(--danger);">Yes, Delete Story</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
+       Modal: One-Click Cloud Catalog Seed Confirmation
+       =================================================================== -->
+  <div class="modal-overlay" id="seed-catalog-modal">
+    <div class="modal-card" style="max-width: 580px;">
+      <div class="modal-header" style="background: var(--burgundy-900);">
+        <h2>Sync Authentic Catalog to Cloud</h2>
+        <button type="button" class="modal-close-btn js-close-modal" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body" style="padding: 1.5rem;">
+        <p style="font-size: 0.95rem; margin-bottom: 1rem;">
+          This operation will publish our authentic Bloom&amp;blush catalog directly to your Google Firebase Firestore database:
+        </p>
+
+        <ul style="font-size: 0.86rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem; padding-left: 1.25rem;">
+          <li><strong>6 Authentic Collections:</strong> Money Garlands, Artisanal Bouquets, Customized Hampers, Wedding Gifting, Customized Gifts, Luxury Add-ons.</li>
+          <li><strong>8 Authentic Creations:</strong> Royal Sovereign Money Garland, Blush &amp; Wine Bouquet, Velvet Reverie Hamper, Raas Trousseau Tray, and more.</li>
+          <li><strong>7 Instagram Portfolio Stories:</strong> Verified studio journal dispatches.</li>
+          <li><strong>4 Studio Achievements &amp; Reels:</strong> Sacred Lalbaugcha Raja divine garland offerings and regional media spotlight.</li>
+          <li><strong>Purge Obsolete Fake Data:</strong> Permanently removes any legacy test or mock entries.</li>
+        </ul>
+
+        <div id="seed-progress-container" style="display: none; margin-top: 1rem;">
+          <div class="upload-bar"><div id="seed-progress-fill" class="upload-fill" style="width: 0%;"></div></div>
+          <p id="seed-progress-status" style="font-size: 0.84rem; color: var(--burgundy-700); font-weight: 600; margin-top: 0.5rem;">Syncing...</p>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary js-close-modal" id="btn-cancel-seed">Cancel</button>
+        <button type="button" class="btn btn-primary" id="btn-confirm-seed-catalog" style="background: var(--burgundy-700);">Start Cloud Synchronization</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================
        Modal: Free Cloud Media Storage Guide (Videos & Photos)
        =================================================================== -->
   <div class="modal-overlay" id="storage-guide-modal">
@@ -803,16 +1455,19 @@
   <!-- Footer -->
   <footer class="admin-footer">
     <p>&copy; 2026 Bloom&amp;blush &bull; Owner Studio Portal &bull; Handcrafted for Siddhi Kokate</p>
-    <p style="margin-top: 4px;"><a href="../index.html" target="_blank">Visit Main Website</a> &bull; Pimpri-Chinchwad, Pune</p>
+    <p style="margin-top: 4px;"><a href="./" target="_blank">Visit Main Website</a> &bull; Pimpri-Chinchwad, Pune</p>
   </footer>
 
   <!-- Firebase App & Firestore SDKs -->
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics-compat.js"></script>
-  <script src="../js/firebase-config.js"></script>
+  <script src="js/firebase-config.js"></script>
+
+  <!-- Cloudflare R2 S3 SigV4 Storage Client -->
+  <script src="admin/js/r2-storage.js"></script>
 
   <!-- Admin Application Logic Script -->
-  <script src="js/admin.js"></script>
+  <script src="admin/js/admin.js"></script>
 </body>
 </html>

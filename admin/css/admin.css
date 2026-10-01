@@ -1384,8 +1384,353 @@ textarea.form-control {
   margin-bottom: 0.35rem;
 }
 
-.storage-option-card .btn {
+/* ===================================================================
+   Cloud Status Pill in Header
+   =================================================================== */
+.cloud-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  color: var(--gold-400);
+  font-size: 0.76rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.cloud-status-pill .pulse-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4CAF50;
+  box-shadow: 0 0 8px #4CAF50;
+  animation: pulse-glow 2s infinite ease-in-out;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+/* ===================================================================
+   Collections & Categories Admin Grid
+   =================================================================== */
+.collections-admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.collection-card-admin {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  transition: var(--transition);
+}
+
+.collection-card-admin:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--gold-500);
+}
+
+.col-card-media-admin {
+  position: relative;
+  height: 180px;
+  background: var(--burgundy-900);
+  overflow: hidden;
+}
+
+.col-card-media-admin img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.collection-card-admin:hover .col-card-media-admin img {
+  transform: scale(1.05);
+}
+
+.col-card-order-badge {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  background: rgba(38, 5, 10, 0.85);
+  backdrop-filter: blur(4px);
+  color: var(--gold-400);
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+}
+
+.col-card-count-badge {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--burgundy-900);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-full);
+}
+
+.col-card-body-admin {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.col-card-subtitle-admin {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--gold-700);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.col-card-title-admin {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--burgundy-900);
+  margin-bottom: 0.45rem;
+}
+
+.col-card-desc-admin {
+  font-size: 0.83rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.col-card-footer-admin {
   margin-top: auto;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+/* ===================================================================
+   Portfolio Admin Cards
+   =================================================================== */
+.portfolio-card-admin {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  transition: var(--transition);
+}
+
+.portfolio-card-admin:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--gold-500);
+}
+
+.portfolio-card-media {
+  position: relative;
+  height: 200px;
+  background: var(--burgundy-900);
+  overflow: hidden;
+}
+
+.portfolio-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.portfolio-card-admin:hover .portfolio-card-media img {
+  transform: scale(1.05);
+}
+
+.portfolio-card-body {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+/* ===================================================================
+   Cloud & R2 Settings Section
+   =================================================================== */
+.settings-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  margin-top: 0.5rem;
+}
+
+.settings-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.settings-card-header {
+  padding: 1.25rem 1.5rem;
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.settings-card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.settings-card-header h3 {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--burgundy-900);
+}
+
+.settings-card-header p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.badge-status-pill {
+  margin-left: auto;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+}
+
+.badge-active {
+  background: #E8F5E9;
+  color: #2E7D32;
+  border: 1px solid #A5D6A7;
+}
+
+.badge-idle {
+  background: #FFF8E1;
+  color: #B28704;
+  border: 1px solid #FFE082;
+}
+
+.settings-card-body {
+  padding: 1.5rem;
+}
+
+.db-stats-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.db-stat-row {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.db-stat-row span {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.db-stat-row strong {
+  font-size: 1.15rem;
+  color: var(--burgundy-900);
+}
+
+.seed-catalog-box {
+  background: linear-gradient(135deg, #FCF4F6 0%, #FAF0E4 100%);
+  border: 1px solid rgba(128, 35, 54, 0.25);
+  border-radius: var(--radius-md);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+
+.seed-box-text h4 {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--burgundy-900);
+  margin-bottom: 0.25rem;
+}
+
+.seed-box-text p {
+  font-size: 0.83rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+/* ===================================================================
+   Upload Progress Bar
+   =================================================================== */
+.upload-progress-box {
+  margin-top: 0.65rem;
+  padding: 0.65rem 0.85rem;
+  background: #FFFDF9;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  border-radius: var(--radius-sm);
+}
+
+.upload-bar {
+  width: 100%;
+  height: 6px;
+  background: #E0E0E0;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 0.35rem;
+}
+
+.upload-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold-500), var(--burgundy-700));
+  width: 0%;
+  transition: width 0.25s ease;
+}
+
+.upload-text {
+  font-size: 0.75rem;
+  color: var(--burgundy-800);
+  font-weight: 600;
 }
 
 /* Responsive adjustments */

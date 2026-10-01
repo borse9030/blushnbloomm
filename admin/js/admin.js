@@ -5,13 +5,28 @@
  * ===================================================================
  */
 
-// Global State
+// Global State: Collections & Categories
+let COLLECTIONS = [];
+let ACTIVE_COL_SEARCH = '';
+let EDITING_COLLECTION_ID = null;
+let DELETING_COL_ID = null;
+let broadcastColChannel = null;
+
+// Global State: Products / Creations
 let PRODUCTS = [];
 let ACTIVE_CATEGORY = 'all';
 let SEARCH_QUERY = '';
 let SORT_BY = 'default';
 let EDITING_PRODUCT_ID = null;
 let broadcastSyncChannel = null;
+
+// Global State: Instagram Portfolio
+let PORTFOLIO = [];
+let ACTIVE_PORT_CATEGORY = 'all';
+let PORT_SEARCH_QUERY = '';
+let EDITING_PORT_ID = null;
+let DELETING_PORT_ID = null;
+let broadcastPortChannel = null;
 
 // Global State: Studio Achievements
 let ACHIEVEMENTS = [];
@@ -22,6 +37,152 @@ let EDITING_ACHIEVE_ID = null;
 let DELETING_ACHIEVE_ID = null;
 let CURRENT_ACTIVE_TAB = 'products';
 let broadcastAchieveChannel = null;
+
+// Default bundled collections fallback - matching authentic collections.json
+const DEFAULT_FALLBACK_COLLECTIONS = [
+  {
+    "id": "money-garlands",
+    "title": "Money Garlands",
+    "subtitle": "Auspicious & Ceremonial",
+    "description": "Intricately pleated currency garlands woven with velvet roses, gold zari lace, and lustrous pearls for weddings and milestone celebrations.",
+    "image": "assets/images/money_garland.jpg",
+    "itemCount": "Custom Denominations Available",
+    "displayOrder": 1
+  },
+  {
+    "id": "bouquets",
+    "title": "Artisanal Bouquets",
+    "subtitle": "Fresh & Preserved Florals",
+    "description": "Hand-tied floral poetry combining deep wine roses, blush ranunculus, and cascading velvet ribbons tailored for proposals and weddings.",
+    "image": "assets/images/editorial_bouquet.jpg",
+    "itemCount": "Bespoke Floral Styling",
+    "displayOrder": 2
+  },
+  {
+    "id": "customized-hampers",
+    "title": "Customized Hampers",
+    "subtitle": "Curated Luxury Boxes",
+    "description": "Opulent presentation hampers in velvet and gold detailing, featuring handpicked gourmet delights, artisanal candles, and dried botanicals.",
+    "image": "assets/images/luxury_hamper.jpg",
+    "itemCount": "Personalized Selection",
+    "displayOrder": 3
+  },
+  {
+    "id": "wedding-gifting",
+    "title": "Wedding & Celebration Gifting",
+    "subtitle": "Trousseau & Royal Packaging",
+    "description": "Majestic bridal trays, trousseau packing, and ceremonial gifts that honor timeless Indian wedding traditions with modern elegance.",
+    "image": "assets/images/wedding_trousseau.jpg",
+    "itemCount": "Bridal & Family Trays",
+    "displayOrder": 4
+  },
+  {
+    "id": "customized-gifts",
+    "title": "Customized Gifts",
+    "subtitle": "Personalized Keepsakes",
+    "description": "Handcrafted wooden keepsake boxes, calligraphy wax-sealed tokens, and celebratory favors customized with personal names and initials.",
+    "image": "assets/images/customized_gifts.jpg",
+    "itemCount": "Made-to-Order",
+    "displayOrder": 5
+  },
+  {
+    "id": "luxury-addons",
+    "title": "Luxury Add-ons",
+    "subtitle": "Cloches, Accents & Keepsakes",
+    "description": "Everlasting botanical domes, scented wax medallions, calligraphy keepsakes, and bespoke ceremonial accents.",
+    "image": "assets/images/floral_dome.jpg",
+    "itemCount": "Artisanal Accents",
+    "displayOrder": 6
+  }
+];
+
+// Default bundled portfolio fallback - matching authentic portfolio.json
+const DEFAULT_FALLBACK_PORTFOLIO = [
+  {
+    "id": "port-sovereign-garland",
+    "title": "The Royal Sovereign Money Garland",
+    "category": "Money Garlands",
+    "image": "assets/images/money_garland.jpg",
+    "linkUrl": "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
+    "caption": "Handcrafted currency garland with rich burgundy roses and zari brocade for grand Maharashtrian wedding entry.",
+    "tags": ["Money Garlands", "Wedding", "Groom Styling"],
+    "span": "col-span-2 row-span-2",
+    "featured": true,
+    "createdAt": 1738100000000
+  },
+  {
+    "id": "port-bridal-trousseau",
+    "title": "Raas Velvet Trousseau Suite",
+    "category": "Wedding & Celebration Gifting",
+    "image": "assets/images/wedding_trousseau.jpg",
+    "linkUrl": "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
+    "caption": "Opulent burgundy velvet ceremonial trays with antique zardozi borders and Kundan brooch pins.",
+    "tags": ["Trousseau", "Bridal", "Ceremonial"],
+    "span": "col-span-1 row-span-1",
+    "featured": true,
+    "createdAt": 1738050000000
+  },
+  {
+    "id": "port-rose-cloche",
+    "title": "Eternal Burgundy Rose Cloche",
+    "category": "Bouquets",
+    "image": "assets/images/floral_dome.jpg",
+    "linkUrl": "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
+    "caption": "Natural preserved deep wine rose under brass glass dome that lasts 3+ years.",
+    "tags": ["Preserved Florals", "Keepsake", "Anniversary"],
+    "span": "col-span-1 row-span-1",
+    "featured": true,
+    "createdAt": 1738000000000
+  },
+  {
+    "id": "port-luxe-hamper",
+    "title": "Velvet Reverie Celebration Hamper",
+    "category": "Customized Hampers",
+    "image": "assets/images/luxury_hamper.jpg",
+    "linkUrl": "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
+    "caption": "Rigid velvet trunk with brass canisters, scented wood-wick candle, and wax-sealed greeting.",
+    "tags": ["Hampers", "Festive", "Luxury Gifting"],
+    "span": "col-span-1 row-span-2",
+    "featured": true,
+    "createdAt": 1737950000000
+  },
+  {
+    "id": "port-wine-posy",
+    "title": "Wine & Blush Bridal Posy",
+    "category": "Bouquets",
+    "image": "assets/images/editorial_bouquet.jpg",
+    "linkUrl": "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
+    "caption": "Garden roses and ranunculus bound with trailing hand-dyed burgundy silk velvet ribbons.",
+    "tags": ["Bouquets", "Bridal", "Fresh Florals"],
+    "span": "col-span-1 row-span-1",
+    "featured": true,
+    "createdAt": 1737900000000
+  },
+  {
+    "id": "port-pastel-garland",
+    "title": "Pastel Pearl Ceremony Garland",
+    "category": "Money Garlands",
+    "image": "assets/images/pastel_garland.jpg",
+    "linkUrl": "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
+    "caption": "Soft blush and pearl draping for baby naming ceremonies and morning engagements.",
+    "tags": ["Money Garlands", "Baby Shower", "Pastel"],
+    "span": "col-span-1 row-span-1",
+    "featured": true,
+    "createdAt": 1737850000000
+  },
+  {
+    "id": "port-keepsake-box",
+    "title": "Hand-Carved Keepsake Letter Box",
+    "category": "Customized Gifts",
+    "image": "assets/images/customized_gifts.jpg",
+    "linkUrl": "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==",
+    "caption": "Seasoned wood filigree casket with deckle-edge calligraphy love note and wax seal.",
+    "tags": ["Customized Gifts", "Personalized", "Keepsake"],
+    "span": "col-span-1 row-span-1",
+    "featured": true,
+    "createdAt": 1737800000000
+  }
+];
 
 // Default bundled achievements fallback - strictly authentic milestones
 const DEFAULT_FALLBACK_ACHIEVEMENTS = [
@@ -340,17 +501,53 @@ const OCCASION_PRESETS = [
    Initialization
    =================================================================== */
 document.addEventListener('DOMContentLoaded', async () => {
-  initSyncChannel();
-  initTabNavigation();
-  initStorageGuideModal();
-  initAchievementsAdmin();
-  await loadProducts();
-  await loadAchievements();
-  setupEventListeners();
-  renderCategoryFilters();
-  renderProducts();
-  updateStats();
-  updateAchievementStats();
+  window.addEventListener('error', (e) => {
+    console.error('[Admin Unhandled Error]', e.message, e.filename, e.lineno);
+    const countEl = document.getElementById('filtered-count');
+    if (countEl) countEl.innerHTML = `<span style="color:red;">Error: ${e.message} (L${e.lineno})</span>`;
+  });
+
+  try {
+    initSyncChannel();
+    initTabNavigation();
+    initStorageGuideModal();
+    initR2Settings();
+    initMediaUploads();
+    initCollectionsAdmin();
+    initPortfolioAdmin();
+    initAchievementsAdmin();
+    initCloudSeedModal();
+    initBackupRestore();
+    setupEventListeners();
+
+    // Initial instant render from bundled/local defaults so UI is never stuck on "Loading..."
+    if (!PRODUCTS || PRODUCTS.length === 0) PRODUCTS = [...DEFAULT_FALLBACK_PRODUCTS];
+    if (!COLLECTIONS || COLLECTIONS.length === 0) COLLECTIONS = [...DEFAULT_FALLBACK_COLLECTIONS];
+    if (!PORTFOLIO || PORTFOLIO.length === 0) PORTFOLIO = [...DEFAULT_FALLBACK_PORTFOLIO];
+    if (!ACHIEVEMENTS || ACHIEVEMENTS.length === 0) ACHIEVEMENTS = [...DEFAULT_FALLBACK_ACHIEVEMENTS];
+
+    updateCategoryDropdowns();
+    renderCategoryFilters();
+    renderProducts();
+    renderAdminCollections();
+    renderAdminPortfolio();
+    renderAdminAchievements();
+    updateStats();
+    updateAchievementStats();
+    updateCollectionStats();
+    updatePortfolioStats();
+    updateCloudCounters();
+
+    // Now asynchronously load from cloud / JSON without blocking initial render
+    loadCollections().catch(err => console.warn('Collections async load notice:', err));
+    loadProducts().catch(err => console.warn('Products async load notice:', err));
+    loadPortfolio().catch(err => console.warn('Portfolio async load notice:', err));
+    loadAchievements().catch(err => console.warn('Achievements async load notice:', err));
+  } catch (err) {
+    console.error('[Admin Init Failure]', err);
+    const countEl = document.getElementById('filtered-count');
+    if (countEl) countEl.textContent = 'Init error: ' + err.message;
+  }
 });
 
 /**
@@ -359,18 +556,31 @@ document.addEventListener('DOMContentLoaded', async () => {
 function initSyncChannel() {
   if ('BroadcastChannel' in window) {
     try {
+      broadcastColChannel = new BroadcastChannel('bloom_collections_sync');
+      broadcastColChannel.onmessage = (event) => {
+        if (event.data && event.data.type === 'COLLECTIONS_UPDATED') {
+          loadCollectionsFromLocalStorage(false);
+          updateCategoryDropdowns();
+        }
+      };
+
       broadcastSyncChannel = new BroadcastChannel('bloom_product_sync');
       broadcastSyncChannel.onmessage = (event) => {
         if (event.data && event.data.type === 'PRODUCTS_UPDATED') {
-          console.log('[Admin] Received product sync update from another window');
           loadFromLocalStorage(false);
+        }
+      };
+
+      broadcastPortChannel = new BroadcastChannel('bloom_portfolio_sync');
+      broadcastPortChannel.onmessage = (event) => {
+        if (event.data && event.data.type === 'PORTFOLIO_UPDATED') {
+          loadPortfolioFromLocalStorage(false);
         }
       };
 
       broadcastAchieveChannel = new BroadcastChannel('bloom_achievements_sync');
       broadcastAchieveChannel.onmessage = (event) => {
         if (event.data && event.data.type === 'ACHIEVEMENTS_UPDATED') {
-          console.log('[Admin] Received achievement sync update from another window');
           loadAchievementsFromLocalStorage(false);
         }
       };
@@ -410,7 +620,7 @@ async function loadProducts() {
 
   // 2. Fetch products.json
   try {
-    const res = await fetch('../products.json');
+    const res = await fetch('products.json');
     if (res.ok) {
       const data = await res.json();
       if (Array.isArray(data) && data.length > 0) {
@@ -421,7 +631,7 @@ async function loadProducts() {
       }
     }
   } catch (err) {
-    console.info('[Admin] Fetching ../products.json failed (likely local file protocol). Using bundled catalog.');
+    console.info('[Admin] Fetching products.json failed (likely local file protocol). Using bundled catalog.');
   }
 
   // 3. Fallback to bundled
@@ -632,7 +842,7 @@ function setupImageTabs() {
     assetSelect.addEventListener('change', () => {
       if (assetSelect.value) {
         const fullRel = assetSelect.value.startsWith('assets/') ? assetSelect.value : assetSelect.value;
-        setImagePreview('../' + fullRel, assetSelect.options[assetSelect.selectedIndex].text);
+        setImagePreview(fullRel, assetSelect.options[assetSelect.selectedIndex].text);
         document.getElementById('prod-image-final').value = fullRel;
       }
     });
@@ -876,15 +1086,12 @@ function renderProducts() {
     const card = document.createElement('div');
     card.className = 'product-admin-card';
 
-    // Format image URL properly for display inside admin folder
+    // Format image URL properly for display
     let displayImg = p.image || 'assets/images/money_garland.jpg';
-    if (!displayImg.startsWith('http') && !displayImg.startsWith('data:') && !displayImg.startsWith('../')) {
-      displayImg = '../' + displayImg;
-    }
 
     card.innerHTML = `
       <div class="card-image-wrap">
-        <img src="${escapeHtml(displayImg)}" alt="${escapeHtml(p.name)}" onerror="this.src='../assets/images/money_garland.jpg'">
+        <img src="${escapeHtml(displayImg)}" alt="${escapeHtml(p.name)}" onerror="this.src='assets/images/money_garland.jpg'">
         ${p.badge ? `<span class="card-badge">${escapeHtml(p.badge)}</span>` : ''}
         <span class="card-category-tag">${escapeHtml(p.category || 'Boutique Creation')}</span>
       </div>
@@ -1034,7 +1241,7 @@ function openProductModal(productId = null) {
     // Image
     if (p.image) {
       document.getElementById('prod-image-final').value = p.image;
-      const previewSrc = (!p.image.startsWith('http') && !p.image.startsWith('data:') && !p.image.startsWith('../')) ? '../' + p.image : p.image;
+      const previewSrc = p.image;
       setImagePreview(previewSrc, p.name);
     }
 
@@ -1519,39 +1726,95 @@ function updateFirebaseBadge(connected, count = 0, errorMsg = '') {
 }
 
 /* ===================================================================
-   Tab Navigation (Creations vs Achievements)
+   Tab Navigation: 5 Boutique Studio Management Sections
    =================================================================== */
 function initTabNavigation() {
+  const tabCollections = document.getElementById('tab-nav-collections');
   const tabProducts = document.getElementById('tab-nav-products');
+  const tabPortfolio = document.getElementById('tab-nav-portfolio');
   const tabAchievements = document.getElementById('tab-nav-achievements');
+  const tabSettings = document.getElementById('tab-nav-settings');
+
+  const viewCollections = document.getElementById('view-collections');
   const viewProducts = document.getElementById('view-products');
+  const viewPortfolio = document.getElementById('view-portfolio');
   const viewAchievements = document.getElementById('view-achievements');
-  const btnAddProduct = document.getElementById('btn-add-product');
-  const btnAddAchievement = document.getElementById('btn-add-achievement');
+  const viewSettings = document.getElementById('view-settings');
+
+  const btnAddCol = document.getElementById('btn-add-collection');
+  const btnAddProd = document.getElementById('btn-add-product');
+  const btnAddPort = document.getElementById('btn-add-portfolio');
+  const btnAddAch = document.getElementById('btn-add-achievement');
 
   function switchTab(target) {
     CURRENT_ACTIVE_TAB = target;
-    if (target === 'products') {
+    const allTabs = [tabCollections, tabProducts, tabPortfolio, tabAchievements, tabSettings];
+    const allViews = [viewCollections, viewProducts, viewPortfolio, viewAchievements, viewSettings];
+    const allBtns = [btnAddCol, btnAddProd, btnAddPort, btnAddAch];
+
+    allTabs.forEach(t => t && t.classList.remove('active'));
+    allViews.forEach(v => v && (v.style.display = 'none'));
+    allBtns.forEach(b => b && (b.style.display = 'none'));
+
+    if (target === 'collections') {
+      if (tabCollections) tabCollections.classList.add('active');
+      if (viewCollections) viewCollections.style.display = 'block';
+      if (btnAddCol) btnAddCol.style.display = 'inline-flex';
+      renderAdminCollections();
+      updateCollectionStats();
+    } else if (target === 'products') {
       if (tabProducts) tabProducts.classList.add('active');
-      if (tabAchievements) tabAchievements.classList.remove('active');
       if (viewProducts) viewProducts.style.display = 'block';
-      if (viewAchievements) viewAchievements.style.display = 'none';
-      if (btnAddProduct) btnAddProduct.style.display = 'inline-flex';
-      if (btnAddAchievement) btnAddAchievement.style.display = 'none';
-    } else {
+      if (btnAddProd) btnAddProd.style.display = 'inline-flex';
+      renderCategoryFilters();
+      renderProducts();
+      updateStats();
+    } else if (target === 'portfolio') {
+      if (tabPortfolio) tabPortfolio.classList.add('active');
+      if (viewPortfolio) viewPortfolio.style.display = 'block';
+      if (btnAddPort) btnAddPort.style.display = 'inline-flex';
+      renderAdminPortfolio();
+      updatePortfolioStats();
+    } else if (target === 'achievements') {
       if (tabAchievements) tabAchievements.classList.add('active');
-      if (tabProducts) tabProducts.classList.remove('active');
       if (viewAchievements) viewAchievements.style.display = 'block';
-      if (viewProducts) viewProducts.style.display = 'none';
-      if (btnAddAchievement) btnAddAchievement.style.display = 'inline-flex';
-      if (btnAddProduct) btnAddProduct.style.display = 'none';
+      if (btnAddAch) btnAddAch.style.display = 'inline-flex';
       renderAdminAchievements();
       updateAchievementStats();
+    } else if (target === 'settings') {
+      if (tabSettings) tabSettings.classList.add('active');
+      if (viewSettings) viewSettings.style.display = 'block';
+      updateCloudCounters();
     }
   }
 
-  if (tabProducts) tabProducts.addEventListener('click', () => switchTab('products'));
-  if (tabAchievements) tabAchievements.addEventListener('click', () => switchTab('achievements'));
+  if (tabCollections) tabCollections.addEventListener('click', () => { switchTab('collections'); window.location.hash = 'collections'; });
+  if (tabProducts) tabProducts.addEventListener('click', () => { switchTab('products'); window.location.hash = 'products'; });
+  if (tabPortfolio) tabPortfolio.addEventListener('click', () => { switchTab('portfolio'); window.location.hash = 'portfolio'; });
+  if (tabAchievements) tabAchievements.addEventListener('click', () => { switchTab('achievements'); window.location.hash = 'achievements'; });
+  if (tabSettings) tabSettings.addEventListener('click', () => { switchTab('settings'); window.location.hash = 'settings'; });
+
+  const initialHash = window.location.hash.replace('#', '');
+  if (['collections', 'products', 'portfolio', 'achievements', 'settings'].includes(initialHash)) {
+    switchTab(initialHash);
+  }
+
+  window.addEventListener('hashchange', () => {
+    const h = window.location.hash.replace('#', '');
+    if (['collections', 'products', 'portfolio', 'achievements', 'settings'].includes(h)) {
+      switchTab(h);
+    }
+  });
+
+  // Inline add buttons in toolbar
+  const btnColInline = document.getElementById('btn-col-add-inline');
+  if (btnColInline) btnColInline.addEventListener('click', () => openCollectionModal(null));
+
+  const btnPortInline = document.getElementById('btn-port-add-inline');
+  if (btnPortInline) btnPortInline.addEventListener('click', () => openPortfolioModal(null));
+
+  if (btnAddCol) btnAddCol.addEventListener('click', () => openCollectionModal(null));
+  if (btnAddPort) btnAddPort.addEventListener('click', () => openPortfolioModal(null));
 }
 
 /* ===================================================================
@@ -1605,9 +1868,9 @@ async function loadAchievements() {
     }
   }
 
-  // 3. Fetch ../achievements.json
+  // 3. Fetch achievements.json
   try {
-    const res = await fetch('../achievements.json');
+    const res = await fetch('achievements.json');
     if (res.ok) {
       const data = await res.json();
       if (Array.isArray(data) && data.length > 0) {
@@ -1793,7 +2056,7 @@ function renderAdminAchievements() {
     return `
       <div class="achieve-card-admin" data-id="${item.id}">
         <div class="achieve-card-media">
-          <img src="${escapeHtml(thumb)}" alt="${escapeHtml(item.title)}" loading="lazy" onerror="this.src='../assets/images/hero.jpg'">
+          <img src="${escapeHtml(thumb)}" alt="${escapeHtml(item.title)}" loading="lazy" onerror="this.src='assets/images/hero.jpg'">
           
           <div class="achieve-card-badges">
             <span class="achieve-card-badge">${typeLabel}</span>
@@ -1964,14 +2227,14 @@ function setupAchievementEventListeners() {
   const photoAssetSelect = document.getElementById('achieve-photo-asset-select');
   if (photoAssetSelect) {
     const assets = [
-      { name: 'Money Garland Ceremonial', url: '../assets/images/money_garland.jpg' },
-      { name: 'Editorial Bridal Bouquet', url: '../assets/images/editorial_bouquet.jpg' },
-      { name: 'Luxury Celebration Hamper', url: '../assets/images/luxury_hamper.jpg' },
-      { name: 'Wedding Trousseau Platter', url: '../assets/images/wedding_trousseau.jpg' },
-      { name: 'Preserved Floral Cloche', url: '../assets/images/floral_dome.jpg' },
-      { name: 'Customized Keepsake Gifts', url: '../assets/images/customized_gifts.jpg' },
-      { name: 'Pastel Pearl Garland', url: '../assets/images/pastel_garland.jpg' },
-      { name: 'Studio Showcase Hero', url: '../assets/images/hero.jpg' }
+      { name: 'Money Garland Ceremonial', url: 'assets/images/money_garland.jpg' },
+      { name: 'Editorial Bridal Bouquet', url: 'assets/images/editorial_bouquet.jpg' },
+      { name: 'Luxury Celebration Hamper', url: 'assets/images/luxury_hamper.jpg' },
+      { name: 'Wedding Trousseau Platter', url: 'assets/images/wedding_trousseau.jpg' },
+      { name: 'Preserved Floral Cloche', url: 'assets/images/floral_dome.jpg' },
+      { name: 'Customized Keepsake Gifts', url: 'assets/images/customized_gifts.jpg' },
+      { name: 'Pastel Pearl Garland', url: 'assets/images/pastel_garland.jpg' },
+      { name: 'Studio Showcase Hero', url: 'assets/images/hero.jpg' }
     ];
     photoAssetSelect.innerHTML = assets.map(a => `<option value="${a.url}">${a.name}</option>`).join('');
     photoAssetSelect.addEventListener('change', updateAchieveLivePreview);
@@ -2334,5 +2597,1069 @@ function executeDeleteAchievement() {
   closeAllModals();
   showToast('Achievement removed from showcase.', 'info');
   DELETING_ACHIEVE_ID = null;
+}
+
+/* ===================================================================
+   Collections & Categories Management (Panel 01)
+   =================================================================== */
+function initCollectionsAdmin() {
+  const colSearch = document.getElementById('col-search-input');
+  if (colSearch) {
+    colSearch.value = '';
+    colSearch.addEventListener('input', (e) => {
+      ACTIVE_COL_SEARCH = e.target.value.toLowerCase().trim();
+      renderAdminCollections();
+    });
+  }
+
+  const colForm = document.getElementById('collection-form');
+  if (colForm) {
+    colForm.addEventListener('submit', handleCollectionFormSubmit);
+  }
+
+  const titleInput = document.getElementById('col-title-input');
+  const idInput = document.getElementById('col-id-input');
+  if (titleInput && idInput) {
+    titleInput.addEventListener('input', () => {
+      if (!EDITING_COLLECTION_ID) {
+        idInput.value = titleInput.value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      }
+    });
+  }
+
+  const confirmDelColBtn = document.getElementById('btn-confirm-delete-col');
+  if (confirmDelColBtn) {
+    confirmDelColBtn.addEventListener('click', confirmDeleteCollection);
+  }
+
+  // Populate bundled asset select for collections
+  const colAssetSelect = document.getElementById('col-asset-select');
+  if (colAssetSelect) {
+    colAssetSelect.innerHTML = [
+      '<option value="">-- Choose from Studio Photography --</option>',
+      ...BUNDLED_ASSETS.map(a => `<option value="${a.path}">${a.name} (${a.path})</option>`)
+    ].join('');
+    colAssetSelect.addEventListener('change', (e) => {
+      if (e.target.value) {
+        setColImagePreview(e.target.value, e.target.options[e.target.selectedIndex].text);
+      }
+    });
+  }
+
+  // Collection modal image source tabs
+  document.querySelectorAll('#collection-modal .image-source-tabs .tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#collection-modal .image-source-tabs .tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const tab = btn.dataset.tab;
+      document.getElementById('panel-col-img-upload').style.display = tab === 'col-img-upload' ? 'block' : 'none';
+      document.getElementById('panel-col-img-asset').style.display = tab === 'col-img-asset' ? 'block' : 'none';
+      document.getElementById('panel-col-img-url').style.display = tab === 'col-img-url' ? 'block' : 'none';
+    });
+  });
+
+  const colUrlInput = document.getElementById('col-image-url');
+  if (colUrlInput) {
+    colUrlInput.addEventListener('input', (e) => {
+      if (e.target.value.trim()) {
+        setColImagePreview(e.target.value.trim(), 'Web Photo URL');
+      }
+    });
+  }
+}
+
+function setColImagePreview(url, label = 'Image Selected') {
+  const container = document.getElementById('col-image-preview-container');
+  const thumb = document.getElementById('col-img-preview-thumb');
+  const labelEl = document.getElementById('col-img-preview-label');
+  const finalInput = document.getElementById('col-image-final');
+  if (container && thumb && finalInput) {
+    finalInput.value = url;
+    thumb.src = url;
+    if (labelEl) labelEl.textContent = label;
+    container.style.display = 'flex';
+  }
+}
+
+async function loadCollections() {
+  startFirestoreCollectionsSync();
+
+  const localData = localStorage.getItem('bloom_custom_collections');
+  if (localData) {
+    try {
+      const parsed = JSON.parse(localData);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        COLLECTIONS = parsed;
+        renderAdminCollections();
+        updateCollectionStats();
+        return;
+      }
+    } catch (e) {
+      localStorage.removeItem('bloom_custom_collections');
+    }
+  }
+
+  try {
+    const res = await fetch('collections.json');
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0) {
+        COLLECTIONS = data;
+        saveCollections(false);
+        renderAdminCollections();
+        updateCollectionStats();
+        return;
+      }
+    }
+  } catch (e) {}
+
+  COLLECTIONS = [...DEFAULT_FALLBACK_COLLECTIONS];
+  saveCollections(false);
+  renderAdminCollections();
+  updateCollectionStats();
+}
+
+function startFirestoreCollectionsSync() {
+  if (typeof firestoreDb === 'undefined' || !firestoreDb) return;
+  try {
+    firestoreDb.collection('collections').onSnapshot((snapshot) => {
+      if (!snapshot.empty) {
+        const cloudCols = [];
+        snapshot.forEach(doc => cloudCols.push(doc.data()));
+        if (cloudCols.length > 0) {
+          cloudCols.sort((a, b) => (a.displayOrder || 99) - (b.displayOrder || 99));
+          COLLECTIONS = cloudCols;
+          localStorage.setItem('bloom_custom_collections', JSON.stringify(COLLECTIONS));
+          renderAdminCollections();
+          updateCollectionStats();
+          updateCategoryDropdowns();
+          updateCloudCounters();
+        }
+      } else {
+        const batch = firestoreDb.batch();
+        DEFAULT_FALLBACK_COLLECTIONS.forEach(col => {
+          batch.set(firestoreDb.collection('collections').doc(col.id), col);
+        });
+        batch.commit().catch(() => {});
+      }
+    });
+  } catch (e) {}
+}
+
+function saveCollections(notify = true) {
+  try {
+    localStorage.setItem('bloom_custom_collections', JSON.stringify(COLLECTIONS));
+    if (notify) {
+      if (broadcastColChannel) {
+        broadcastColChannel.postMessage({ type: 'COLLECTIONS_UPDATED', collections: COLLECTIONS });
+      }
+      window.dispatchEvent(new Event('storage'));
+    }
+    updateCollectionStats();
+    updateCloudCounters();
+  } catch (e) {}
+}
+
+function loadCollectionsFromLocalStorage(render = true) {
+  const localData = localStorage.getItem('bloom_custom_collections');
+  if (localData) {
+    try {
+      COLLECTIONS = JSON.parse(localData);
+      if (render) {
+        renderAdminCollections();
+        updateCollectionStats();
+      }
+    } catch (e) {}
+  }
+}
+
+function renderAdminCollections() {
+  const container = document.getElementById('collections-admin-grid');
+  const countEl = document.getElementById('col-filtered-count');
+  if (!container) return;
+
+  let filtered = COLLECTIONS.filter(c => {
+    if (!ACTIVE_COL_SEARCH) return true;
+    const q = ACTIVE_COL_SEARCH;
+    return (c.title && c.title.toLowerCase().includes(q)) ||
+           (c.subtitle && c.subtitle.toLowerCase().includes(q)) ||
+           (c.description && c.description.toLowerCase().includes(q));
+  });
+
+  if (countEl) {
+    countEl.textContent = `Showing ${filtered.length} of ${COLLECTIONS.length} collections`;
+  }
+
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state" style="grid-column: 1 / -1; padding: 3rem 1.5rem; text-align: center; background: #FFF; border-radius: var(--radius-md); border: 1px dashed var(--border-subtle);">
+        <p style="font-size: 1.1rem; font-weight: 600; color: var(--burgundy-900);">No collections found</p>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.35rem;">Try adjusting your search query or create a new collection category.</p>
+        <button type="button" class="btn btn-primary" onclick="openCollectionModal(null)" style="margin-top: 1rem;">+ Add First Collection</button>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = filtered.map(col => {
+    const linkedProductsCount = PRODUCTS.filter(p => p.collectionId === col.id || p.category === col.title).length;
+    return `
+      <article class="collection-card-admin" data-id="${escapeHtml(col.id)}">
+        <div class="col-card-media-admin">
+          <img src="${escapeHtml(col.image || 'assets/images/money_garland.jpg')}" alt="${escapeHtml(col.title)}" loading="lazy">
+          <span class="col-card-order-badge">#${col.displayOrder || 1} Order</span>
+          <span class="col-card-count-badge">${linkedProductsCount} Creations</span>
+        </div>
+        <div class="col-card-body-admin">
+          <span class="col-card-subtitle-admin">${escapeHtml(col.subtitle || 'Signature Line')}</span>
+          <h3 class="col-card-title-admin">${escapeHtml(col.title)}</h3>
+          <p class="col-card-desc-admin">${escapeHtml(col.description || '')}</p>
+          <div class="col-card-footer-admin">
+            <span style="font-size: 0.74rem; color: var(--text-muted);">${escapeHtml(col.itemCount || 'Customizable')}</span>
+            <div style="display: flex; gap: 0.4rem;">
+              <button type="button" class="btn btn-sm btn-outline-gold" onclick="openCollectionModal('${escapeHtml(col.id)}')">Edit</button>
+              <button type="button" class="btn btn-sm btn-secondary" onclick="promptDeleteCollection('${escapeHtml(col.id)}')" style="color: var(--danger);">Delete</button>
+            </div>
+          </div>
+        </div>
+      </article>
+    `;
+  }).join('');
+}
+
+function openCollectionModal(colId = null) {
+  EDITING_COLLECTION_ID = colId;
+  const modal = document.getElementById('collection-modal');
+  const titleEl = document.getElementById('modal-col-title');
+  if (!modal) return;
+
+  if (colId) {
+    const col = COLLECTIONS.find(c => c.id === colId);
+    if (!col) return;
+    if (titleEl) titleEl.textContent = `Edit Collection: ${col.title}`;
+    document.getElementById('col-id-input').value = col.id;
+    document.getElementById('col-id-input').readOnly = true;
+    document.getElementById('col-title-input').value = col.title || '';
+    document.getElementById('col-subtitle-input').value = col.subtitle || '';
+    document.getElementById('col-desc-input').value = col.description || '';
+    document.getElementById('col-count-input').value = col.itemCount || '';
+    document.getElementById('col-order-input').value = col.displayOrder || 1;
+    setColImagePreview(col.image || '', col.title);
+  } else {
+    if (titleEl) titleEl.textContent = 'Add New Boutique Collection';
+    document.getElementById('col-id-input').value = '';
+    document.getElementById('col-id-input').readOnly = false;
+    document.getElementById('col-title-input').value = '';
+    document.getElementById('col-subtitle-input').value = '';
+    document.getElementById('col-desc-input').value = '';
+    document.getElementById('col-count-input').value = 'Custom Denominations Available';
+    document.getElementById('col-order-input').value = (COLLECTIONS.length + 1);
+    document.getElementById('col-image-final').value = '';
+    const previewContainer = document.getElementById('col-image-preview-container');
+    if (previewContainer) previewContainer.style.display = 'none';
+  }
+
+  modal.classList.add('active');
+}
+
+function handleCollectionFormSubmit(e) {
+  e.preventDefault();
+  const id = document.getElementById('col-id-input').value.trim();
+  const title = document.getElementById('col-title-input').value.trim();
+  const subtitle = document.getElementById('col-subtitle-input').value.trim();
+  const description = document.getElementById('col-desc-input').value.trim();
+  const itemCount = document.getElementById('col-count-input').value.trim();
+  const displayOrder = parseInt(document.getElementById('col-order-input').value, 10) || 1;
+  const image = document.getElementById('col-image-final').value.trim() || 'assets/images/money_garland.jpg';
+
+  if (!id || !title) {
+    showToast('Collection ID and Title are required.', 'error');
+    return;
+  }
+
+  const colObj = {
+    id,
+    title,
+    subtitle,
+    description,
+    itemCount,
+    displayOrder,
+    image,
+    updatedAt: Date.now()
+  };
+
+  const existingIdx = COLLECTIONS.findIndex(c => c.id === id);
+  if (existingIdx >= 0) {
+    COLLECTIONS[existingIdx] = { ...COLLECTIONS[existingIdx], ...colObj };
+    showToast(`Collection "${title}" updated successfully!`, 'success');
+  } else {
+    COLLECTIONS.push(colObj);
+    showToast(`Collection "${title}" added to boutique catalog!`, 'success');
+  }
+
+  COLLECTIONS.sort((a, b) => (a.displayOrder || 99) - (b.displayOrder || 99));
+  saveCollections(true);
+
+  if (typeof firestoreDb !== 'undefined' && firestoreDb) {
+    firestoreDb.collection('collections').doc(colObj.id).set(colObj)
+      .then(() => console.log('[Firebase] Collection synced live:', colObj.id))
+      .catch(err => console.warn('[Firebase] Firestore collection error:', err));
+  }
+
+  updateCategoryDropdowns();
+  renderAdminCollections();
+  updateCollectionStats();
+  closeAllModals();
+}
+
+function promptDeleteCollection(colId) {
+  DELETING_COL_ID = colId;
+  const col = COLLECTIONS.find(c => c.id === colId);
+  const nameEl = document.getElementById('delete-collection-name');
+  const modal = document.getElementById('delete-collection-modal');
+  if (nameEl) nameEl.textContent = col ? `"${col.title}"` : 'this collection';
+  if (modal) modal.classList.add('active');
+}
+
+function confirmDeleteCollection() {
+  if (!DELETING_COL_ID) return;
+  const id = DELETING_COL_ID;
+  COLLECTIONS = COLLECTIONS.filter(c => c.id !== id);
+  saveCollections(true);
+
+  if (typeof firestoreDb !== 'undefined' && firestoreDb) {
+    firestoreDb.collection('collections').doc(id).delete()
+      .then(() => console.log('[Firebase] Collection deleted from Cloud:', id))
+      .catch(e => console.warn(e));
+  }
+
+  updateCategoryDropdowns();
+  renderAdminCollections();
+  updateCollectionStats();
+  closeAllModals();
+  showToast('Collection removed from catalog.', 'info');
+  DELETING_COL_ID = null;
+}
+
+function updateCollectionStats() {
+  const statTotal = document.getElementById('stat-col-total');
+  const statProducts = document.getElementById('stat-col-products');
+  const statColSort = document.getElementById('stat-total-collections');
+  const badgeCol = document.getElementById('tab-badge-collections');
+
+  if (statTotal) statTotal.textContent = COLLECTIONS.length;
+  if (statColSort) statColSort.textContent = COLLECTIONS.length;
+  if (badgeCol) badgeCol.textContent = COLLECTIONS.length;
+  if (statProducts) statProducts.textContent = PRODUCTS.length;
+}
+
+/**
+ * Dynamic Category Synchronization
+ * Inherits all categories directly from COLLECTIONS and populates creation & portfolio forms
+ */
+function updateCategoryDropdowns() {
+  // 1. Product Category Select in Product Modal
+  const prodCatSelect = document.getElementById('prod-category-select');
+  if (prodCatSelect) {
+    prodCatSelect.innerHTML = [
+      ...COLLECTIONS.map(c => `<option value="${escapeHtml(c.id)}" data-name="${escapeHtml(c.title)}">${escapeHtml(c.title)}</option>`),
+      `<option value="__custom__">+ Custom Category...</option>`
+    ].join('');
+  }
+
+  // 2. Creation Filter Chips in Products View
+  const filterChips = document.getElementById('category-filter-chips');
+  if (filterChips) {
+    const chipsHtml = [
+      `<button type="button" class="filter-chip ${ACTIVE_CATEGORY === 'all' ? 'active' : ''}" data-category="all">All Offerings (${PRODUCTS.length})</button>`,
+      ...COLLECTIONS.map(c => {
+        const count = PRODUCTS.filter(p => p.collectionId === c.id || p.category === c.title).length;
+        return `<button type="button" class="filter-chip ${ACTIVE_CATEGORY === c.id ? 'active' : ''}" data-category="${escapeHtml(c.id)}">${escapeHtml(c.title)} (${count})</button>`;
+      })
+    ].join('');
+    filterChips.innerHTML = chipsHtml;
+
+    filterChips.querySelectorAll('.filter-chip').forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterChips.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        ACTIVE_CATEGORY = btn.dataset.category;
+        renderProducts();
+      });
+    });
+  }
+
+  // 3. Portfolio Category Select in Portfolio Modal
+  const portCatSelect = document.getElementById('port-category-select');
+  if (portCatSelect) {
+    portCatSelect.innerHTML = COLLECTIONS.map(c => `
+      <option value="${escapeHtml(c.title)}">${escapeHtml(c.title)}</option>
+    `).join('');
+  }
+}
+
+/* ===================================================================
+   Instagram Portfolio & Journal Management (Panel 03)
+   =================================================================== */
+function initPortfolioAdmin() {
+  const portSearch = document.getElementById('port-search-input');
+  if (portSearch) {
+    portSearch.value = '';
+    portSearch.addEventListener('input', (e) => {
+      PORT_SEARCH_QUERY = e.target.value.toLowerCase().trim();
+      renderAdminPortfolio();
+    });
+  }
+
+  const portForm = document.getElementById('portfolio-form');
+  if (portForm) {
+    portForm.addEventListener('submit', handlePortfolioFormSubmit);
+  }
+
+  const titleInput = document.getElementById('port-title-input');
+  const idInput = document.getElementById('port-id-input');
+  if (titleInput && idInput) {
+    titleInput.addEventListener('input', () => {
+      if (!EDITING_PORT_ID) {
+        idInput.value = 'port-' + titleInput.value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      }
+    });
+  }
+
+  const confirmDelPortBtn = document.getElementById('btn-confirm-delete-port');
+  if (confirmDelPortBtn) {
+    confirmDelPortBtn.addEventListener('click', confirmDeletePortfolio);
+  }
+
+  // Asset select for portfolio
+  const portAssetSelect = document.getElementById('port-asset-select');
+  if (portAssetSelect) {
+    portAssetSelect.innerHTML = [
+      '<option value="">-- Choose from Studio Photography --</option>',
+      ...BUNDLED_ASSETS.map(a => `<option value="${a.path}">${a.name} (${a.path})</option>`)
+    ].join('');
+    portAssetSelect.addEventListener('change', (e) => {
+      if (e.target.value) {
+        setPortImagePreview(e.target.value, e.target.options[e.target.selectedIndex].text);
+      }
+    });
+  }
+
+  // Portfolio modal image source tabs
+  document.querySelectorAll('#portfolio-modal .image-source-tabs .tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#portfolio-modal .image-source-tabs .tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const tab = btn.dataset.tab;
+      document.getElementById('panel-port-img-upload').style.display = tab === 'port-img-upload' ? 'block' : 'none';
+      document.getElementById('panel-port-img-asset').style.display = tab === 'port-img-asset' ? 'block' : 'none';
+      document.getElementById('panel-port-img-url').style.display = tab === 'port-img-url' ? 'block' : 'none';
+    });
+  });
+
+  const portUrlInput = document.getElementById('port-image-url');
+  if (portUrlInput) {
+    portUrlInput.addEventListener('input', (e) => {
+      if (e.target.value.trim()) {
+        setPortImagePreview(e.target.value.trim(), 'Web Photo URL');
+      }
+    });
+  }
+}
+
+function setPortImagePreview(url, label = 'Image Selected') {
+  const container = document.getElementById('port-image-preview-container');
+  const thumb = document.getElementById('port-img-preview-thumb');
+  const labelEl = document.getElementById('port-img-preview-label');
+  const finalInput = document.getElementById('port-image-final');
+  if (container && thumb && finalInput) {
+    finalInput.value = url;
+    thumb.src = url;
+    if (labelEl) labelEl.textContent = label;
+    container.style.display = 'flex';
+  }
+}
+
+async function loadPortfolio() {
+  startFirestorePortfolioSync();
+
+  const localData = localStorage.getItem('bloom_custom_portfolio');
+  if (localData) {
+    try {
+      const parsed = JSON.parse(localData);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        PORTFOLIO = parsed;
+        renderAdminPortfolio();
+        updatePortfolioStats();
+        return;
+      }
+    } catch (e) {
+      localStorage.removeItem('bloom_custom_portfolio');
+    }
+  }
+
+  try {
+    const res = await fetch('portfolio.json');
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0) {
+        PORTFOLIO = data;
+        savePortfolio(false);
+        renderAdminPortfolio();
+        updatePortfolioStats();
+        return;
+      }
+    }
+  } catch (e) {}
+
+  PORTFOLIO = [...DEFAULT_FALLBACK_PORTFOLIO];
+  savePortfolio(false);
+  renderAdminPortfolio();
+  updatePortfolioStats();
+}
+
+function startFirestorePortfolioSync() {
+  if (typeof firestoreDb === 'undefined' || !firestoreDb) return;
+  try {
+    firestoreDb.collection('portfolio').onSnapshot((snapshot) => {
+      if (!snapshot.empty) {
+        const cloudPort = [];
+        snapshot.forEach(doc => cloudPort.push(doc.data()));
+        if (cloudPort.length > 0) {
+          PORTFOLIO = cloudPort;
+          localStorage.setItem('bloom_custom_portfolio', JSON.stringify(PORTFOLIO));
+          renderAdminPortfolio();
+          updatePortfolioStats();
+          updateCloudCounters();
+        }
+      } else {
+        const batch = firestoreDb.batch();
+        DEFAULT_FALLBACK_PORTFOLIO.forEach(item => {
+          batch.set(firestoreDb.collection('portfolio').doc(item.id), item);
+        });
+        batch.commit().catch(() => {});
+      }
+    });
+  } catch (e) {}
+}
+
+function savePortfolio(notify = true) {
+  try {
+    localStorage.setItem('bloom_custom_portfolio', JSON.stringify(PORTFOLIO));
+    if (notify) {
+      if (broadcastPortChannel) {
+        broadcastPortChannel.postMessage({ type: 'PORTFOLIO_UPDATED', portfolio: PORTFOLIO });
+      }
+      window.dispatchEvent(new Event('storage'));
+    }
+    updatePortfolioStats();
+    updateCloudCounters();
+  } catch (e) {}
+}
+
+function loadPortfolioFromLocalStorage(render = true) {
+  const localData = localStorage.getItem('bloom_custom_portfolio');
+  if (localData) {
+    try {
+      PORTFOLIO = JSON.parse(localData);
+      if (render) {
+        renderAdminPortfolio();
+        updatePortfolioStats();
+      }
+    } catch (e) {}
+  }
+}
+
+function renderAdminPortfolio() {
+  const container = document.getElementById('portfolio-admin-grid');
+  const countEl = document.getElementById('port-filtered-count');
+  if (!container) return;
+
+  let filtered = PORTFOLIO.filter(item => {
+    if (!PORT_SEARCH_QUERY) return true;
+    const q = PORT_SEARCH_QUERY;
+    return (item.title && item.title.toLowerCase().includes(q)) ||
+           (item.category && item.category.toLowerCase().includes(q)) ||
+           (item.caption && item.caption.toLowerCase().includes(q));
+  });
+
+  if (countEl) {
+    countEl.textContent = `Showing ${filtered.length} of ${PORTFOLIO.length} portfolio stories`;
+  }
+
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state" style="grid-column: 1 / -1; padding: 3rem 1.5rem; text-align: center; background: #FFF; border-radius: var(--radius-md); border: 1px dashed var(--border-subtle);">
+        <p style="font-size: 1.1rem; font-weight: 600; color: var(--burgundy-900);">No portfolio stories found</p>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.35rem;">Add a new Instagram story showcase to display your artisanal creations.</p>
+        <button type="button" class="btn btn-primary" onclick="openPortfolioModal(null)" style="margin-top: 1rem;">+ Add Portfolio Story</button>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = filtered.map(item => `
+    <article class="portfolio-card-admin" data-id="${escapeHtml(item.id)}">
+      <div class="portfolio-card-media">
+        <img src="${escapeHtml(item.image || 'assets/images/money_garland.jpg')}" alt="${escapeHtml(item.title)}" loading="lazy">
+        <span class="achieve-card-date">${escapeHtml(item.category || 'Journal')}</span>
+      </div>
+      <div class="portfolio-card-body">
+        <span class="achieve-card-category">${(item.tags || []).join(' &bull; ') || 'Instagram Story'}</span>
+        <h3 class="achieve-card-title">${escapeHtml(item.title)}</h3>
+        <p class="achieve-card-desc">${escapeHtml(item.caption || '')}</p>
+        <div class="achieve-card-footer">
+          <a href="${escapeHtml(item.linkUrl || 'https://www.instagram.com/blushnbloomm.in')}" target="_blank" rel="noopener" class="btn btn-sm btn-outline-gold" style="padding: 0.3rem 0.6rem; font-size: 0.74rem;">
+            <span>Instagram &rarr;</span>
+          </a>
+          <div style="display: flex; gap: 0.4rem;">
+            <button type="button" class="btn btn-sm btn-outline-gold" onclick="openPortfolioModal('${escapeHtml(item.id)}')">Edit</button>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="promptDeletePortfolio('${escapeHtml(item.id)}')" style="color: var(--danger);">Delete</button>
+          </div>
+        </div>
+      </div>
+    </article>
+  `).join('');
+}
+
+function openPortfolioModal(storyId = null) {
+  EDITING_PORT_ID = storyId;
+  const modal = document.getElementById('portfolio-modal');
+  const titleEl = document.getElementById('modal-port-title');
+  if (!modal) return;
+
+  updateCategoryDropdowns();
+
+  if (storyId) {
+    const item = PORTFOLIO.find(p => p.id === storyId);
+    if (!item) return;
+    if (titleEl) titleEl.textContent = `Edit Story: ${item.title}`;
+    document.getElementById('port-id-input').value = item.id;
+    document.getElementById('port-id-input').readOnly = true;
+    document.getElementById('port-title-input').value = item.title || '';
+    document.getElementById('port-category-select').value = item.category || '';
+    document.getElementById('port-link-input').value = item.linkUrl || '';
+    document.getElementById('port-caption-input').value = item.caption || '';
+    document.getElementById('port-tags-input').value = (item.tags || []).join(', ');
+    document.getElementById('port-span-select').value = item.span || 'col-span-1 row-span-1';
+    setPortImagePreview(item.image || '', item.title);
+  } else {
+    if (titleEl) titleEl.textContent = 'Add Instagram Portfolio Story';
+    document.getElementById('port-id-input').value = '';
+    document.getElementById('port-id-input').readOnly = false;
+    document.getElementById('port-title-input').value = '';
+    document.getElementById('port-link-input').value = 'https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==';
+    document.getElementById('port-caption-input').value = '';
+    document.getElementById('port-tags-input').value = 'Money Garlands, Bridal, Pune';
+    document.getElementById('port-span-select').value = 'col-span-1 row-span-1';
+    document.getElementById('port-image-final').value = '';
+    const previewContainer = document.getElementById('port-image-preview-container');
+    if (previewContainer) previewContainer.style.display = 'none';
+  }
+
+  modal.classList.add('active');
+}
+
+function handlePortfolioFormSubmit(e) {
+  e.preventDefault();
+  const id = document.getElementById('port-id-input').value.trim();
+  const title = document.getElementById('port-title-input').value.trim();
+  const category = document.getElementById('port-category-select').value;
+  const linkUrl = document.getElementById('port-link-input').value.trim();
+  const caption = document.getElementById('port-caption-input').value.trim();
+  const tagsStr = document.getElementById('port-tags-input').value.trim();
+  const span = document.getElementById('port-span-select').value;
+  const image = document.getElementById('port-image-final').value.trim() || 'assets/images/money_garland.jpg';
+
+  const tags = tagsStr.split(',').map(t => t.trim()).filter(Boolean);
+
+  const portObj = {
+    id: id || ('port-' + Date.now()),
+    title,
+    category,
+    linkUrl,
+    caption,
+    tags,
+    span,
+    image,
+    featured: true,
+    createdAt: Date.now()
+  };
+
+  const existingIdx = PORTFOLIO.findIndex(p => p.id === portObj.id);
+  if (existingIdx >= 0) {
+    portObj.createdAt = PORTFOLIO[existingIdx].createdAt || Date.now();
+    PORTFOLIO[existingIdx] = portObj;
+    showToast(`Story "${title}" updated successfully!`, 'success');
+  } else {
+    PORTFOLIO.unshift(portObj);
+    showToast(`Story "${title}" added to portfolio!`, 'success');
+  }
+
+  savePortfolio(true);
+
+  if (typeof firestoreDb !== 'undefined' && firestoreDb) {
+    firestoreDb.collection('portfolio').doc(portObj.id).set(portObj)
+      .then(() => console.log('[Firebase] Portfolio story synced live:', portObj.id))
+      .catch(err => console.warn(err));
+  }
+
+  renderAdminPortfolio();
+  updatePortfolioStats();
+  closeAllModals();
+}
+
+function promptDeletePortfolio(storyId) {
+  DELETING_PORT_ID = storyId;
+  const item = PORTFOLIO.find(p => p.id === storyId);
+  const nameEl = document.getElementById('delete-portfolio-name');
+  const modal = document.getElementById('delete-portfolio-modal');
+  if (nameEl) nameEl.textContent = item ? `"${item.title}"` : 'this story';
+  if (modal) modal.classList.add('active');
+}
+
+function confirmDeletePortfolio() {
+  if (!DELETING_PORT_ID) return;
+  const id = DELETING_PORT_ID;
+  PORTFOLIO = PORTFOLIO.filter(p => p.id !== id);
+  savePortfolio(true);
+
+  if (typeof firestoreDb !== 'undefined' && firestoreDb) {
+    firestoreDb.collection('portfolio').doc(id).delete()
+      .then(() => console.log('[Firebase] Deleted portfolio story:', id))
+      .catch(e => console.warn(e));
+  }
+
+  renderAdminPortfolio();
+  updatePortfolioStats();
+  closeAllModals();
+  showToast('Story removed from portfolio.', 'info');
+  DELETING_PORT_ID = null;
+}
+
+function updatePortfolioStats() {
+  const statTotal = document.getElementById('stat-port-total');
+  const statFeatured = document.getElementById('stat-port-featured');
+  const badgePort = document.getElementById('tab-badge-portfolio');
+
+  if (statTotal) statTotal.textContent = PORTFOLIO.length;
+  if (statFeatured) statFeatured.textContent = PORTFOLIO.filter(p => p.featured).length;
+  if (badgePort) badgePort.textContent = PORTFOLIO.length;
+}
+
+/* ===================================================================
+   Cloudflare R2 Direct Upload & Configuration
+   =================================================================== */
+function initR2Settings() {
+  if (typeof R2Storage === 'undefined') return;
+  const config = (typeof R2Storage.loadConfig === 'function') 
+    ? R2Storage.loadConfig() 
+    : ((typeof R2Storage.getConfig === 'function') ? R2Storage.getConfig() : {});
+
+  const accountIdInput = document.getElementById('r2-account-id');
+  const accessKeyInput = document.getElementById('r2-access-key');
+  const secretKeyInput = document.getElementById('r2-secret-key');
+  const bucketNameInput = document.getElementById('r2-bucket-name');
+  const publicDomainInput = document.getElementById('r2-public-domain');
+  const workerUrlInput = document.getElementById('r2-worker-url');
+
+  if (accountIdInput) accountIdInput.value = config.accountId || '';
+  if (accessKeyInput) accessKeyInput.value = config.accessKeyId || '';
+  if (secretKeyInput) secretKeyInput.value = config.secretAccessKey || '';
+  if (bucketNameInput) bucketNameInput.value = config.bucketName || 'blushnbloomm-media';
+  if (publicDomainInput) publicDomainInput.value = config.publicDomain || '';
+  if (workerUrlInput) workerUrlInput.value = config.workerUrl || '';
+
+  const r2Form = document.getElementById('form-r2-settings');
+  if (r2Form) {
+    r2Form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      R2Storage.saveConfig({
+        accountId: accountIdInput.value.trim(),
+        accessKeyId: accessKeyInput.value.trim(),
+        secretAccessKey: secretKeyInput.value.trim(),
+        bucketName: bucketNameInput.value.trim() || 'blushnbloomm-media',
+        publicDomain: publicDomainInput.value.trim(),
+        workerUrl: workerUrlInput.value.trim()
+      });
+      showToast('Cloudflare R2 settings saved successfully!', 'success');
+      const badge = document.getElementById('r2-status-badge');
+      if (badge) {
+        badge.className = 'badge-status-pill badge-active';
+        badge.textContent = 'Configured';
+      }
+    });
+  }
+
+  const btnTest = document.getElementById('btn-test-r2-conn');
+  const testMsg = document.getElementById('r2-test-msg');
+  if (btnTest) {
+    btnTest.addEventListener('click', async () => {
+      if (testMsg) testMsg.innerHTML = '<span style="color: var(--burgundy-700);">Testing R2 connection probe...</span>';
+      btnTest.disabled = true;
+      try {
+        const res = await R2Storage.testConnection();
+        if (res.success) {
+          if (testMsg) testMsg.innerHTML = '<span style="color: #2E7D32;">✓ Connection Verified &amp; Probe Upload Succeeded!</span>';
+          showToast('Cloudflare R2 connection verified!', 'success');
+        } else {
+          if (testMsg) testMsg.innerHTML = `<span style="color: var(--danger);">✗ Test Failed: ${escapeHtml(res.error)}</span>`;
+          showToast('R2 Test failed: ' + res.error, 'error');
+        }
+      } catch (err) {
+        if (testMsg) testMsg.innerHTML = `<span style="color: var(--danger);">✗ Error: ${escapeHtml(err.message)}</span>`;
+      } finally {
+        btnTest.disabled = false;
+      }
+    });
+  }
+}
+
+/**
+ * Universal Media File Upload to Cloudflare R2 with In-Browser Auto-Compression
+ */
+function initMediaUploads() {
+  function bindUpload(fileInputId, progressBoxId, finalInputId, previewContainerId, previewThumbId, previewLabelId, folder) {
+    const fileInput = document.getElementById(fileInputId);
+    const progressBox = document.getElementById(progressBoxId);
+    const finalInput = document.getElementById(finalInputId);
+    const previewContainer = document.getElementById(previewContainerId);
+    const previewThumb = previewThumbId ? document.getElementById(previewThumbId) : null;
+    const previewLabel = previewLabelId ? document.getElementById(previewLabelId) : null;
+
+    if (!fileInput) return;
+
+    fileInput.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const fill = progressBox ? progressBox.querySelector('.upload-fill') : null;
+      const text = progressBox ? progressBox.querySelector('.upload-text') : null;
+
+      if (progressBox) progressBox.style.display = 'block';
+
+      try {
+        const uploadedUrl = await R2Storage.uploadFile(file, folder, (percent, statusText) => {
+          if (fill) fill.style.width = `${percent}%`;
+          if (text) text.textContent = `${statusText} (${percent}%)`;
+        });
+
+        if (finalInput) finalInput.value = uploadedUrl;
+        if (previewThumb) previewThumb.src = uploadedUrl;
+        if (previewLabel) previewLabel.textContent = `Uploaded: ${file.name} (WebP)`;
+        if (previewContainer) previewContainer.style.display = 'flex';
+
+        showToast(`Uploaded "${file.name}" to Cloudflare R2!`, 'success');
+        setTimeout(() => {
+          if (progressBox) progressBox.style.display = 'none';
+        }, 1500);
+      } catch (err) {
+        console.error('[Upload Error]', err);
+        showToast(`Upload failed: ${err.message}. Using local file preview.`, 'error');
+        if (progressBox) progressBox.style.display = 'none';
+      }
+    });
+  }
+
+  // 1. Collection photo
+  bindUpload('col-image-file', 'col-upload-progress', 'col-image-final', 'col-image-preview-container', 'col-img-preview-thumb', 'col-img-preview-label', 'collections');
+
+  // 2. Product creation photo
+  bindUpload('prod-image-file', 'prod-upload-progress', 'prod-image-final', 'prod-image-preview-container', 'prod-img-preview-thumb', 'prod-img-preview-label', 'creations');
+
+  // 3. Portfolio photo
+  bindUpload('port-image-file', 'port-upload-progress', 'port-image-final', 'port-image-preview-container', 'port-img-preview-thumb', 'port-img-preview-label', 'portfolio');
+}
+
+/* ===================================================================
+   One-Click Cloud Catalog Seed & Fake Data Purge
+   =================================================================== */
+function initCloudSeedModal() {
+  const openBtn = document.getElementById('btn-open-seed-catalog');
+  const modal = document.getElementById('seed-catalog-modal');
+  const confirmBtn = document.getElementById('btn-confirm-seed-catalog');
+
+  if (openBtn && modal) {
+    openBtn.addEventListener('click', () => {
+      document.getElementById('seed-progress-container').style.display = 'none';
+      modal.classList.add('active');
+    });
+  }
+
+  if (confirmBtn) {
+    confirmBtn.addEventListener('click', seedAuthenticCatalogToCloud);
+  }
+}
+
+async function seedAuthenticCatalogToCloud() {
+  const container = document.getElementById('seed-progress-container');
+  const fill = document.getElementById('seed-progress-fill');
+  const status = document.getElementById('seed-progress-status');
+  const confirmBtn = document.getElementById('btn-confirm-seed-catalog');
+  const cancelBtn = document.getElementById('btn-cancel-seed');
+
+  if (container) container.style.display = 'block';
+  if (confirmBtn) confirmBtn.disabled = true;
+  if (cancelBtn) cancelBtn.disabled = true;
+
+  function setStep(pct, msg) {
+    if (fill) fill.style.width = `${pct}%`;
+    if (status) status.textContent = msg;
+  }
+
+  try {
+    if (typeof firestoreDb === 'undefined' || !firestoreDb) {
+      throw new Error('Firebase Firestore is not initialized.');
+    }
+
+    setStep(10, 'Step 1/5: Synchronizing 6 Authentic Collections to Cloud...');
+    const colBatch = firestoreDb.batch();
+    DEFAULT_FALLBACK_COLLECTIONS.forEach(col => {
+      colBatch.set(firestoreDb.collection('collections').doc(col.id), col);
+    });
+    await colBatch.commit();
+    COLLECTIONS = [...DEFAULT_FALLBACK_COLLECTIONS];
+    saveCollections(false);
+
+    setStep(40, 'Step 2/5: Synchronizing 8 Authentic Boutique Creations...');
+    const prodBatch = firestoreDb.batch();
+    DEFAULT_FALLBACK_PRODUCTS.forEach(prod => {
+      prodBatch.set(firestoreDb.collection('products').doc(prod.id), prod);
+    });
+    await prodBatch.commit();
+    PRODUCTS = [...DEFAULT_FALLBACK_PRODUCTS];
+    saveProducts(false);
+
+    setStep(65, 'Step 3/5: Synchronizing 7 Instagram Portfolio Stories...');
+    const portBatch = firestoreDb.batch();
+    DEFAULT_FALLBACK_PORTFOLIO.forEach(item => {
+      portBatch.set(firestoreDb.collection('portfolio').doc(item.id), item);
+    });
+    await portBatch.commit();
+    PORTFOLIO = [...DEFAULT_FALLBACK_PORTFOLIO];
+    savePortfolio(false);
+
+    setStep(85, 'Step 4/5: Synchronizing Authentic Achievements & Purging Fake Data...');
+    const achBatch = firestoreDb.batch();
+    DEFAULT_FALLBACK_ACHIEVEMENTS.forEach(ach => {
+      achBatch.set(firestoreDb.collection('achievements').doc(ach.id), ach);
+    });
+    await achBatch.commit();
+    ACHIEVEMENTS = [...DEFAULT_FALLBACK_ACHIEVEMENTS];
+    saveAchievements(false);
+
+    // Purge fake achievement documents from Firestore
+    try {
+      const snap = await firestoreDb.collection('achievements').get();
+      snap.forEach(doc => {
+        if (isFakeAchievement(doc.data()) || FAKE_ACHIEVE_IDS.has(doc.id)) {
+          doc.ref.delete().catch(() => {});
+        }
+      });
+    } catch (e) {}
+
+    setStep(100, '✓ Complete! Authentic catalog is now live in Firestore for all users!');
+    showToast('Authentic Bloom&blush catalog successfully synchronized to Google Cloud!', 'success');
+
+    updateCategoryDropdowns();
+    renderAdminCollections();
+    renderProducts();
+    renderAdminPortfolio();
+    renderAdminAchievements();
+    updateCollectionStats();
+    updateStats();
+    updatePortfolioStats();
+    updateAchievementStats();
+    updateCloudCounters();
+
+    setTimeout(() => {
+      closeAllModals();
+      if (confirmBtn) confirmBtn.disabled = false;
+      if (cancelBtn) cancelBtn.disabled = false;
+    }, 1800);
+  } catch (err) {
+    console.error('Seed error:', err);
+    setStep(100, `✗ Error: ${err.message}`);
+    showToast('Seed failed: ' + err.message, 'error');
+    if (confirmBtn) confirmBtn.disabled = false;
+    if (cancelBtn) cancelBtn.disabled = false;
+  }
+}
+
+/* ===================================================================
+   Full Studio JSON Backup & Restore
+   =================================================================== */
+function initBackupRestore() {
+  const exportBtn = document.getElementById('btn-download-studio-backup');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', () => {
+      const fullBackup = {
+        meta: {
+          brand: 'Bloom&blush',
+          founder: 'Siddhi Kokate',
+          location: 'Pimpri-Chinchwad, Pune',
+          exportedAt: new Date().toISOString(),
+          version: '2.0.0'
+        },
+        collections: COLLECTIONS,
+        products: PRODUCTS,
+        portfolio: PORTFOLIO,
+        achievements: ACHIEVEMENTS
+      };
+
+      const blob = new Blob([JSON.stringify(fullBackup, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `bloom_and_blush_catalog_backup_${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Studio catalog backup downloaded!', 'success');
+    });
+  }
+
+  const importInput = document.getElementById('file-import-studio-json');
+  if (importInput) {
+    importInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        try {
+          const data = JSON.parse(evt.target.result);
+          if (data.collections) { COLLECTIONS = data.collections; saveCollections(true); }
+          if (data.products) { PRODUCTS = data.products; saveProducts(true); }
+          if (data.portfolio) { PORTFOLIO = data.portfolio; savePortfolio(true); }
+          if (data.achievements) { ACHIEVEMENTS = data.achievements; saveAchievements(true); }
+
+          updateCategoryDropdowns();
+          renderAdminCollections();
+          renderProducts();
+          renderAdminPortfolio();
+          renderAdminAchievements();
+          updateCloudCounters();
+          showToast('Studio catalog restored successfully from JSON file!', 'success');
+        } catch (err) {
+          showToast('Invalid backup JSON file: ' + err.message, 'error');
+        }
+      };
+      reader.readAsText(file);
+    });
+  }
+}
+
+function updateCloudCounters() {
+  const colCount = document.getElementById('db-count-collections');
+  const prodCount = document.getElementById('db-count-products');
+  const portCount = document.getElementById('db-count-portfolio');
+  const achCount = document.getElementById('db-count-achievements');
+
+  if (colCount) colCount.textContent = `${COLLECTIONS.length} Active Collections`;
+  if (prodCount) prodCount.textContent = `${PRODUCTS.length} Boutique Creations`;
+  if (portCount) portCount.textContent = `${PORTFOLIO.length} Journal Stories`;
+  if (achCount) achCount.textContent = `${ACHIEVEMENTS.length} Highlights & Reels`;
 }
 

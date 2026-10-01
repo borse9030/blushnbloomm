@@ -7,6 +7,9 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Restore cached local state before initial DOM paint to prevent flicker
+  restoreCachedData();
+
   // Initialize Core Application Components
   initBrandMeta();
   initHeroSlider();
@@ -30,8 +33,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollToning();
   initButtonPops();
 
-  // Load & Sync products and achievements dynamically
+  // Load & Sync collections, products, portfolio, and achievements dynamically
+  loadCollectionsData();
   loadProductsData();
+  loadPortfolioData();
   loadAchievementsData();
   setupSyncListeners();
 });
@@ -409,46 +414,20 @@ function renderAchievements(filter = 'all') {
   const container = document.getElementById('achievements-grid');
   if (!container) return;
 
-  // The 4 Milestones exactly matching Panel 07:
-  // 1. Featured in Local Media (Press & Features)
-  // 2. Ganesh Utsav Special (Milestone Event)
-  // 3. Wedding Season 2025 (Featured Collection)
-  // 4. Client Love (Happy Moments)
-  const milestoneRecords = [
-    {
-      id: 'ach-media-press',
-      title: 'Featured in Local Media',
-      category: 'Press & Features',
-      image: 'assets/images/customized_gifts.jpg',
-      mediaType: 'image'
-    },
-    {
-      id: 'ach-ganesh-utsav',
-      title: 'Ganesh Utsav Special',
-      category: 'Milestone Event',
-      image: 'assets/images/pastel_garland.jpg',
-      mediaType: 'image'
-    },
-    {
-      id: 'ach-wedding-season',
-      title: 'Wedding Season 2025',
-      category: 'Featured Collection',
-      image: 'assets/images/wedding_trousseau.jpg',
-      mediaType: 'image'
-    },
-    {
-      id: 'ach-client-love',
-      title: 'Client Love',
-      category: 'Happy Moments',
-      image: 'assets/images/money_garland.jpg',
-      mediaType: 'image'
-    }
-  ];
+  const dataset = (Array.isArray(ACHIEVEMENTS) && ACHIEVEMENTS.length > 0)
+    ? ACHIEVEMENTS 
+    : (typeof DEFAULT_ACHIEVEMENTS !== 'undefined' ? DEFAULT_ACHIEVEMENTS : []);
 
-  const displayItems = milestoneRecords;
+  const displayItems = filter === 'all' 
+    ? dataset 
+    : dataset.filter(item => {
+        const cat = (item.category || '').toLowerCase();
+        const f = filter.toLowerCase();
+        return cat.includes(f);
+      });
 
-  container.innerHTML = displayItems.map(item => {
-    const thumb = item.thumbnailUrl || item.mediaUrl || item.image;
+  container.innerHTML = (displayItems.length > 0 ? displayItems : dataset).map(item => {
+    const thumb = item.thumbnailUrl || item.mediaUrl || item.image || 'assets/images/hero.jpg';
     const isVideo = item.mediaType === 'video';
 
     return `
@@ -1013,6 +992,67 @@ function handleUrlHashRouting() {
 /**
  * Data Synchronization (Firestore, localStorage, broadcast)
  */
+function restoreCachedData() {
+  try {
+    const cCol = localStorage.getItem('bloom_custom_collections');
+    if (cCol) {
+      const parsed = JSON.parse(cCol);
+      if (Array.isArray(parsed) && parsed.length > 0) COLLECTIONS = parsed;
+    }
+  } catch (e) {}
+
+  try {
+    const cProd = localStorage.getItem('bloom_custom_products');
+    if (cProd) {
+      const parsed = JSON.parse(cProd);
+      if (Array.isArray(parsed) && parsed.length > 0) PRODUCTS = parsed;
+    }
+  } catch (e) {}
+
+  try {
+    const cPort = localStorage.getItem('bloom_custom_portfolio');
+    if (cPort) {
+      const parsed = JSON.parse(cPort);
+      if (Array.isArray(parsed) && parsed.length > 0) PORTFOLIO_ITEMS = parsed;
+    }
+  } catch (e) {}
+
+  try {
+    const cAch = localStorage.getItem('bloom_custom_achievements');
+    if (cAch) {
+      const parsed = JSON.parse(cAch);
+      if (Array.isArray(parsed) && parsed.length > 0) ACHIEVEMENTS = parsed;
+    }
+  } catch (e) {}
+}
+
+async function loadCollectionsData() {
+  if (typeof firestoreDb !== 'undefined' && firestoreDb) {
+    try {
+      firestoreDb.collection('collections').onSnapshot((snapshot) => {
+        if (!snapshot.empty) {
+          const cloudCols = [];
+          snapshot.forEach(doc => cloudCols.push(doc.data()));
+          if (cloudCols.length > 0) {
+            cloudCols.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0));
+            COLLECTIONS = cloudCols;
+            try {
+              localStorage.setItem('bloom_custom_collections', JSON.stringify(COLLECTIONS));
+            } catch (err) {}
+            renderCollections();
+            initCategoryFilters();
+            renderProducts('all');
+          }
+        }
+      }, (err) => {
+        console.warn('Firestore collections listener notice:', err.message);
+      });
+    } catch (e) {
+      console.warn('Firestore collections init notice:', e);
+    }
+  }
+}
+
 async function loadProductsData() {
   if (typeof firestoreDb !== 'undefined' && firestoreDb) {
     try {
@@ -1021,14 +1061,47 @@ async function loadProductsData() {
           const cloudProducts = [];
           snapshot.forEach(doc => cloudProducts.push(doc.data()));
           if (cloudProducts.length > 0) {
+            cloudProducts.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0) || (b.createdAt || 0) - (a.createdAt || 0));
             PRODUCTS = cloudProducts;
-            localStorage.setItem('bloom_custom_products', JSON.stringify(PRODUCTS));
+            try {
+              localStorage.setItem('bloom_custom_products', JSON.stringify(PRODUCTS));
+            } catch (err) {}
             renderProducts('all');
             initCategoryFilters();
           }
         }
+      }, (err) => {
+        console.warn('Firestore products listener notice:', err.message);
       });
-    } catch (e) {}
+    } catch (e) {
+      console.warn('Firestore products init notice:', e);
+    }
+  }
+}
+
+async function loadPortfolioData() {
+  if (typeof firestoreDb !== 'undefined' && firestoreDb) {
+    try {
+      firestoreDb.collection('portfolio').onSnapshot((snapshot) => {
+        if (!snapshot.empty) {
+          const cloudPort = [];
+          snapshot.forEach(doc => cloudPort.push(doc.data()));
+          if (cloudPort.length > 0) {
+            cloudPort.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+            PORTFOLIO_ITEMS = cloudPort;
+            try {
+              localStorage.setItem('bloom_custom_portfolio', JSON.stringify(PORTFOLIO_ITEMS));
+            } catch (err) {}
+            renderPortfolio('all');
+            initPortfolioFilters();
+          }
+        }
+      }, (err) => {
+        console.warn('Firestore portfolio listener notice:', err.message);
+      });
+    } catch (e) {
+      console.warn('Firestore portfolio init notice:', e);
+    }
   }
 }
 
@@ -1040,25 +1113,103 @@ async function loadAchievementsData() {
           const cloudAch = [];
           snapshot.forEach(doc => cloudAch.push(doc.data()));
           if (cloudAch.length > 0) {
+            cloudAch.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
             ACHIEVEMENTS = cloudAch;
-            localStorage.setItem('bloom_custom_achievements', JSON.stringify(ACHIEVEMENTS));
+            try {
+              localStorage.setItem('bloom_custom_achievements', JSON.stringify(ACHIEVEMENTS));
+            } catch (err) {}
             renderAchievements('all');
           }
         }
+      }, (err) => {
+        console.warn('Firestore achievements listener notice:', err.message);
       });
-    } catch (e) {}
+    } catch (e) {
+      console.warn('Firestore achievements init notice:', e);
+    }
   }
 }
 
 function setupSyncListeners() {
+  // Cross-tab BroadcastChannel Listeners
+  if ('BroadcastChannel' in window) {
+    try {
+      const bcCol = new BroadcastChannel('bloom_collections_sync');
+      bcCol.onmessage = (event) => {
+        if (event.data && event.data.type === 'COLLECTIONS_UPDATED' && Array.isArray(event.data.collections)) {
+          COLLECTIONS = event.data.collections;
+          renderCollections();
+          initCategoryFilters();
+          renderProducts('all');
+        }
+      };
+
+      const bcProd = new BroadcastChannel('bloom_product_sync');
+      bcProd.onmessage = (event) => {
+        if (event.data && event.data.type === 'PRODUCTS_UPDATED' && Array.isArray(event.data.products)) {
+          PRODUCTS = event.data.products;
+          renderProducts('all');
+          initCategoryFilters();
+        }
+      };
+
+      const bcPort = new BroadcastChannel('bloom_portfolio_sync');
+      bcPort.onmessage = (event) => {
+        if (event.data && event.data.type === 'PORTFOLIO_UPDATED' && Array.isArray(event.data.portfolio)) {
+          PORTFOLIO_ITEMS = event.data.portfolio;
+          renderPortfolio('all');
+          initPortfolioFilters();
+        }
+      };
+
+      const bcAch = new BroadcastChannel('bloom_achievements_sync');
+      bcAch.onmessage = (event) => {
+        if (event.data && event.data.type === 'ACHIEVEMENTS_UPDATED' && Array.isArray(event.data.achievements)) {
+          ACHIEVEMENTS = event.data.achievements;
+          renderAchievements('all');
+        }
+      };
+    } catch (err) {
+      console.warn('BroadcastChannel sync init:', err);
+    }
+  }
+
+  // Cross-window / Cross-tab Storage Events
   window.addEventListener('storage', (e) => {
-    if (e.key === 'bloom_custom_products' && e.newValue) {
+    if (e.key === 'bloom_custom_collections' && e.newValue) {
+      try {
+        const parsed = JSON.parse(e.newValue);
+        if (Array.isArray(parsed)) {
+          COLLECTIONS = parsed;
+          renderCollections();
+          initCategoryFilters();
+          renderProducts('all');
+        }
+      } catch (err) {}
+    } else if (e.key === 'bloom_custom_products' && e.newValue) {
       try {
         const parsed = JSON.parse(e.newValue);
         if (Array.isArray(parsed)) {
           PRODUCTS = parsed;
           renderProducts('all');
           initCategoryFilters();
+        }
+      } catch (err) {}
+    } else if (e.key === 'bloom_custom_portfolio' && e.newValue) {
+      try {
+        const parsed = JSON.parse(e.newValue);
+        if (Array.isArray(parsed)) {
+          PORTFOLIO_ITEMS = parsed;
+          renderPortfolio('all');
+          initPortfolioFilters();
+        }
+      } catch (err) {}
+    } else if (e.key === 'bloom_custom_achievements' && e.newValue) {
+      try {
+        const parsed = JSON.parse(e.newValue);
+        if (Array.isArray(parsed)) {
+          ACHIEVEMENTS = parsed;
+          renderAchievements('all');
         }
       } catch (err) {}
     }
