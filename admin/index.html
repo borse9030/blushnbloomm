@@ -1242,8 +1242,8 @@
           <!-- Image Upload / R2 -->
           <div class="form-group form-full">
             <label class="form-label">
-              <span>Story Image Photography *</span>
-              <span class="helper">Choose file (auto-uploaded to R2) or web URL</span>
+              <span>Story Cover Photography / Thumbnail *</span>
+              <span class="helper">Choose file (auto-uploaded to R2) or studio asset</span>
             </label>
 
             <div class="image-source-tabs">
@@ -1280,8 +1280,65 @@
             <div id="port-image-preview-container" class="image-preview-container" style="display: none; margin-top: 0.75rem;">
               <img id="port-img-preview-thumb" class="image-preview-thumb" src="" alt="Preview">
               <div class="image-preview-info">
-                <strong id="port-img-preview-label">Image Selected</strong>
-                <p style="font-size: 0.75rem; color: var(--text-muted);">Displays in the Instagram journal feed.</p>
+                <strong id="port-img-preview-label">Cover Selected</strong>
+                <p style="font-size: 0.75rem; color: var(--text-muted);">Displays as the video cover in the Instagram journal feed.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reel Video (MP4) - Playable Directly on Website -->
+          <div class="form-group form-full">
+            <label class="form-label">
+              <span>Reel Video (MP4) - Playable Directly On Website</span>
+              <span class="helper">Plays smoothly inside our website without leaving to Instagram</span>
+            </label>
+
+            <div class="image-source-tabs" id="port-vid-tabs">
+              <button type="button" class="tab-btn active" data-tab="port-vid-upload">Upload Video (MP4 / R2)</button>
+              <button type="button" class="tab-btn" data-tab="port-vid-asset">Studio Reels</button>
+              <button type="button" class="tab-btn" data-tab="port-vid-url">Direct Video URL</button>
+            </div>
+
+            <!-- Upload Video File -->
+            <div id="panel-port-vid-upload">
+              <input type="file" id="port-video-file" class="form-control" accept="video/mp4,video/*">
+            </div>
+
+            <!-- Studio Asset Select -->
+            <div id="panel-port-vid-asset" style="display: none;">
+              <select id="port-video-asset-select" class="form-control">
+                <option value="">-- Select Authentic Studio Reel --</option>
+                <option value="assets/reels/Dd3Ozl8KBW8.mp4">Dd3Ozl8KBW8.mp4 - Sacred Lalbaugcha Raja Currency Garland</option>
+                <option value="assets/reels/DdInv2hKpE1.mp4">DdInv2hKpE1.mp4 - Opulent Velvet Bridal Trousseau Suite</option>
+                <option value="assets/reels/Db41OwdPwnL.mp4">Db41OwdPwnL.mp4 - Sacred Ceremonial Offering Garland</option>
+                <option value="assets/reels/DbkDEIouZJy.mp4">DbkDEIouZJy.mp4 - Grand Floral Entry &amp; Wedding Decor</option>
+                <option value="assets/reels/DZr_p-RIvdf.mp4">DZr_p-RIvdf.mp4 - Velvet Reverie Celebration Hamper</option>
+                <option value="assets/reels/DZdO5XLoxn0.mp4">DZdO5XLoxn0.mp4 - Studio BTS &amp; Artisan Flower Weaving</option>
+                <option value="assets/reels/DV5C0UbCOnY.mp4">DV5C0UbCOnY.mp4 - Pastel Pearl Ceremony Garland</option>
+                <option value="assets/reels/DVkXv4hDJV2.mp4">DVkXv4hDJV2.mp4 - Wine &amp; Blush Bridal Posy Bouquet</option>
+              </select>
+            </div>
+
+            <!-- Video Web URL -->
+            <div id="panel-port-vid-url" style="display: none;">
+              <input type="url" id="port-video-url" class="form-control" placeholder="assets/reels/Dd3Ozl8KBW8.mp4 or https://pub-...r2.dev/reels/...mp4">
+            </div>
+
+            <!-- Upload Progress Bar -->
+            <div id="port-vid-upload-progress" class="upload-progress-box" style="display: none;">
+              <div class="upload-bar"><div class="upload-fill"></div></div>
+              <span class="upload-text">Uploading Reel Video to Cloudflare R2...</span>
+            </div>
+
+            <!-- Hidden input holding final video string -->
+            <input type="hidden" id="port-video-final">
+
+            <!-- Video Preview Box -->
+            <div id="port-video-preview-container" class="image-preview-container" style="display: none; margin-top: 0.75rem; align-items: center; gap: 1rem;">
+              <video id="port-vid-preview-thumb" src="" controls muted style="max-height: 120px; border-radius: 8px; border: 1px solid var(--accent-gold); max-width: 100px; background: #000;"></video>
+              <div class="image-preview-info">
+                <strong id="port-vid-preview-label">Reel Video Ready</strong>
+                <p style="font-size: 0.75rem; color: var(--text-muted);">Plays natively inside our sleek in-site video modal when customers click this card.</p>
               </div>
             </div>
           </div>

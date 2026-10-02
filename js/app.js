@@ -390,23 +390,49 @@ function renderPortfolio(categoryFilter = 'all') {
   // Fallback to all items if filtered subset is empty
   if (items.length === 0) items = PORTFOLIO_ITEMS;
 
-  const instaIcon = `<svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`;
+  const instaIcon = `<svg viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`;
 
   container.innerHTML = items.slice(0, 8).map(item => {
-    const isReel = (item.linkUrl && item.linkUrl.includes('/reel/')) || (item.tags && item.tags.some(t => t.toLowerCase().includes('reel') || t.toLowerCase().includes('video')));
-    const badgeType = isReel ? 'Reel' : 'Post';
+    const isReel = !!(item.videoUrl || (item.linkUrl && item.linkUrl.includes('/reel/')) || (item.tags && item.tags.some(t => t.toLowerCase().includes('reel') || t.toLowerCase().includes('video'))));
+    const duration = item.duration || '0:15';
     return `
     <div class="portfolio-journal-card js-tilt-card js-portfolio-item" data-id="${item.id}" role="button" tabindex="0" aria-label="${escapeHtml(item.title)} on Instagram">
       <img src="${item.image}" alt="${escapeHtml(item.title)} - Bloom&blush" loading="lazy">
-      <div class="portfolio-insta-badge" aria-hidden="true">${instaIcon}</div>
+      
+      <!-- Top badges: Reel Indicator + Instagram Icon -->
+      <div class="portfolio-card-top-badges">
+        <span class="portfolio-pill-badge">
+          ${isReel ? `
+            <svg viewBox="0 0 24 24" width="11" height="11" fill="currentColor"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm0 4h3l-2-4H3c-.6 0-1 .4-1 1v3h2zm5 0h4l-2-4H9l2 4zm6 0h4l-2-4h-2l2 4zM4 10v8h16v-8H4z"/></svg>
+            <span>Reel</span>
+          ` : `
+            <span>Story</span>
+          `}
+        </span>
+        <div class="portfolio-insta-badge" aria-hidden="true">${instaIcon}</div>
+      </div>
+
+      <!-- Center Play Icon Hover Effect -->
+      <div class="portfolio-play-center-btn" aria-hidden="true">
+        <div class="play-btn-circle">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="#FFFFFF"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+      </div>
+
+      <!-- Card Bottom Overlay -->
       <div class="portfolio-card-overlay">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
-          <span class="portfolio-overlay-cat">${escapeHtml(item.category)}</span>
-          <span style="font-size: 0.7rem; background: rgba(0,0,0,0.5); padding: 2px 7px; border-radius: 10px; color: #FFF; font-weight: 600;">${badgeType}</span>
+          <span class="portfolio-overlay-cat">${escapeHtml(item.category || 'Handcrafted')}</span>
+          <span style="font-size: 0.7rem; color: var(--accent-gold-light); font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+            <svg viewBox="0 0 24 24" width="10" height="10" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> ${duration}
+          </span>
         </div>
         <h4 class="portfolio-overlay-title">${escapeHtml(item.title)}</h4>
-        <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem; align-items: center;">
-          <span style="font-size: 0.72rem; color: var(--accent-gold-light); font-weight: 600;">View Story &bull; @blushnbloomm.in ↗</span>
+        <div style="margin-top: 0.45rem; display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 0.74rem; color: #FFFFFF; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,0.8); display: inline-flex; align-items: center; gap: 4px;">
+            ▶ Play Reel on Website
+          </span>
+          <span style="font-size: 0.68rem; color: var(--accent-gold-light); opacity: 0.85;">@blushnbloomm.in</span>
         </div>
       </div>
     </div>
@@ -440,23 +466,69 @@ function openInstagramModal(item) {
 
   const instaUrl = item.linkUrl || 'https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA==';
   const match = instaUrl.match(/\/(p|reel|tv)\/([a-zA-Z0-9_-]+)/);
-  const isEmbeddable = !!match;
-  const embedSrc = isEmbeddable ? `https://www.instagram.com/${match[1]}/${match[2]}/embed/captioned/` : null;
+  const shortcode = item.shortcode || (match ? match[2] : '');
+  const videoSrc = item.videoUrl || (shortcode ? `assets/reels/${shortcode}.mp4` : null);
+  const isVideo = !!videoSrc;
 
-  const waMsg = encodeURIComponent(`Hello Siddhi! I was viewing your creation "${item.title}" on Bloom&blush Instagram portfolio and would love to customize an order. Could you share pricing and dispatch options for Pimpri-Chinchwad / Pune?`);
+  const waMsg = encodeURIComponent(`Hello Siddhi! I was watching your reel "${item.title}" on Bloom&blush website and would love to customize an order. Could you share pricing, crafting time, and dispatch options for Pimpri-Chinchwad / Pune?`);
   const waUrl = `https://wa.me/918180879442?text=${waMsg}`;
 
   body.innerHTML = `
-    <div style="flex: 1.2; background: #000; display: flex; align-items: center; justify-content: center; min-height: 380px; position: relative; overflow: hidden;">
-      ${embedSrc ? `
-        <iframe src="${embedSrc}" style="width: 100%; height: 100%; min-height: 480px; border: none;" allowtransparency="true" allow="encrypted-media"></iframe>
+    <!-- Left Media Column: Native In-Site Video Player or Image -->
+    <div style="flex: 1.15; background: #000000; display: flex; align-items: center; justify-content: center; min-height: 440px; position: relative; overflow: hidden;">
+      ${isVideo ? `
+        <div class="reel-player-stage" id="reel-player-stage">
+          <video id="reel-native-video"
+                 src="${videoSrc}"
+                 poster="${item.image}"
+                 playsinline
+                 loop
+                 autoplay
+                 muted
+                 preload="auto"
+                 class="reel-video-element"
+                 aria-label="${escapeHtml(item.title)} reel video">
+          </video>
+
+          <!-- Floating Sound Toggle Button -->
+          <button type="button" class="reel-sound-pill" id="btn-reel-sound" title="Toggle Sound">
+            <svg id="reel-sound-svg-muted" viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
+              <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27l4.73 4.73H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+            </svg>
+            <svg id="reel-sound-svg-unmuted" viewBox="0 0 24 24" width="15" height="15" fill="currentColor" style="display: none;">
+              <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+            </svg>
+            <span id="reel-sound-label">Unmute Audio</span>
+          </button>
+
+          <!-- Top-Right Floating Controls (Fullscreen) -->
+          <div class="reel-floating-controls">
+            <button type="button" class="reel-ctrl-btn" id="btn-reel-fullscreen" title="Fullscreen View">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Centered Play / Pause Animation Icon -->
+          <div class="reel-center-play-badge" id="reel-center-play-badge" style="display: none;">
+            <svg viewBox="0 0 24 24" width="28" height="28" fill="#FFFFFF"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+
+          <!-- Scrubbing Timeline Progress Bar -->
+          <div class="reel-progress-wrap" id="reel-progress-wrap" title="Seek video">
+            <div class="reel-progress-fill" id="reel-progress-fill"></div>
+          </div>
+        </div>
       ` : `
         <img src="${item.image}" alt="${escapeHtml(item.title)}" style="width: 100%; height: 100%; object-fit: contain; max-height: 70vh;">
       `}
     </div>
 
-    <div style="flex: 1; padding: 2rem; display: flex; flex-direction: column; justify-content: space-between; background: #FFFFFF; min-width: 300px;">
+    <!-- Right Content Column: Studio Metadata & Authentic Caption -->
+    <div style="flex: 1; padding: 2rem; display: flex; flex-direction: column; justify-content: space-between; background: #FFFFFF; min-width: 320px;">
       <div>
+        <!-- Instagram Profile Banner Header -->
         <div style="display: flex; align-items: center; gap: 0.75rem; padding-bottom: 1.25rem; border-bottom: 1px solid rgba(0,0,0,0.08); margin-bottom: 1.25rem;">
           <div style="width: 44px; height: 44px; border-radius: 50%; padding: 2px; background: linear-gradient(45deg, #F58529, #DD2A7B, #8134AF); display: flex;">
             <img src="assets/images/web_logo.png" alt="Siddhi Kokate" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; background: #FFF;">
@@ -464,39 +536,47 @@ function openInstagramModal(item) {
           <div>
             <div style="display: flex; align-items: center; gap: 0.35rem;">
               <span style="font-weight: 700; font-size: 0.95rem; color: var(--burgundy-deep);">@blushnbloomm.in</span>
-              <svg viewBox="0 0 24 24" width="14" height="14" style="color: #0095F6;"><path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              <svg viewBox="0 0 24 24" width="15" height="15" style="color: #0095F6;"><path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
             </div>
-            <div style="font-size: 0.78rem; color: var(--text-muted);">Siddhi Kokate &bull; Floral &amp; Gifting Studio</div>
+            <div style="font-size: 0.78rem; color: var(--text-muted);">Siddhi Kokate &bull; Floral &amp; Gifting Studio &bull; Pune</div>
           </div>
         </div>
 
-        <span style="display: inline-block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-gold); font-weight: 600; margin-bottom: 0.35rem;">
-          ${escapeHtml(item.category || 'Visual Story')}
-        </span>
-        <h3 style="font-family: var(--font-serif); font-size: 1.35rem; color: var(--burgundy-deep); margin-bottom: 0.75rem; line-height: 1.3;">
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem;">
+          <span style="display: inline-block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-gold); font-weight: 700;">
+            ${escapeHtml(item.category || 'Handcrafted')}
+          </span>
+          <span style="font-size: 0.7rem; background: rgba(94, 13, 24, 0.08); color: var(--burgundy-deep); padding: 2px 7px; border-radius: 8px; font-weight: 600;">
+            ▶ Authentic Reel
+          </span>
+        </div>
+
+        <h3 style="font-family: var(--font-serif); font-size: 1.35rem; color: var(--burgundy-deep); margin-bottom: 0.85rem; line-height: 1.3;">
           ${escapeHtml(item.title)}
         </h3>
 
-        <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1rem;">
+        <!-- Full Authentic Caption with Marathi/Hindi lines preserved -->
+        <div style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.25rem; white-space: pre-line; max-height: 160px; overflow-y: auto; padding-right: 0.5rem;">
           ${escapeHtml(item.caption || 'Handcrafted bespoke piece designed with fine floral artistry, zardozi brocade, and ceremonial grandeur at Bloom&blush studio in Pimpri-Chinchwad, Pune.')}
-        </p>
+        </div>
 
         ${Array.isArray(item.tags) && item.tags.length > 0 ? `
-          <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.5rem;">
+          <div style="display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 1.25rem;">
             ${item.tags.map(t => `<span style="font-size: 0.74rem; background: var(--cream-ivory); border: 1px solid rgba(197, 168, 128, 0.3); padding: 3px 9px; border-radius: 12px; color: var(--text-secondary);">#${escapeHtml(t)}</span>`).join('')}
           </div>
         ` : ''}
       </div>
 
+      <!-- Action Buttons: Direct WhatsApp Customization + Instagram Post -->
       <div style="display: flex; flex-direction: column; gap: 0.65rem; margin-top: 1rem; border-top: 1px solid rgba(0,0,0,0.08); padding-top: 1.25rem;">
-        <a href="${instaUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary js-instagram-link" style="width: 100%; justify-content: center; text-align: center; gap: 0.5rem;">
-          <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-          <span>Open on Instagram (@blushnbloomm.in)</span>
+        <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width: 100%; justify-content: center; text-align: center; gap: 0.5rem; background: #25D366; border-color: #25D366; color: #FFF; font-weight: 600;">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2z"/></svg>
+          <span>Enquire About This Reel on WhatsApp</span>
         </a>
 
-        <a href="${waUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="width: 100%; justify-content: center; text-align: center; gap: 0.5rem; background: #25D366; border-color: #25D366; color: #FFF;">
-          <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2z"/></svg>
-          <span>Inquire About This Creation</span>
+        <a href="${instaUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary js-instagram-link" style="width: 100%; justify-content: center; text-align: center; gap: 0.5rem; font-size: 0.84rem;">
+          <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          <span>View on Instagram (@blushnbloomm.in)</span>
         </a>
       </div>
     </div>
@@ -505,6 +585,97 @@ function openInstagramModal(item) {
   modal.style.display = 'flex';
   modal.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
+
+  // Wire up native video player interactive features
+  if (isVideo) {
+    const video = document.getElementById('reel-native-video');
+    const soundBtn = document.getElementById('btn-reel-sound');
+    const soundMutedSvg = document.getElementById('reel-sound-svg-muted');
+    const soundUnmutedSvg = document.getElementById('reel-sound-svg-unmuted');
+    const soundLabel = document.getElementById('reel-sound-label');
+    const centerBadge = document.getElementById('reel-center-play-badge');
+    const progressFill = document.getElementById('reel-progress-fill');
+    const progressWrap = document.getElementById('reel-progress-wrap');
+    const fsBtn = document.getElementById('btn-reel-fullscreen');
+
+    if (video) {
+      video.play().catch(() => {
+        // Autoplay policy prevented playback, keep muted
+        video.muted = true;
+        video.play().catch(() => {});
+      });
+
+      // Click video to toggle Play / Pause
+      video.addEventListener('click', () => {
+        if (video.paused) {
+          video.play();
+          if (centerBadge) {
+            centerBadge.innerHTML = '<svg viewBox="0 0 24 24" width="28" height="28" fill="#FFFFFF"><path d="M8 5v14l11-7z"/></svg>';
+            centerBadge.style.display = 'flex';
+            setTimeout(() => { centerBadge.style.display = 'none'; }, 350);
+          }
+        } else {
+          video.pause();
+          if (centerBadge) {
+            centerBadge.innerHTML = '<svg viewBox="0 0 24 24" width="28" height="28" fill="#FFFFFF"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+            centerBadge.style.display = 'flex';
+          }
+        }
+      });
+
+      // Sound toggle button
+      if (soundBtn) {
+        soundBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          video.muted = !video.muted;
+          if (video.muted) {
+            soundMutedSvg.style.display = 'block';
+            soundUnmutedSvg.style.display = 'none';
+            soundLabel.textContent = 'Unmute Audio';
+          } else {
+            soundMutedSvg.style.display = 'none';
+            soundUnmutedSvg.style.display = 'block';
+            soundLabel.textContent = 'Mute Audio';
+          }
+        });
+      }
+
+      // Progress bar updates
+      video.addEventListener('timeupdate', () => {
+        if (progressFill && video.duration) {
+          const pct = (video.currentTime / video.duration) * 100;
+          progressFill.style.width = `${pct}%`;
+        }
+      });
+
+      // Seek on progress bar click
+      if (progressWrap) {
+        progressWrap.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const rect = progressWrap.getBoundingClientRect();
+          const clickX = e.clientX - rect.left;
+          const pct = Math.max(0, Math.min(1, clickX / rect.width));
+          if (video.duration) {
+            video.currentTime = pct * video.duration;
+          }
+        });
+      }
+
+      // Fullscreen
+      if (fsBtn) {
+        fsBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          if (!document.fullscreenElement) {
+            const stage = document.getElementById('reel-player-stage');
+            if (stage && stage.requestFullscreen) stage.requestFullscreen();
+            else if (video.requestFullscreen) video.requestFullscreen();
+          } else {
+            if (document.exitFullscreen) document.exitFullscreen();
+          }
+        });
+      }
+    }
+  }
 
   const closeBtn = document.getElementById('btn-close-insta-modal');
   if (closeBtn) {
@@ -518,6 +689,12 @@ function openInstagramModal(item) {
 function closeInstagramModal() {
   const modal = document.getElementById('insta-post-modal');
   if (modal) {
+    const video = modal.querySelector('video');
+    if (video) {
+      video.pause();
+      video.src = '';
+      video.load();
+    }
     modal.style.display = 'none';
     modal.setAttribute('aria-hidden', 'true');
     const body = document.getElementById('insta-modal-body');
@@ -1137,8 +1314,13 @@ function restoreCachedData() {
     const cPort = localStorage.getItem('bloom_custom_portfolio');
     if (cPort) {
       const parsed = JSON.parse(cPort);
-      // Only keep if it is not the old mock data (which used port-sovereign-garland)
-      const isLegacy = Array.isArray(parsed) && parsed.some(it => it.id === 'port-sovereign-garland' || !it.linkUrl.includes('/reel/'));
+      // Only keep if it is not the old mock data (which lacked videoUrl or used assets/images/)
+      const isLegacy = Array.isArray(parsed) && parsed.some(it => 
+        it.id === 'port-sovereign-garland' || 
+        !(it.linkUrl || '').includes('/reel/') ||
+        !it.videoUrl ||
+        (it.image && it.image.includes('assets/images/'))
+      );
       if (Array.isArray(parsed) && parsed.length > 0 && !isLegacy) {
         PORTFOLIO_ITEMS = parsed;
       } else {
@@ -1217,8 +1399,21 @@ async function loadPortfolioData() {
           const cloudPort = [];
           snapshot.forEach(doc => cloudPort.push(doc.data()));
           if (cloudPort.length > 0) {
-            cloudPort.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-            PORTFOLIO_ITEMS = cloudPort;
+            // Ensure authentic covers and videoUrls for all authentic reel stories
+            const sanitized = cloudPort.map(item => {
+              const match = (item.linkUrl || '').match(/\/(reel|p)\/([a-zA-Z0-9_-]+)/);
+              const shortcode = item.shortcode || (match ? match[2] : '');
+              const videoUrl = item.videoUrl || (shortcode ? `assets/reels/${shortcode}.mp4` : '');
+              const image = (item.image && !item.image.includes('assets/images/')) ? item.image : (shortcode ? `assets/reels/${shortcode}.jpg` : item.image);
+              return {
+                ...item,
+                image,
+                videoUrl,
+                shortcode
+              };
+            });
+            sanitized.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+            PORTFOLIO_ITEMS = sanitized;
             try {
               localStorage.setItem('bloom_custom_portfolio', JSON.stringify(PORTFOLIO_ITEMS));
             } catch (err) {}
@@ -1233,6 +1428,22 @@ async function loadPortfolioData() {
       console.warn('Firestore portfolio init notice:', e);
     }
   }
+
+  // Also verify portfolio.json fallback for immediate instant loading
+  try {
+    const res = await fetch('portfolio.json');
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0) {
+        const local = localStorage.getItem('bloom_custom_portfolio');
+        if (!local || !PORTFOLIO_ITEMS || PORTFOLIO_ITEMS.length === 0) {
+          PORTFOLIO_ITEMS = data;
+          renderPortfolio('all');
+          initPortfolioFilters();
+        }
+      }
+    }
+  } catch (err) {}
 }
 
 async function loadAchievementsData() {

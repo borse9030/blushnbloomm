@@ -100,13 +100,16 @@ const DEFAULT_FALLBACK_COLLECTIONS = [
 const DEFAULT_FALLBACK_PORTFOLIO = [
   {
     "id": "port-reel-dd3ozl8kbw8",
-    "title": "The Royal Sovereign Currency Garland",
+    "title": "Sacred Lalbaugcha Raja Currency Garland",
     "category": "Garlands",
-    "image": "assets/images/money_garland.jpg",
+    "image": "assets/reels/Dd3Ozl8KBW8.jpg",
+    "videoUrl": "assets/reels/Dd3Ozl8KBW8.mp4",
     "linkUrl": "https://www.instagram.com/reel/Dd3Ozl8KBW8/",
     "shortcode": "Dd3Ozl8KBW8",
-    "caption": "Handcrafted currency garland with rich burgundy roses and zari brocade for grand Maharashtrian wedding entry.",
+    "caption": "Muze ye dilao na🥹💗\n@blushnbloomm.in \n#viral #reels #trending #bouquet #hampers",
     "tags": ["Garlands", "Money Garlands", "Wedding", "Groom Styling"],
+    "duration": "0:15",
+    "aspect": "9:16",
     "span": "col-span-2 row-span-2",
     "featured": true,
     "createdAt": 1738100000000
@@ -115,11 +118,14 @@ const DEFAULT_FALLBACK_PORTFOLIO = [
     "id": "port-reel-ddinv2hkpe1",
     "title": "Opulent Velvet Bridal Trousseau Suite",
     "category": "Bridal",
-    "image": "assets/images/wedding_trousseau.jpg",
+    "image": "assets/reels/DdInv2hKpE1.jpg",
+    "videoUrl": "assets/reels/DdInv2hKpE1.mp4",
     "linkUrl": "https://www.instagram.com/reel/DdInv2hKpE1/",
     "shortcode": "DdInv2hKpE1",
-    "caption": "Opulent burgundy velvet ceremonial trays with antique zardozi borders and Kundan brooch pins.",
+    "caption": "Unrgent garlands available, कोऱ्या नोटा available 🫶🏻\nतुमच्या लाडक्या बाप्पा साठी आजच booking करा \n@blushnbloomm.in \n8180879442\n#viral #trending #dagdusheth #lalbaughcharaja #ganpatibappamorya",
     "tags": ["Bridal", "Trousseau", "Ceremonial", "Wedding"],
+    "duration": "0:15",
+    "aspect": "9:16",
     "span": "col-span-1 row-span-1",
     "featured": true,
     "createdAt": 1738050000000
@@ -128,11 +134,14 @@ const DEFAULT_FALLBACK_PORTFOLIO = [
     "id": "port-reel-db41owdpwnl",
     "title": "Sacred Ceremonial Offering Garland",
     "category": "Garlands",
-    "image": "assets/images/reel_garland_preview.jpg",
+    "image": "assets/reels/Db41OwdPwnL.jpg",
+    "videoUrl": "assets/reels/Db41OwdPwnL.mp4",
     "linkUrl": "https://www.instagram.com/reel/Db41OwdPwnL/",
     "shortcode": "Db41OwdPwnL",
-    "caption": "Handcrafted sacred devotional garland with fragrant floral arrangement and gold zari accents.",
+    "caption": "Sacred Devotional Garland offering for Lalbaugcha Raja, Mumbai. Handcrafted with authentic floral artistry and gold zari brocade.",
     "tags": ["Garlands", "Devotional", "Ceremony", "Handcrafted"],
+    "duration": "0:29",
+    "aspect": "9:16",
     "span": "col-span-1 row-span-1",
     "featured": true,
     "createdAt": 1738000000000
@@ -141,11 +150,14 @@ const DEFAULT_FALLBACK_PORTFOLIO = [
     "id": "port-reel-dbkdeiouzjy",
     "title": "Grand Floral Entry & Wedding Decor",
     "category": "Decor",
-    "image": "assets/images/hero.jpg",
+    "image": "assets/reels/DbkDEIouZJy.jpg",
+    "videoUrl": "assets/reels/DbkDEIouZJy.mp4",
     "linkUrl": "https://www.instagram.com/reel/DbkDEIouZJy/",
     "shortcode": "DbkDEIouZJy",
-    "caption": "Majestic floral installation, luxury stage decor, and ambient floral styling for wedding receptions.",
+    "caption": "दादा देशील ना 🥹❤️🫀\nRakshabandhan gift for sister \n@blushnbloomm.in \n📞 81808 79442\n#love #rakshabandhan #sister #brothers #gift",
     "tags": ["Decor", "Floral Styling", "Wedding Decor", "Grand Entry"],
+    "duration": "0:15",
+    "aspect": "9:16",
     "span": "col-span-1 row-span-2",
     "featured": true,
     "createdAt": 1737950000000
@@ -154,11 +166,14 @@ const DEFAULT_FALLBACK_PORTFOLIO = [
     "id": "port-reel-dzr_p-rivdf",
     "title": "Velvet Reverie Celebration Hamper",
     "category": "Hampers",
-    "image": "assets/images/luxury_hamper.jpg",
+    "image": "assets/reels/DZr_p-RIvdf.jpg",
+    "videoUrl": "assets/reels/DZr_p-RIvdf.mp4",
     "linkUrl": "https://www.instagram.com/reel/DZr_p-RIvdf/",
     "shortcode": "DZr_p-RIvdf",
-    "caption": "Rigid velvet trunk with brass canisters, scented wood-wick candle, and wax-sealed greeting.",
+    "caption": ".जिथे चरण तुझे दिसेल तिथे मस्तक माझे झुकेल 🙇‍♂️🌸\n.  Blessed..!🥹❤️\n#viral #fyb #ganpatibappa #birthday #viralreel",
     "tags": ["Hampers", "Festive", "Luxury Gifting", "Customized"],
+    "duration": "0:15",
+    "aspect": "9:16",
     "span": "col-span-1 row-span-1",
     "featured": true,
     "createdAt": 1737900000000
@@ -167,11 +182,14 @@ const DEFAULT_FALLBACK_PORTFOLIO = [
     "id": "port-reel-dzdo5xloxn0",
     "title": "Studio BTS & Artisan Flower Weaving",
     "category": "Behind the Scenes",
-    "image": "assets/images/reel_styling_preview.jpg",
+    "image": "assets/reels/DZdO5XLoxn0.jpg",
+    "videoUrl": "assets/reels/DZdO5XLoxn0.mp4",
     "linkUrl": "https://www.instagram.com/reel/DZdO5XLoxn0/",
     "shortcode": "DZdO5XLoxn0",
-    "caption": "Behind-the-scenes in our Pimpri-Chinchwad studio crafting delicate bespoke pieces with patience and passion.",
+    "caption": "Bappa….❤️🌸🙇🏻 Handcrafted with pure love in our studio.",
     "tags": ["Behind the Scenes", "Studio BTS", "Artisanal", "Pune"],
+    "duration": "0:15",
+    "aspect": "9:16",
     "span": "col-span-1 row-span-1",
     "featured": true,
     "createdAt": 1737850000000
@@ -180,11 +198,14 @@ const DEFAULT_FALLBACK_PORTFOLIO = [
     "id": "port-reel-dv5c0ubcony",
     "title": "Pastel Pearl Ceremony Garland",
     "category": "Garlands",
-    "image": "assets/images/pastel_garland.jpg",
+    "image": "assets/reels/DV5C0UbCOnY.jpg",
+    "videoUrl": "assets/reels/DV5C0UbCOnY.mp4",
     "linkUrl": "https://www.instagram.com/reel/DV5C0UbCOnY/",
     "shortcode": "DV5C0UbCOnY",
-    "caption": "Soft blush and pearl draping for baby naming ceremonies, roka, and morning engagements.",
+    "caption": "Handcrafted Pastel Elegance 🌻🤍\n@blushnbloomm.in\n#viral #reels #instagood #trending #garlands",
     "tags": ["Garlands", "Pastel", "Baby Shower", "Roka"],
+    "duration": "0:15",
+    "aspect": "9:16",
     "span": "col-span-1 row-span-1",
     "featured": true,
     "createdAt": 1737800000000
@@ -193,11 +214,14 @@ const DEFAULT_FALLBACK_PORTFOLIO = [
     "id": "port-reel-dvkxv4hdjv2",
     "title": "Wine & Blush Bridal Posy Bouquet",
     "category": "Bridal",
-    "image": "assets/images/editorial_bouquet.jpg",
+    "image": "assets/reels/DVkXv4hDJV2.jpg",
+    "videoUrl": "assets/reels/DVkXv4hDJV2.mp4",
     "linkUrl": "https://www.instagram.com/reel/DVkXv4hDJV2/",
     "shortcode": "DVkXv4hDJV2",
-    "caption": "Garden roses and ranunculus bound with trailing hand-dyed burgundy silk velvet ribbons.",
+    "caption": "Har by @blushnbloomm.in 😍🫶🏻\n#foryou #foryoupage #instagram #viral #instadaily",
     "tags": ["Bridal", "Bouquets", "Fresh Florals", "Bridal Entry"],
+    "duration": "0:15",
+    "aspect": "9:16",
     "span": "col-span-1 row-span-1",
     "featured": true,
     "createdAt": 1737750000000
@@ -3066,9 +3090,9 @@ function initPortfolioAdmin() {
   }
 
   // Portfolio modal image source tabs
-  document.querySelectorAll('#portfolio-modal .image-source-tabs .tab-btn').forEach(btn => {
+  document.querySelectorAll('#portfolio-modal [data-tab^="port-img-"]').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('#portfolio-modal .image-source-tabs .tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('#portfolio-modal [data-tab^="port-img-"]').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       const tab = btn.dataset.tab;
       document.getElementById('panel-port-img-upload').style.display = tab === 'port-img-upload' ? 'block' : 'none';
@@ -3077,11 +3101,67 @@ function initPortfolioAdmin() {
     });
   });
 
+  // Portfolio modal video source tabs
+  document.querySelectorAll('#portfolio-modal [data-tab^="port-vid-"]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#portfolio-modal [data-tab^="port-vid-"]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const tab = btn.dataset.tab;
+      const up = document.getElementById('panel-port-vid-upload');
+      const as = document.getElementById('panel-port-vid-asset');
+      const ur = document.getElementById('panel-port-vid-url');
+      if (up) up.style.display = tab === 'port-vid-upload' ? 'block' : 'none';
+      if (as) as.style.display = tab === 'port-vid-asset' ? 'block' : 'none';
+      if (ur) ur.style.display = tab === 'port-vid-url' ? 'block' : 'none';
+    });
+  });
+
+  const portVidAssetSelect = document.getElementById('port-video-asset-select');
+  if (portVidAssetSelect) {
+    portVidAssetSelect.addEventListener('change', (e) => {
+      if (e.target.value) {
+        setPortVideoPreview(e.target.value, e.target.options[e.target.selectedIndex].text);
+      }
+    });
+  }
+
+  const portVidUrlInput = document.getElementById('port-video-url');
+  if (portVidUrlInput) {
+    portVidUrlInput.addEventListener('input', (e) => {
+      if (e.target.value.trim()) {
+        setPortVideoPreview(e.target.value.trim(), 'Direct Video URL');
+      }
+    });
+  }
+
   const portUrlInput = document.getElementById('port-image-url');
   if (portUrlInput) {
     portUrlInput.addEventListener('input', (e) => {
       if (e.target.value.trim()) {
         setPortImagePreview(e.target.value.trim(), 'Web Photo URL');
+      }
+    });
+  }
+
+  const portLinkInput = document.getElementById('port-link-input');
+  if (portLinkInput) {
+    portLinkInput.addEventListener('input', (e) => {
+      const val = e.target.value.trim();
+      const match = val.match(/\/(reel|p)\/([a-zA-Z0-9_-]+)/);
+      if (match && match[2]) {
+        const shortcode = match[2];
+        const idInput = document.getElementById('port-id-input');
+        if (idInput && !EDITING_PORT_ID && !idInput.value) {
+          idInput.value = 'port-reel-' + shortcode.toLowerCase();
+        }
+        const finalImg = document.getElementById('port-image-final');
+        if (finalImg && !finalImg.value) {
+          setPortImagePreview(`assets/reels/${shortcode}.jpg`, `Authentic Reel Cover (${shortcode}.jpg)`);
+        }
+        const finalVid = document.getElementById('port-video-final');
+        if (finalVid && !finalVid.value) {
+          setPortVideoPreview(`assets/reels/${shortcode}.mp4`, `Authentic Reel Video (${shortcode}.mp4)`);
+        }
       }
     });
   }
@@ -3093,10 +3173,34 @@ function setPortImagePreview(url, label = 'Image Selected') {
   const labelEl = document.getElementById('port-img-preview-label');
   const finalInput = document.getElementById('port-image-final');
   if (container && thumb && finalInput) {
-    finalInput.value = url;
-    thumb.src = url;
-    if (labelEl) labelEl.textContent = label;
-    container.style.display = 'flex';
+    finalInput.value = url || '';
+    if (url) {
+      thumb.src = url;
+      if (labelEl) labelEl.textContent = label;
+      container.style.display = 'flex';
+    } else {
+      thumb.src = '';
+      container.style.display = 'none';
+    }
+  }
+}
+
+function setPortVideoPreview(url, label = 'Reel Video Ready') {
+  const container = document.getElementById('port-video-preview-container');
+  const thumb = document.getElementById('port-vid-preview-thumb');
+  const labelEl = document.getElementById('port-vid-preview-label');
+  const finalInput = document.getElementById('port-video-final');
+  if (container && thumb && finalInput) {
+    finalInput.value = url || '';
+    if (url) {
+      thumb.src = url;
+      thumb.load();
+      if (labelEl) labelEl.textContent = label;
+      container.style.display = 'flex';
+    } else {
+      thumb.src = '';
+      container.style.display = 'none';
+    }
   }
 }
 
@@ -3108,7 +3212,12 @@ async function loadPortfolio() {
     try {
       const parsed = JSON.parse(localData);
       if (Array.isArray(parsed) && parsed.length > 0) {
-        const isLegacy = parsed.some(it => it.id === 'port-sovereign-garland' || !(it.linkUrl || '').includes('/reel/'));
+        const isLegacy = parsed.some(it => 
+          it.id === 'port-sovereign-garland' || 
+          !(it.linkUrl || '').includes('/reel/') ||
+          !it.videoUrl ||
+          (it.image && it.image.includes('assets/images/'))
+        );
         if (!isLegacy) {
           PORTFOLIO = parsed;
           renderAdminPortfolio();
@@ -3151,7 +3260,19 @@ function startFirestorePortfolioSync() {
         const cloudPort = [];
         snapshot.forEach(doc => cloudPort.push(doc.data()));
         if (cloudPort.length > 0) {
-          PORTFOLIO = cloudPort;
+          const sanitized = cloudPort.map(item => {
+            const match = (item.linkUrl || '').match(/\/(reel|p)\/([a-zA-Z0-9_-]+)/);
+            const shortcode = item.shortcode || (match ? match[2] : '');
+            const videoUrl = item.videoUrl || (shortcode ? `assets/reels/${shortcode}.mp4` : '');
+            const image = (item.image && !item.image.includes('assets/images/')) ? item.image : (shortcode ? `assets/reels/${shortcode}.jpg` : item.image);
+            return {
+              ...item,
+              image,
+              videoUrl,
+              shortcode
+            };
+          });
+          PORTFOLIO = sanitized;
           localStorage.setItem('bloom_custom_portfolio', JSON.stringify(PORTFOLIO));
           renderAdminPortfolio();
           updatePortfolioStats();
@@ -3225,9 +3346,14 @@ function renderAdminPortfolio() {
 
   container.innerHTML = filtered.map(item => `
     <article class="portfolio-card-admin" data-id="${escapeHtml(item.id)}">
-      <div class="portfolio-card-media">
+      <div class="portfolio-card-media" style="position: relative;">
         <img src="${escapeHtml(item.image || 'assets/images/money_garland.jpg')}" alt="${escapeHtml(item.title)}" loading="lazy">
         <span class="achieve-card-date">${escapeHtml(item.category || 'Journal')}</span>
+        ${item.videoUrl ? `
+          <span style="position: absolute; bottom: 8px; right: 8px; background: rgba(94, 13, 24, 0.9); color: #FFF; font-size: 0.68rem; font-weight: 700; padding: 3px 8px; border-radius: 6px; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 2px 6px rgba(0,0,0,0.3);">
+            <svg viewBox="0 0 24 24" width="10" height="10" fill="currentColor"><path d="M8 5v14l11-7z"/></svg> Playable Reel
+          </span>
+        ` : ''}
       </div>
       <div class="portfolio-card-body">
         <span class="achieve-card-category">${(item.tags || []).join(' &bull; ') || 'Instagram Story'}</span>
@@ -3268,8 +3394,9 @@ function openPortfolioModal(storyId = null) {
     document.getElementById('port-tags-input').value = (item.tags || []).join(', ');
     document.getElementById('port-span-select').value = item.span || 'col-span-1 row-span-1';
     setPortImagePreview(item.image || '', item.title);
+    setPortVideoPreview(item.videoUrl || '', item.title ? `Reel Video: ${item.title}` : 'Reel Video');
   } else {
-    if (titleEl) titleEl.textContent = 'Add Instagram Portfolio Story';
+    if (titleEl) titleEl.textContent = 'Add Instagram Portfolio Story / Reel';
     document.getElementById('port-id-input').value = '';
     document.getElementById('port-id-input').readOnly = false;
     document.getElementById('port-title-input').value = '';
@@ -3277,9 +3404,8 @@ function openPortfolioModal(storyId = null) {
     document.getElementById('port-caption-input').value = '';
     document.getElementById('port-tags-input').value = 'Money Garlands, Bridal, Pune';
     document.getElementById('port-span-select').value = 'col-span-1 row-span-1';
-    document.getElementById('port-image-final').value = '';
-    const previewContainer = document.getElementById('port-image-preview-container');
-    if (previewContainer) previewContainer.style.display = 'none';
+    setPortImagePreview('', '');
+    setPortVideoPreview('', '');
   }
 
   modal.classList.add('active');
@@ -3295,6 +3421,13 @@ function handlePortfolioFormSubmit(e) {
   const tagsStr = document.getElementById('port-tags-input').value.trim();
   const span = document.getElementById('port-span-select').value;
   const image = document.getElementById('port-image-final').value.trim() || 'assets/images/money_garland.jpg';
+  let videoUrl = document.getElementById('port-video-final') ? document.getElementById('port-video-final').value.trim() : '';
+
+  const match = linkUrl.match(/\/(reel|p)\/([a-zA-Z0-9_-]+)/);
+  const shortcode = match ? match[2] : '';
+  if (!videoUrl && shortcode) {
+    videoUrl = `assets/reels/${shortcode}.mp4`;
+  }
 
   const tags = tagsStr.split(',').map(t => t.trim()).filter(Boolean);
 
@@ -3307,6 +3440,10 @@ function handlePortfolioFormSubmit(e) {
     tags,
     span,
     image,
+    videoUrl: videoUrl || '',
+    shortcode: shortcode || undefined,
+    duration: "0:15",
+    aspect: "9:16",
     featured: true,
     createdAt: Date.now()
   };
@@ -3444,7 +3581,7 @@ function initR2Settings() {
  * Universal Media File Upload to Cloudflare R2 with In-Browser Auto-Compression
  */
 function initMediaUploads() {
-  function bindUpload(fileInputId, progressBoxId, finalInputId, previewContainerId, previewThumbId, previewLabelId, folder) {
+  function bindUpload(fileInputId, progressBoxId, finalInputId, previewContainerId, previewThumbId, previewLabelId, folder, isVideo = false) {
     const fileInput = document.getElementById(fileInputId);
     const progressBox = document.getElementById(progressBoxId);
     const finalInput = document.getElementById(finalInputId);
@@ -3470,8 +3607,11 @@ function initMediaUploads() {
         });
 
         if (finalInput) finalInput.value = uploadedUrl;
-        if (previewThumb) previewThumb.src = uploadedUrl;
-        if (previewLabel) previewLabel.textContent = `Uploaded: ${file.name} (WebP)`;
+        if (previewThumb) {
+          previewThumb.src = uploadedUrl;
+          if (isVideo && typeof previewThumb.load === 'function') previewThumb.load();
+        }
+        if (previewLabel) previewLabel.textContent = isVideo ? `Uploaded Video: ${file.name}` : `Uploaded: ${file.name} (WebP)`;
         if (previewContainer) previewContainer.style.display = 'flex';
 
         showToast(`Uploaded "${file.name}" to Cloudflare R2!`, 'success');
@@ -3492,8 +3632,11 @@ function initMediaUploads() {
   // 2. Product creation photo
   bindUpload('prod-image-file', 'prod-upload-progress', 'prod-image-final', 'prod-image-preview-container', 'prod-img-preview-thumb', 'prod-img-preview-label', 'creations');
 
-  // 3. Portfolio photo
+  // 3. Portfolio cover photo
   bindUpload('port-image-file', 'port-upload-progress', 'port-image-final', 'port-image-preview-container', 'port-img-preview-thumb', 'port-img-preview-label', 'portfolio');
+
+  // 4. Portfolio reel video
+  bindUpload('port-video-file', 'port-vid-upload-progress', 'port-video-final', 'port-video-preview-container', 'port-vid-preview-thumb', 'port-vid-preview-label', 'reels', true);
 }
 
 /* ===================================================================

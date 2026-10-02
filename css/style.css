@@ -1717,6 +1717,183 @@ button {
   justify-content: center;
 }
 
+/* Portfolio Card Reel & Badges Enhancements */
+.portfolio-card-top-badges {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 3;
+}
+
+.portfolio-pill-badge {
+  background: rgba(18, 5, 8, 0.72);
+  backdrop-filter: blur(6px);
+  color: #FFFFFF;
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  letter-spacing: 0.02em;
+}
+
+.portfolio-play-center-btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.85);
+  opacity: 0;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.play-btn-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(94, 13, 24, 0.92);
+  border: 2px solid var(--accent-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  transition: transform 0.25s ease;
+}
+
+.portfolio-journal-card:hover .portfolio-play-center-btn {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.portfolio-journal-card:hover .play-btn-circle {
+  transform: scale(1.08);
+}
+
+/* Native In-Site Reel Video Player Modal */
+.reel-player-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 480px;
+  max-height: 80vh;
+  background: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  user-select: none;
+}
+
+.reel-video-element {
+  width: 100%;
+  height: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  cursor: pointer;
+  background: #000000;
+}
+
+.reel-floating-controls {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  z-index: 6;
+}
+
+.reel-ctrl-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(18, 5, 8, 0.75);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.reel-ctrl-btn:hover {
+  background: var(--burgundy-deep);
+  border-color: var(--accent-gold);
+  transform: scale(1.08);
+}
+
+.reel-sound-pill {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: rgba(18, 5, 8, 0.8);
+  backdrop-filter: blur(8px);
+  color: #FFFFFF;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 6;
+  transition: all 0.2s ease;
+}
+
+.reel-sound-pill:hover {
+  background: var(--burgundy-deep);
+  border-color: var(--accent-gold);
+}
+
+.reel-center-play-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: rgba(18, 5, 8, 0.7);
+  backdrop-filter: blur(8px);
+  border: 2px solid var(--accent-gold);
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 5;
+  transition: opacity 0.25s ease;
+}
+
+.reel-progress-wrap {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: rgba(255, 255, 255, 0.2);
+  z-index: 6;
+  cursor: pointer;
+}
+
+.reel-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent-gold), #FFB703);
+  transition: width 0.1s linear;
+}
+
 /* ===================================================================
    07. ACHIEVEMENTS SECTION (Panel 07 - KPI Stats & Milestones)
    =================================================================== */
