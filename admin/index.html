@@ -570,47 +570,6 @@
               </div>
             </div>
 
-            <!-- Optional Collapsible Developer Settings (Hidden by default so owner never gets confused) -->
-            <details style="margin-top: 1rem; border-top: 1px dashed rgba(0,0,0,0.1); padding-top: 0.75rem;">
-              <summary style="font-size: 0.82rem; color: var(--text-muted); cursor: pointer; user-select: none;">
-                ⚙️ Advanced Technical Configuration (Developer Only)
-              </summary>
-              <form id="form-r2-settings" class="form-grid" style="margin-top: 1rem;">
-                <div class="form-group form-full">
-                  <label class="form-label" for="r2-account-id">Cloudflare Account ID</label>
-                  <input type="text" id="r2-account-id" class="form-control" placeholder="fe55d9a781822b063a8e6a697ae6136b" value="fe55d9a781822b063a8e6a697ae6136b" autocomplete="off">
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="r2-access-key">R2 Access Key ID</label>
-                  <input type="text" id="r2-access-key" class="form-control" placeholder="Optional" autocomplete="off">
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="r2-secret-key">R2 Secret Access Key</label>
-                  <input type="password" id="r2-secret-key" class="form-control" placeholder="••••••••••••••••••••••••" autocomplete="off">
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="r2-bucket-name">Bucket Name</label>
-                  <input type="text" id="r2-bucket-name" class="form-control" placeholder="blushnbloomm-media" value="blushnbloomm-media">
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="r2-public-domain">Public Media Domain</label>
-                  <input type="url" id="r2-public-domain" class="form-control" placeholder="https://pub-91be6110e6d34a3bafea471d064d1b49.r2.dev" value="https://pub-91be6110e6d34a3bafea471d064d1b49.r2.dev">
-                </div>
-                <div class="form-group form-full">
-                  <label class="form-label" for="r2-worker-url">Cloudflare Worker Proxy (Optional)</label>
-                  <input type="url" id="r2-worker-url" class="form-control" placeholder="https://upload.blushnbloomm.workers.dev">
-                </div>
-                <div class="form-group form-full" style="display: flex; gap: 0.75rem; align-items: center; margin-top: 0.5rem; flex-wrap: wrap;">
-                  <button type="submit" class="btn btn-primary" id="btn-save-r2-settings">
-                    Update Advanced Credentials
-                  </button>
-                  <button type="button" class="btn btn-outline-gold" id="btn-test-r2-conn">
-                    Probe Connection
-                  </button>
-                  <span id="r2-test-msg" style="font-size: 0.85rem; font-weight: 600;"></span>
-                </div>
-              </form>
-            </details>
           </div>
         </div>
 

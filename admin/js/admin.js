@@ -1329,6 +1329,11 @@ function updateStats() {
     const sigs = PRODUCTS.filter(p => p.badge && p.badge.toLowerCase().includes('signature')).length;
     signatureCountEl.textContent = sigs || '2';
   }
+
+  const badgeProducts = document.getElementById('tab-badge-products');
+  if (badgeProducts) {
+    badgeProducts.textContent = PRODUCTS.length;
+  }
 }
 
 /* ===================================================================
