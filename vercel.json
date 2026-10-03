@@ -2,11 +2,25 @@
   "outputDirectory": ".",
   "cleanUrls": true,
   "rewrites": [
+    { "source": "/money-garlands", "destination": "/money-garlands.html" },
+    { "source": "/bouquets", "destination": "/bouquets.html" },
+    { "source": "/customized-hampers", "destination": "/customized-hampers.html" },
+    { "source": "/wedding-gifting", "destination": "/wedding-gifting.html" },
+    { "source": "/customized-gifts", "destination": "/customized-gifts.html" },
+    { "source": "/luxury-addons", "destination": "/luxury-addons.html" },
     { "source": "/sitemap", "destination": "/sitemap.html" },
     { "source": "/admin", "destination": "/admin/index.html" },
     { "source": "/admin/(.*)", "destination": "/admin/$1" }
   ],
   "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    },
     {
       "source": "/sitemap.xml",
       "headers": [
@@ -20,7 +34,13 @@
         { "key": "Content-Type", "value": "text/plain; charset=utf-8" },
         { "key": "Cache-Control", "value": "public, max-age=86400, s-maxage=86400" }
       ]
+    },
+    {
+      "source": "/site.webmanifest",
+      "headers": [
+        { "key": "Content-Type", "value": "application/manifest+json; charset=utf-8" },
+        { "key": "Cache-Control", "value": "public, max-age=86400" }
+      ]
     }
   ]
 }
-

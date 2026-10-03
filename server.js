@@ -10,6 +10,7 @@ const MIME_TYPES = {
   '.css': 'text/css; charset=utf-8',
   '.js': 'application/javascript; charset=utf-8',
   '.json': 'application/json; charset=utf-8',
+  '.webmanifest': 'application/manifest+json; charset=utf-8',
   '.png': 'image/png',
   '.jpg': 'image/jpeg',
   '.jpeg': 'image/jpeg',
@@ -27,6 +28,13 @@ const server = http.createServer((req, res) => {
   let reqPath = decodeURI(req.url.split('?')[0]);
   if (reqPath === '/') reqPath = '/index.html';
   if (reqPath === '/admin' || reqPath === '/admin/') reqPath = '/admin/index.html';
+  if (reqPath === '/money-garlands') reqPath = '/money-garlands.html';
+  if (reqPath === '/bouquets') reqPath = '/bouquets.html';
+  if (reqPath === '/customized-hampers') reqPath = '/customized-hampers.html';
+  if (reqPath === '/wedding-gifting') reqPath = '/wedding-gifting.html';
+  if (reqPath === '/customized-gifts') reqPath = '/customized-gifts.html';
+  if (reqPath === '/luxury-addons') reqPath = '/luxury-addons.html';
+  if (reqPath === '/sitemap') reqPath = '/sitemap.html';
 
   if (req.method === 'POST' && reqPath === '/api/save-thumbnail') {
     let body = '';
@@ -119,7 +127,10 @@ const server = http.createServer((req, res) => {
 
     const headers = {
       'Content-Type': contentType,
-      'Accept-Ranges': 'bytes'
+      'Accept-Ranges': 'bytes',
+      'X-Content-Type-Options': 'nosniff',
+      'X-Frame-Options': 'SAMEORIGIN',
+      'Referrer-Policy': 'strict-origin-when-cross-origin'
     };
 
     if (ext === '.html' || ext === '.js' || ext === '.css' || ext === '.json') {

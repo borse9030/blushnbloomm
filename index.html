@@ -24,16 +24,25 @@
   <meta property="og:title" content="Bloom&amp;blush | Thoughtfully Crafted. Beautifully Presented.">
   <meta property="og:description" content="Luxury boutique gifting, customized money garlands, artisanal bridal bouquets, and celebration hampers in Pimpri-Chinchwad, Pune.">
   <meta property="og:image" content="https://blushnbloomm.in/assets/images/hero.jpg">
+  <meta property="og:image:secure_url" content="https://blushnbloomm.in/assets/images/hero.jpg">
+  <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Bloom&amp;blush Luxury Gifting &amp; Floral Studio">
   <meta property="og:url" content="https://blushnbloomm.in/">
+  <meta property="og:locale" content="en_IN">
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Bloom&amp;blush | Boutique Gifting &amp; Floral Studio Pune">
   <meta name="twitter:description" content="Bespoke money garlands, luxury bouquets, and celebration hampers by Siddhi Kokate in Pune.">
   <meta name="twitter:image" content="https://blushnbloomm.in/assets/images/hero.jpg">
+
+  <!-- Mobile & PWA Optimization -->
+  <link rel="manifest" href="site.webmanifest">
+  <meta name="theme-color" content="#5E1624">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
   <!-- Favicon & Brand Icons -->
   <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -83,7 +92,42 @@
         },
         "telephone": "+918180879442",
         "priceRange": "₹₹",
+        "currenciesAccepted": "INR",
+        "paymentAccepted": "Cash, UPI, Credit Card, Bank Transfer",
         "openingHours": "Mo-Su 10:00-20:00",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "reviewCount": "520",
+          "bestRating": "5",
+          "worstRating": "1"
+        },
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Artisanal Gifting & Floral Services",
+          "itemListElement": [
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Bespoke Groom Money Garlands",
+                "description": "Zero-pinhole origami currency garlands with velvet roses and gold zari brocade."
+              },
+              "priceCurrency": "INR",
+              "price": "4500"
+            },
+            {
+              "@type": "Offer",
+              "itemOffered": {
+                "@type": "Service",
+                "name": "Artisanal Bridal Bouquets",
+                "description": "Fresh English garden roses and eternal preserved florals with hand-dyed silk velvet ribbons."
+              },
+              "priceCurrency": "INR",
+              "price": "2450"
+            }
+          ]
+        },
         "sameAs": [
           "https://www.instagram.com/blushnbloomm.in?stkn=MTJxbzE1bHU5czRwNA=="
         ]
@@ -170,27 +214,27 @@
             <svg class="dropdown-chevron" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><path fill="currentColor" d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
           </a>
           <div class="nav-dropdown-menu" role="menu" aria-label="Collections categories">
-            <a href="category.html?id=money-garlands" class="nav-dropdown-item" role="menuitem">
+            <a href="money-garlands.html" class="nav-dropdown-item" role="menuitem">
               <span class="dropdown-item-title">Money Garlands</span>
               <span class="dropdown-item-desc">Auspicious &amp; Ceremonial Currency Designs</span>
             </a>
-            <a href="category.html?id=bouquets" class="nav-dropdown-item" role="menuitem">
+            <a href="bouquets.html" class="nav-dropdown-item" role="menuitem">
               <span class="dropdown-item-title">Artisanal Bouquets</span>
               <span class="dropdown-item-desc">Fresh &amp; Preserved Florals</span>
             </a>
-            <a href="category.html?id=customized-hampers" class="nav-dropdown-item" role="menuitem">
+            <a href="customized-hampers.html" class="nav-dropdown-item" role="menuitem">
               <span class="dropdown-item-title">Customized Hampers</span>
               <span class="dropdown-item-desc">Curated Luxury Gift Boxes</span>
             </a>
-            <a href="category.html?id=wedding-gifting" class="nav-dropdown-item" role="menuitem">
+            <a href="wedding-gifting.html" class="nav-dropdown-item" role="menuitem">
               <span class="dropdown-item-title">Wedding Gifting</span>
               <span class="dropdown-item-desc">Royal Trousseau &amp; Bridal Trays</span>
             </a>
-            <a href="category.html?id=customized-gifts" class="nav-dropdown-item" role="menuitem">
+            <a href="customized-gifts.html" class="nav-dropdown-item" role="menuitem">
               <span class="dropdown-item-title">Customized Keepsakes</span>
               <span class="dropdown-item-desc">Memory Keepsakes &amp; Frames</span>
             </a>
-            <a href="category.html?id=luxury-addons" class="nav-dropdown-item" role="menuitem">
+            <a href="luxury-addons.html" class="nav-dropdown-item" role="menuitem">
               <span class="dropdown-item-title">Luxury Add-ons</span>
               <span class="dropdown-item-desc">Botanical Domes &amp; Accents</span>
             </a>
@@ -340,7 +384,7 @@
       <!-- Right Column: Editorial Framed Image Composition with Calligraphy & Pagination -->
       <div class="hero-media-col">
         <div class="hero-media-frame js-tilt-card" id="hero-media-frame">
-          <img src="assets/images/hero.jpg" alt="Bloom&amp;blush Luxury Gifting and Floral Suite" class="hero-main-img" id="hero-carousel-img">
+          <img src="assets/images/hero.jpg" alt="Bloom&amp;blush Luxury Gifting and Floral Suite" class="hero-main-img" id="hero-carousel-img" width="580" height="720" fetchpriority="high" loading="eager">
           <div class="hero-script-ribbon">
             Gifts<br>Flowers<br>Memories<br>Forever
           </div>
@@ -423,7 +467,7 @@
         <!-- Left: Large Craftsmanship Photography / Video Frame with Play Overlay -->
         <div class="about-media-col">
           <div class="about-image-card js-tilt-card">
-            <img src="assets/images/wedding_trousseau.jpg" alt="Siddhi Kokate - Founder &amp; Creative Lead of Bloom&amp;blush Pimpri-Chinchwad, Pune" loading="lazy">
+            <img src="assets/images/wedding_trousseau.jpg" alt="Siddhi Kokate - Founder &amp; Creative Lead of Bloom&amp;blush Pimpri-Chinchwad, Pune" width="540" height="680" loading="lazy">
             <button type="button" class="about-play-overlay" id="btn-about-play" aria-label="Play Studio Craftsmanship Video">
               <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
             </button>
@@ -880,12 +924,12 @@
         <div class="footer-col">
           <h4>Dedicated Showcases</h4>
           <ul class="footer-links">
-            <li><a href="category.html?id=money-garlands">Money Garlands</a></li>
-            <li><a href="category.html?id=bouquets">Artisanal Bouquets</a></li>
-            <li><a href="category.html?id=customized-hampers">Customized Hampers</a></li>
-            <li><a href="category.html?id=wedding-gifting">Wedding &amp; Celebration Gifting</a></li>
-            <li><a href="category.html?id=customized-gifts">Customized Keepsakes</a></li>
-            <li><a href="category.html?id=luxury-addons">Luxury Add-ons</a></li>
+            <li><a href="money-garlands.html">Money Garlands</a></li>
+            <li><a href="bouquets.html">Artisanal Bouquets</a></li>
+            <li><a href="customized-hampers.html">Customized Hampers</a></li>
+            <li><a href="wedding-gifting.html">Wedding &amp; Celebration Gifting</a></li>
+            <li><a href="customized-gifts.html">Customized Keepsakes</a></li>
+            <li><a href="luxury-addons.html">Luxury Add-ons</a></li>
           </ul>
         </div>
 

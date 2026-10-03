@@ -136,9 +136,9 @@ function initCategoryPage() {
     }
   } catch (e) {}
 
-  // 2. Parse URL query params
+  // 2. Parse URL query params or preset category ID
   const urlParams = new URLSearchParams(window.location.search);
-  const catParam = urlParams.get('id');
+  const catParam = urlParams.get('id') || (typeof window !== 'undefined' && window.PRESET_CATEGORY_ID);
 
   if (catParam && (CATEGORY_META[catParam] || COLLECTIONS.some(c => c.id === catParam))) {
     CURRENT_CAT_ID = catParam;
