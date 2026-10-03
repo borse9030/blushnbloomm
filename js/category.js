@@ -201,10 +201,54 @@ function renderCategory(catId, updateUrl = true) {
   const displayTitle = colObj ? colObj.title : meta.title;
   const displayImage = colObj ? colObj.image : meta.image;
 
-  // 1. Update Head metadata
+  // 1. Update Head metadata & Canonical
   document.title = `${displayTitle} | Bloom&blush Boutique Studio Pune`;
   const metaDescEl = document.getElementById('page-meta-desc');
   if (metaDescEl) metaDescEl.content = meta.lead;
+
+  const canonicalEl = document.getElementById('canonical-link');
+  if (canonicalEl) {
+    canonicalEl.href = `https://blushnbloomm.in/category.html?id=${catId}`;
+  }
+  const ogTitleEl = document.getElementById('og-title');
+  if (ogTitleEl) ogTitleEl.content = `${displayTitle} | Bloom&blush Pune`;
+  const ogDescEl = document.getElementById('og-desc');
+  if (ogDescEl) ogDescEl.content = meta.lead;
+
+  // Update Dynamic JSON-LD Structured Data
+  const jsonLdEl = document.getElementById('category-json-ld');
+  if (jsonLdEl) {
+    const structuredData = {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": `${displayTitle} Collection | Bloom&blush`,
+      "description": meta.lead,
+      "url": `https://blushnbloomm.in/category.html?id=${catId}`,
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Bloom&blush",
+        "url": "https://blushnbloomm.in"
+      },
+      "breadcrumb": {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://blushnbloomm.in/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": displayTitle,
+            "item": `https://blushnbloomm.in/category.html?id=${catId}`
+          }
+        ]
+      }
+    };
+    jsonLdEl.textContent = JSON.stringify(structuredData, null, 2);
+  }
 
   // 2. Update Breadcrumb
   const bcEl = document.getElementById('bc-current-name');

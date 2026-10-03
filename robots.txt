@@ -1,4 +1,39 @@
+# ===================================================================
+# Bloom&blush (blushnbloomm.in) - Search Engine Robots Configuration
+# Studio: Pimpri-Chinchwad, Pune, Maharashtra
+# Official Website: https://blushnbloomm.in
+# ===================================================================
+
 User-agent: *
 Allow: /
+Allow: /assets/
+Allow: /css/
+Allow: /js/
+Allow: /data/
+Allow: /category.html
+Allow: /sitemap.html
+Disallow: /admin/
+Disallow: /api/
 
-Sitemap: https://blushnbloomm.com/sitemap.xml
+User-agent: Googlebot
+Allow: /
+Allow: /assets/
+Allow: /css/
+Allow: /js/
+Allow: /data/
+Disallow: /admin/
+Disallow: /api/
+
+User-agent: Googlebot-Image
+Allow: /assets/images/
+Allow: /assets/videos/
+Allow: /assets/reels/
+
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+# Official Google-compliant XML Sitemap
+Sitemap: https://blushnbloomm.in/sitemap.xml
+Host: blushnbloomm.in

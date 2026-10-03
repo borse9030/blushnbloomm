@@ -1,45 +1,136 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- =========================================================
+       01. Homepage & Flagship Showcase
+       ========================================================= -->
   <url>
-    <loc>https://blushnbloomm.com/</loc>
-    <lastmod>2026-09-21</lastmod>
-    <changefreq>weekly</changefreq>
+    <loc>https://blushnbloomm.in/</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://blushnbloomm.in/assets/images/hero.jpg</image:loc>
+      <image:title>Bloom&amp;blush Boutique Gifting and Floral Studio Pune</image:title>
+      <image:caption>Handcrafted bespoke money garlands, artisanal bridal bouquets, and luxury hampers by Siddhi Kokate in Pimpri-Chinchwad, Pune.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://blushnbloomm.in/assets/images/web_logo.png</image:loc>
+      <image:title>Bloom&amp;blush Brand Emblem Logo</image:title>
+      <image:caption>Luxury floral and boutique gifting brand emblem for blushnbloomm.in.</image:caption>
+    </image:image>
   </url>
+
+  <!-- =========================================================
+       02. Money Garlands Collection Showcase
+       ========================================================= -->
   <url>
-    <loc>https://blushnbloomm.com/#collections</loc>
-    <lastmod>2026-09-21</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://blushnbloomm.com/#featured</loc>
-    <lastmod>2026-09-21</lastmod>
+    <loc>https://blushnbloomm.in/category.html?id=money-garlands</loc>
+    <lastmod>2026-10-03</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blushnbloomm.in/assets/images/money_garland.jpg</image:loc>
+      <image:title>Royal Sovereign Groom Money Garland</image:title>
+      <image:caption>Origami pleated currency garland with velvet roses and gold zari neckband for grooms and Indian wedding ceremonies.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://blushnbloomm.in/assets/images/imperial_money_garland.jpg</image:loc>
+      <image:title>Imperial Golden Groom Currency Garland</image:title>
+      <image:caption>Handcrafted currency note haar for wedding baraat and milestone ceremonies in Pune.</image:caption>
+    </image:image>
   </url>
+
+  <!-- =========================================================
+       03. Artisanal Bouquets & Eternal Florals
+       ========================================================= -->
   <url>
-    <loc>https://blushnbloomm.com/#about</loc>
-    <lastmod>2026-09-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://blushnbloomm.com/#occasions</loc>
-    <lastmod>2026-09-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://blushnbloomm.com/#portfolio</loc>
-    <lastmod>2026-09-21</lastmod>
+    <loc>https://blushnbloomm.in/category.html?id=bouquets</loc>
+    <lastmod>2026-10-03</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blushnbloomm.in/assets/images/editorial_bouquet.jpg</image:loc>
+      <image:title>Blush and Wine Bridal Bouquet with Velvet Ribbons</image:title>
+      <image:caption>Bespoke hand-tied bridal bouquet featuring wine garden roses, ranunculus, and hand-dyed trailing velvet ribbons.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://blushnbloomm.in/assets/images/hero_creation_bouquet.jpg</image:loc>
+      <image:title>Preserved Eternal Rose Bouquet</image:title>
+      <image:caption>Long-lasting preserved florals and seasonal blooms handcrafted in Pimpri-Chinchwad, Pune.</image:caption>
+    </image:image>
   </url>
+
+  <!-- =========================================================
+       04. Customized Celebration Hampers
+       ========================================================= -->
   <url>
-    <loc>https://blushnbloomm.com/#contact</loc>
-    <lastmod>2026-09-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://blushnbloomm.in/category.html?id=customized-hampers</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blushnbloomm.in/assets/images/luxury_hamper.jpg</image:loc>
+      <image:title>Velvet Reverie Luxury Celebration Hamper</image:title>
+      <image:caption>Burgundy velvet gift trunk with brass dry fruit canisters, scented soy candle, and personalized wax seal greetings.</image:caption>
+    </image:image>
   </url>
+
+  <!-- =========================================================
+       05. Wedding & Celebration Gifting / Trousseau
+       ========================================================= -->
+  <url>
+    <loc>https://blushnbloomm.in/category.html?id=wedding-gifting</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://blushnbloomm.in/assets/images/wedding_trousseau.jpg</image:loc>
+      <image:title>Royal Bridal Trousseau Presentation Trays</image:title>
+      <image:caption>Opulent wedding trousseau packaging, shagun platters, and zardozi potlis for grand celebration gifting.</image:caption>
+    </image:image>
+  </url>
+
+  <!-- =========================================================
+       06. Customized Keepsakes & Resin Preservation
+       ========================================================= -->
+  <url>
+    <loc>https://blushnbloomm.in/category.html?id=customized-gifts</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://blushnbloomm.in/assets/images/customized_gifts.jpg</image:loc>
+      <image:title>Handcrafted Memory Keepsake Box &amp; Flower Preservation</image:title>
+      <image:caption>Custom engraved wooden keepsake boxes, brass calligraphy letters, and wedding flower resin preservation in Pune.</image:caption>
+    </image:image>
+  </url>
+
+  <!-- =========================================================
+       07. Luxury Add-ons & Botanical Domes
+       ========================================================= -->
+  <url>
+    <loc>https://blushnbloomm.in/category.html?id=luxury-addons</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <image:image>
+      <image:loc>https://blushnbloomm.in/assets/images/floral_dome.jpg</image:loc>
+      <image:title>Preserved Ecuadorian Rose Botanical Cloche Dome</image:title>
+      <image:caption>Forever real rose preserved in archival glass cloche bell jar, lasting up to 3 years.</image:caption>
+    </image:image>
+  </url>
+
+  <!-- =========================================================
+       08. HTML Sitemap Page (for Google Crawlers & Visitors)
+       ========================================================= -->
+  <url>
+    <loc>https://blushnbloomm.in/sitemap.html</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
 </urlset>

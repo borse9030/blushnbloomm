@@ -18,6 +18,7 @@
   let searchQuickTags = null;
   let searchCustomWaBtn = null;
   let selectedResultIndex = -1;
+  let seoKeywordsList = [];
 
   // Initialize Search when DOM is ready
   if (document.readyState === 'loading') {
@@ -26,7 +27,19 @@
     initSearch();
   }
 
+  function loadSeoKeywords() {
+    fetch('data/seo-keywords.json')
+      .then(res => res.json())
+      .then(data => {
+        if (data && Array.isArray(data.keywords)) {
+          seoKeywordsList = data.keywords;
+        }
+      })
+      .catch(() => {});
+  }
+
   function initSearch() {
+    loadSeoKeywords();
     searchBackdrop = document.getElementById('search-modal-backdrop');
     searchInput = document.getElementById('search-main-input');
     searchClearBtn = document.getElementById('search-clear-btn');
@@ -234,6 +247,26 @@
         scoredProducts.push({ product: p, score });
       }
     });
+
+    // Semantic Boost using 950+ SEO Keywords Taxonomy
+    if (seoKeywordsList && seoKeywordsList.length > 0) {
+      const matchingKeywords = seoKeywordsList.filter(k => 
+        k.keyword === trimmed || k.keyword.includes(trimmed) || trimmed.includes(k.keyword)
+      );
+
+      matchingKeywords.forEach(mk => {
+        products.forEach(p => {
+          if (mk.targetPage.includes(p.collectionId)) {
+            const existing = scoredProducts.find(sp => sp.product.id === p.id);
+            if (existing) {
+              existing.score += 40;
+            } else {
+              scoredProducts.push({ product: p, score: 35 });
+            }
+          }
+        });
+      });
+    }
 
     scoredProducts.sort((a, b) => b.score - a.score);
     const matchedProducts = scoredProducts.map(sp => sp.product);
