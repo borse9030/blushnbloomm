@@ -1996,6 +1996,15 @@ function initTabNavigation() {
       if (viewSettings) viewSettings.style.display = 'block';
       updateCloudCounters();
     }
+
+    const activeTabEl = document.getElementById(`tab-nav-${target}`);
+    if (activeTabEl && typeof activeTabEl.scrollIntoView === 'function') {
+      try {
+        activeTabEl.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+      } catch (e) {
+        // Fallback for older browsers
+      }
+    }
   }
 
   if (tabCollections) tabCollections.addEventListener('click', () => { switchTab('collections'); window.location.hash = 'collections'; });
