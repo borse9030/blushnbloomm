@@ -73,8 +73,40 @@
         <span class="brand-name-header">Bloom&amp;blush</span>
       </a>
 
+      <!-- Desktop Navigation Menu -->
       <nav class="desktop-nav" aria-label="Main Navigation">
-        <a href="#collections" class="nav-link">Collections</a>
+        <div class="nav-dropdown" id="nav-collections-dropdown">
+          <a href="#collections" class="nav-link nav-link-dropdown" id="nav-link-collections" aria-haspopup="true" aria-expanded="false">
+            <span>Collections</span>
+            <svg class="dropdown-chevron" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true"><path fill="currentColor" d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+          </a>
+          <div class="nav-dropdown-menu" role="menu" aria-label="Collections categories">
+            <a href="category.html?id=money-garlands" class="nav-dropdown-item" role="menuitem">
+              <span class="dropdown-item-title">Money Garlands</span>
+              <span class="dropdown-item-desc">Auspicious &amp; Ceremonial Currency Designs</span>
+            </a>
+            <a href="category.html?id=bouquets" class="nav-dropdown-item" role="menuitem">
+              <span class="dropdown-item-title">Artisanal Bouquets</span>
+              <span class="dropdown-item-desc">Fresh &amp; Preserved Florals</span>
+            </a>
+            <a href="category.html?id=customized-hampers" class="nav-dropdown-item" role="menuitem">
+              <span class="dropdown-item-title">Customized Hampers</span>
+              <span class="dropdown-item-desc">Curated Luxury Gift Boxes</span>
+            </a>
+            <a href="category.html?id=wedding-gifting" class="nav-dropdown-item" role="menuitem">
+              <span class="dropdown-item-title">Wedding Gifting</span>
+              <span class="dropdown-item-desc">Royal Trousseau &amp; Bridal Trays</span>
+            </a>
+            <a href="category.html?id=customized-gifts" class="nav-dropdown-item" role="menuitem">
+              <span class="dropdown-item-title">Customized Keepsakes</span>
+              <span class="dropdown-item-desc">Memory Keepsakes &amp; Frames</span>
+            </a>
+            <a href="category.html?id=luxury-addons" class="nav-dropdown-item" role="menuitem">
+              <span class="dropdown-item-title">Luxury Add-ons</span>
+              <span class="dropdown-item-desc">Botanical Domes &amp; Accents</span>
+            </a>
+          </div>
+        </div>
         <a href="#featured" class="nav-link">Creations</a>
         <a href="#about" class="nav-link">About</a>
         <a href="#achievements" class="nav-link">Achievements</a>
@@ -84,10 +116,10 @@
       </nav>
 
       <div class="nav-cta">
-        <!-- Search Trigger Button (Desktop & Mobile) -->
+        <!-- Integrated Luxury Search Bar Trigger -->
         <button type="button" class="btn-header-search js-search-trigger" id="header-search-btn" aria-label="Search creations, garlands, bouquets, hampers" title="Search creations (Ctrl+K)">
           <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-          <span class="search-btn-text">Search</span>
+          <span class="search-btn-text">Search creations...</span>
           <span class="search-btn-shortcut">⌘K</span>
         </button>
 
