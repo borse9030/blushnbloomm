@@ -10,9 +10,9 @@ const R2Storage = (() => {
 
   // Default / cached configuration pre-configured for blushnbloomm-media
   let config = {
-    accountId: 'fe55d9a781822b063a8e6a697ae6136b',
-    accessKeyId: 'b463c9cf5982333fefa19b78cf07a207',
-    secretAccessKey: '0b52e0182c0f07973680ad6304706eed4272930de0a1125c217aa545f435503f',
+    accountId: '',
+    accessKeyId: '',
+    secretAccessKey: '',
     bucketName: 'blushnbloomm-media',
     publicDomain: 'https://pub-91be6110e6d34a3bafea471d064d1b49.r2.dev',
     workerUrl: ''     // Optional Cloudflare Worker upload proxy
@@ -29,11 +29,11 @@ const R2Storage = (() => {
       console.warn('[R2 Storage] Failed to load config:', e);
     }
     // Ensure active credentials are always populated
-    if (!config.accountId) config.accountId = 'fe55d9a781822b063a8e6a697ae6136b';
+    if (!config.accountId) config.accountId = '';
     if (!config.bucketName) config.bucketName = 'blushnbloomm-media';
     if (!config.publicDomain) config.publicDomain = 'https://pub-91be6110e6d34a3bafea471d064d1b49.r2.dev';
-    if (!config.accessKeyId) config.accessKeyId = 'b463c9cf5982333fefa19b78cf07a207';
-    if (!config.secretAccessKey) config.secretAccessKey = '0b52e0182c0f07973680ad6304706eed4272930de0a1125c217aa545f435503f';
+    if (!config.accessKeyId) config.accessKeyId = '';
+    if (!config.secretAccessKey) config.secretAccessKey = '';
     return config;
   }
 
