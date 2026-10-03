@@ -47,7 +47,21 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  const filePath = path.join(ROOT, reqPath);
+  let filePath = path.join(ROOT, reqPath);
+  if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
+    const basename = path.basename(reqPath);
+    const videoCandidate = path.join(ROOT, 'assets', 'videos', basename);
+    const imageCandidate = path.join(ROOT, 'assets', 'images', basename);
+    const reelCandidate = path.join(ROOT, 'assets', 'reels', basename);
+    if (fs.existsSync(videoCandidate) && fs.statSync(videoCandidate).isFile()) {
+      filePath = videoCandidate;
+    } else if (fs.existsSync(imageCandidate) && fs.statSync(imageCandidate).isFile()) {
+      filePath = imageCandidate;
+    } else if (fs.existsSync(reelCandidate) && fs.statSync(reelCandidate).isFile()) {
+      filePath = reelCandidate;
+    }
+  }
+
   if (!filePath.startsWith(ROOT)) {
     res.writeHead(403);
     return res.end('Forbidden');
@@ -103,10 +117,18 @@ const server = http.createServer((req, res) => {
       return;
     }
 
-    res.writeHead(200, {
+    const headers = {
       'Content-Type': contentType,
       'Accept-Ranges': 'bytes'
-    });
+    };
+
+    if (ext === '.html' || ext === '.js' || ext === '.css' || ext === '.json') {
+      headers['Cache-Control'] = 'no-cache, no-store, must-revalidate';
+      headers['Pragma'] = 'no-cache';
+      headers['Expires'] = '0';
+    }
+
+    res.writeHead(200, headers);
     fs.createReadStream(filePath).pipe(res);
   });
 });

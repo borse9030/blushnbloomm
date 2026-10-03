@@ -2086,12 +2086,22 @@ function renderAdminAchievements() {
   }
 
   grid.innerHTML = items.map(item => {
-    const isVideo = item.mediaType === 'video';
-    let thumb = item.thumbnailUrl || item.mediaUrl;
+    const isVideo = item.mediaType === 'video' || (item.mediaUrl && (item.mediaUrl.endsWith('.mp4') || item.mediaUrl.endsWith('.webm')));
+    let thumb = item.thumbnailUrl;
     if (isVideo && item.mediaUrl) {
       const ytMatch = item.mediaUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/i);
-      if (ytMatch && (!item.thumbnailUrl || item.thumbnailUrl.includes('assets/images/'))) {
+      if (ytMatch) {
         thumb = `https://img.youtube.com/vi/${ytMatch[1]}/hqdefault.jpg`;
+      }
+    }
+
+    if (!thumb || thumb.endsWith('.mp4')) {
+      if (item.id === 'ach-lalbaugcha-raja-garland-1') {
+        thumb = 'assets/images/reel_garland_preview.jpg';
+      } else if (item.id === 'ach-lalbaugcha-raja-garland-2') {
+        thumb = 'assets/images/reel_styling_preview.jpg';
+      } else {
+        thumb = isVideo ? 'assets/images/hero.jpg' : (item.mediaUrl || 'assets/images/hero.jpg');
       }
     }
 
@@ -2100,7 +2110,11 @@ function renderAdminAchievements() {
     return `
       <div class="achieve-card-admin" data-id="${item.id}">
         <div class="achieve-card-media">
-          <img src="${escapeHtml(thumb)}" alt="${escapeHtml(item.title)}" loading="lazy" onerror="this.src='assets/images/hero.jpg'">
+          ${isVideo && item.mediaUrl && !item.mediaUrl.includes('youtube') && !item.mediaUrl.includes('youtu.be') ? `
+            <video src="${escapeHtml(item.mediaUrl)}" poster="${escapeHtml(thumb)}" muted playsinline loop style="width: 100%; height: 100%; object-fit: cover;"></video>
+          ` : `
+            <img src="${escapeHtml(thumb)}" alt="${escapeHtml(item.title)}" loading="lazy" onerror="this.src='assets/images/hero.jpg'">
+          `}
           
           <div class="achieve-card-badges">
             <span class="achieve-card-badge">${typeLabel}</span>
@@ -2577,7 +2591,7 @@ function handleAchievementFormSubmit(e) {
     category: category,
     mediaType: mediaType,
     mediaUrl: mediaUrl,
-    thumbnailUrl: thumbnailUrl || mediaUrl,
+    thumbnailUrl: thumbnailUrl || (mediaType === 'video' ? (id === 'ach-lalbaugcha-raja-garland-1' ? 'assets/images/reel_garland_preview.jpg' : (id === 'ach-lalbaugcha-raja-garland-2' ? 'assets/images/reel_styling_preview.jpg' : '')) : mediaUrl),
     date: date,
     badge: badge,
     description: description,

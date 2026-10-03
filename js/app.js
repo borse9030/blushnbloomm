@@ -708,8 +708,28 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') closeInstagramModal();
 });
 
+function normalizeMediaUrl(url, defaultType = 'image') {
+  if (!url) return '';
+  url = url.trim();
+  if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:')) {
+    return url;
+  }
+  let clean = url.replace(/^\/+/, '');
+  const base = clean.split('/').pop();
+  if (base.endsWith('.mp4') || base.endsWith('.webm') || base.endsWith('.ogg')) {
+    return 'assets/videos/' + base;
+  }
+  if (base.endsWith('.jpg') || base.endsWith('.png') || base.endsWith('.jpeg') || base.endsWith('.webp') || base.endsWith('.svg')) {
+    return 'assets/images/' + base;
+  }
+  if (clean.startsWith('public/')) {
+    clean = clean.replace(/^public\//, 'assets/');
+  }
+  return clean;
+}
+
 /**
- * 07. Achievements Section (Panel 07 - KPI Stats & 4 Milestones)
+ * 07. Achievements Section (Panel 07 - KPI Stats & Milestone Reels)
  */
 function renderAchievements(filter = 'all') {
   const container = document.getElementById('achievements-grid');
@@ -727,32 +747,183 @@ function renderAchievements(filter = 'all') {
         return cat.includes(f);
       });
 
-  container.innerHTML = (displayItems.length > 0 ? displayItems : dataset).map(item => {
-    const thumb = item.thumbnailUrl || item.mediaUrl || item.image || 'assets/images/hero.jpg';
-    const isVideo = item.mediaType === 'video';
+  const itemsToRender = displayItems.length > 0 ? displayItems : dataset;
+  container.dataset.count = itemsToRender.length;
+
+  container.innerHTML = itemsToRender.map(item => {
+    const isVideo = item.mediaType === 'video' || (item.mediaUrl && (item.mediaUrl.endsWith('.mp4') || item.mediaUrl.endsWith('.webm')));
+    const mediaUrl = normalizeMediaUrl(item.mediaUrl, 'video');
+    let poster = normalizeMediaUrl(item.thumbnailUrl, 'image');
+
+    if (!poster || poster.endsWith('.mp4')) {
+      if (item.id === 'ach-lalbaugcha-raja-garland-1' || (mediaUrl && mediaUrl.includes('398718527598'))) {
+        poster = 'assets/images/reel_garland_preview.jpg';
+      } else if (item.id === 'ach-lalbaugcha-raja-garland-2' || (mediaUrl && mediaUrl.includes('399154073737'))) {
+        poster = 'assets/images/reel_styling_preview.jpg';
+      } else {
+        poster = 'assets/images/hero.jpg';
+      }
+    }
+
+    if (isVideo && mediaUrl) {
+      return `
+        <article class="milestone-editorial-card milestone-video-card js-tilt-card js-open-achieve" data-achieve-id="${item.id}" role="button" tabindex="0" aria-label="Watch ${escapeHtml(item.title)}">
+          <div class="milestone-media milestone-video-media">
+            <video 
+              class="milestone-card-video" 
+              src="${escapeHtml(mediaUrl)}" 
+              poster="${escapeHtml(poster)}" 
+              muted 
+              playsinline 
+              loop 
+              preload="metadata"
+            ></video>
+            <div class="milestone-media-shade" aria-hidden="true"></div>
+
+            <div class="milestone-top-badges">
+              ${item.badge ? `<span class="milestone-badge-pill">${escapeHtml(item.badge)}</span>` : ''}
+              <span class="milestone-format-pill">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm0 4h3l-2-4H3c-.6 0-1 .4-1 1v3h2zm5 0h4l-2-4H9l2 4zm6 0h4l-2-4h-2l2 4zM4 10v8h16v-8H4z"/></svg>
+                <span>Reel ${escapeHtml(item.duration || '')}</span>
+              </span>
+            </div>
+
+            <div class="milestone-play-center" aria-hidden="true">
+              <div class="milestone-play-circle">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+              <span class="milestone-play-label">Watch Full Reel</span>
+            </div>
+
+            <div class="milestone-inline-controls">
+              <button type="button" class="btn-video-sound-toggle js-sound-toggle" data-achieve-id="${item.id}" aria-label="Toggle Sound" title="Sound On / Off">
+                <svg class="icon-muted" viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27l4.73 4.73H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73 4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+                <svg class="icon-unmuted" viewBox="0 0 24 24" width="16" height="16" style="display:none;"><path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="milestone-body">
+            <div class="milestone-meta-row">
+              <span class="milestone-cat">${escapeHtml(item.category || 'Studio Milestone')}</span>
+              ${item.date ? `<span class="milestone-date">${escapeHtml(item.date)}</span>` : ''}
+            </div>
+            <h4 class="milestone-title">${escapeHtml(item.title)}</h4>
+            ${item.description ? `<p class="milestone-desc">${escapeHtml(item.description)}</p>` : ''}
+            <div class="milestone-footer-row">
+              <span class="milestone-cta-link">
+                <span>View Ceremony Highlight</span>
+                <svg viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </span>
+            </div>
+          </div>
+        </article>
+      `;
+    }
 
     return `
-      <article class="milestone-editorial-card js-tilt-card js-open-achieve" data-achieve-id="${item.id}">
+      <article class="milestone-editorial-card js-tilt-card js-open-achieve" data-achieve-id="${item.id}" role="button" tabindex="0" aria-label="${escapeHtml(item.title)}">
         <div class="milestone-media">
-          <img src="${escapeHtml(thumb)}" alt="${escapeHtml(item.title)} - Bloom&blush" loading="lazy">
-          ${isVideo ? `
-            <div class="about-play-overlay" style="width:48px;height:48px;" title="Watch Video">
-              <svg viewBox="0 0 24 24" width="20" height="20"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
-            </div>
-          ` : ''}
+          <img src="${escapeHtml(poster)}" alt="${escapeHtml(item.title)} - Bloom&blush" loading="lazy" onerror="this.src='assets/images/hero.jpg'">
+          ${item.badge ? `<div class="milestone-top-badges"><span class="milestone-badge-pill">${escapeHtml(item.badge)}</span></div>` : ''}
         </div>
         <div class="milestone-body">
-          <span class="milestone-cat">${escapeHtml(item.category || 'Studio Milestone')}</span>
+          <div class="milestone-meta-row">
+            <span class="milestone-cat">${escapeHtml(item.category || 'Studio Milestone')}</span>
+            ${item.date ? `<span class="milestone-date">${escapeHtml(item.date)}</span>` : ''}
+          </div>
           <h4 class="milestone-title">${escapeHtml(item.title)}</h4>
+          ${item.description ? `<p class="milestone-desc">${escapeHtml(item.description)}</p>` : ''}
+          <div class="milestone-footer-row">
+            <span class="milestone-cta-link">
+              <span>View Milestone</span>
+              <svg viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </span>
+          </div>
         </div>
       </article>
     `;
   }).join('');
 
+  // Wire up video card interactive controls
+  container.querySelectorAll('.milestone-video-card').forEach(card => {
+    const video = card.querySelector('video.milestone-card-video');
+    const soundBtn = card.querySelector('.js-sound-toggle');
+    if (!video) return;
+
+    // Hover muted preview
+    card.addEventListener('mouseenter', () => {
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          card.classList.add('is-playing');
+        }).catch(() => {});
+      }
+    });
+
+    card.addEventListener('mouseleave', () => {
+      if (video.muted) {
+        video.pause();
+        card.classList.remove('is-playing');
+      }
+    });
+
+    // Sound toggle button on card
+    if (soundBtn) {
+      soundBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const iconMuted = soundBtn.querySelector('.icon-muted');
+        const iconUnmuted = soundBtn.querySelector('.icon-unmuted');
+
+        if (video.muted) {
+          // Pause and mute other videos on page
+          document.querySelectorAll('.milestone-card-video').forEach(v => {
+            if (v !== video) {
+              v.muted = true;
+              v.pause();
+              const otherCard = v.closest('.milestone-video-card');
+              if (otherCard) {
+                otherCard.classList.remove('is-playing');
+                const btn = otherCard.querySelector('.js-sound-toggle');
+                if (btn) {
+                  const m = btn.querySelector('.icon-muted');
+                  const u = btn.querySelector('.icon-unmuted');
+                  if (m) m.style.display = 'block';
+                  if (u) u.style.display = 'none';
+                }
+              }
+            }
+          });
+
+          video.muted = false;
+          video.play().then(() => {
+            card.classList.add('is-playing');
+            if (iconMuted) iconMuted.style.display = 'none';
+            if (iconUnmuted) iconUnmuted.style.display = 'block';
+          }).catch(() => {});
+        } else {
+          video.muted = true;
+          if (iconMuted) iconMuted.style.display = 'block';
+          if (iconUnmuted) iconUnmuted.style.display = 'none';
+        }
+      });
+    }
+  });
+
+  // Card click opens modal
   container.querySelectorAll('.js-open-achieve').forEach(el => {
     el.addEventListener('click', () => {
       const achId = el.dataset.achieveId;
+      document.querySelectorAll('.milestone-card-video').forEach(v => v.pause());
       if (achId) openAchievementModal(achId);
+    });
+
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const achId = el.dataset.achieveId;
+        document.querySelectorAll('.milestone-card-video').forEach(v => v.pause());
+        if (achId) openAchievementModal(achId);
+      }
     });
   });
 
@@ -1162,14 +1333,27 @@ function openAchievementModal(achieveId) {
 
   if (!backdrop || !mediaWrapper) return;
 
-  const isVideo = item.mediaType === 'video';
-  if (isVideo && item.mediaUrl) {
+  const isVideo = item.mediaType === 'video' || (item.mediaUrl && (item.mediaUrl.endsWith('.mp4') || item.mediaUrl.endsWith('.webm')));
+  const mediaUrl = normalizeMediaUrl(item.mediaUrl, 'video');
+  let poster = normalizeMediaUrl(item.thumbnailUrl, 'image');
+
+  if (!poster || poster.endsWith('.mp4')) {
+    if (item.id === 'ach-lalbaugcha-raja-garland-1' || (mediaUrl && mediaUrl.includes('398718527598'))) {
+      poster = 'assets/images/reel_garland_preview.jpg';
+    } else if (item.id === 'ach-lalbaugcha-raja-garland-2' || (mediaUrl && mediaUrl.includes('399154073737'))) {
+      poster = 'assets/images/reel_styling_preview.jpg';
+    } else {
+      poster = 'assets/images/hero.jpg';
+    }
+  }
+
+  if (isVideo && mediaUrl) {
     mediaWrapper.innerHTML = `
-      <video src="${escapeHtml(item.mediaUrl)}" controls autoplay playsinline loop preload="auto" poster="${escapeHtml(item.thumbnailUrl || '')}" style="max-height: 520px; width: 100%;"></video>
+      <video src="${escapeHtml(mediaUrl)}" controls autoplay playsinline loop preload="auto" poster="${escapeHtml(poster)}" style="max-height: 520px; width: 100%; border-radius: 12px;"></video>
     `;
   } else {
     mediaWrapper.innerHTML = `
-      <img src="${escapeHtml(item.thumbnailUrl || item.mediaUrl || item.image)}" alt="${escapeHtml(item.title)} - Bloom&blush" style="max-height: 520px; width: 100%; object-fit: contain;">
+      <img src="${escapeHtml(poster || mediaUrl || item.image)}" alt="${escapeHtml(item.title)} - Bloom&blush" style="max-height: 520px; width: 100%; object-fit: contain; border-radius: 12px;">
     `;
   }
 
@@ -1333,7 +1517,21 @@ function restoreCachedData() {
     const cAch = localStorage.getItem('bloom_custom_achievements');
     if (cAch) {
       const parsed = JSON.parse(cAch);
-      if (Array.isArray(parsed) && parsed.length > 0) ACHIEVEMENTS = parsed;
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        ACHIEVEMENTS = parsed.map(item => {
+          if (item.id === 'ach-lalbaugcha-raja-garland-1') {
+            if (!item.thumbnailUrl || item.thumbnailUrl.endsWith('.mp4')) {
+              item.thumbnailUrl = 'assets/images/reel_garland_preview.jpg';
+            }
+          } else if (item.id === 'ach-lalbaugcha-raja-garland-2') {
+            if (!item.thumbnailUrl || item.thumbnailUrl.endsWith('.mp4')) {
+              item.thumbnailUrl = 'assets/images/reel_styling_preview.jpg';
+            }
+          }
+          return item;
+        });
+        localStorage.setItem('bloom_custom_achievements', JSON.stringify(ACHIEVEMENTS));
+      }
     }
   } catch (e) {}
 }
@@ -1447,12 +1645,40 @@ async function loadPortfolioData() {
 }
 
 async function loadAchievementsData() {
+  // 1. Fetch achievements.json fallback for immediate, reliable loading
+  try {
+    const res = await fetch('achievements.json');
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data) && data.length > 0) {
+        const local = localStorage.getItem('bloom_custom_achievements');
+        const needsSync = !local || !ACHIEVEMENTS || ACHIEVEMENTS.length === 0 || ACHIEVEMENTS.some(a => a.thumbnailUrl && a.thumbnailUrl.endsWith('.mp4'));
+        if (needsSync) {
+          ACHIEVEMENTS = data;
+          try {
+            localStorage.setItem('bloom_custom_achievements', JSON.stringify(ACHIEVEMENTS));
+          } catch (e) {}
+          renderAchievements('all');
+        }
+      }
+    }
+  } catch (err) {}
+
+  // 2. Firestore Cloud Database Listener
   if (typeof firestoreDb !== 'undefined' && firestoreDb) {
     try {
       firestoreDb.collection('achievements').onSnapshot((snapshot) => {
         if (!snapshot.empty) {
           const cloudAch = [];
-          snapshot.forEach(doc => cloudAch.push(doc.data()));
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            if (data.id === 'ach-lalbaugcha-raja-garland-1' && (!data.thumbnailUrl || data.thumbnailUrl.endsWith('.mp4'))) {
+              data.thumbnailUrl = 'assets/images/reel_garland_preview.jpg';
+            } else if (data.id === 'ach-lalbaugcha-raja-garland-2' && (!data.thumbnailUrl || data.thumbnailUrl.endsWith('.mp4'))) {
+              data.thumbnailUrl = 'assets/images/reel_styling_preview.jpg';
+            }
+            cloudAch.push(data);
+          });
           if (cloudAch.length > 0) {
             cloudAch.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
             ACHIEVEMENTS = cloudAch;
