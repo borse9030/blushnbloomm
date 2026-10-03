@@ -171,10 +171,18 @@ function renderProducts(filterCollectionId = 'all') {
     : PRODUCTS.filter(p => p.collectionId === filterCollectionId);
 
   if (filtered.length === 0) {
+    const waNum = (typeof CONFIG !== 'undefined' && CONFIG.whatsappNumber) ? CONFIG.whatsappNumber : '918180879442';
     container.innerHTML = `
-      <div style="text-align: center; padding: 4rem 1rem;">
-        <p style="font-family: var(--font-serif); font-size: 1.6rem; color: var(--burgundy-deep);">No creations found in this collection.</p>
-        <p style="font-size: 0.92rem; color: var(--text-muted); margin-top: 0.5rem;">Select "All Creations" above or chat with Siddhi Kokate on WhatsApp for bespoke orders.</p>
+      <div style="text-align: center; padding: 4.5rem 1.5rem; background: rgba(253, 248, 247, 0.7); border-radius: 20px; border: 1px dashed rgba(160, 44, 90, 0.2); max-width: 680px; margin: 2rem auto;">
+        <div style="font-size: 2.2rem; margin-bottom: 0.75rem;">🌸</div>
+        <p style="font-family: var(--font-serif); font-size: 1.6rem; color: var(--burgundy-deep); margin-bottom: 0.5rem; font-weight: 500;">Bespoke Handcrafted Creations</p>
+        <p style="font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; max-width: 520px; margin: 0 auto 1.5rem;">
+          Our boutique studio creates each piece individually to order. Connect with founder Siddhi Kokate on WhatsApp to view recent custom dispatches or commission a bespoke design.
+        </p>
+        <a href="https://wa.me/${waNum}?text=${encodeURIComponent('Hello Siddhi, I would like to inquire about commissioning a bespoke floral/garland creation from Bloom&blush!')}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+          <span>Inquire via WhatsApp</span>
+          <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12c0 2.17.7 4.19 1.94 5.86L2.87 22l4.27-1.12C8.66 21.58 10.28 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+        </a>
       </div>
     `;
     return;
@@ -1487,9 +1495,11 @@ function restoreCachedData() {
 
   try {
     const cProd = localStorage.getItem('bloom_custom_products');
-    if (cProd) {
+    if (cProd !== null) {
       const parsed = JSON.parse(cProd);
-      if (Array.isArray(parsed) && parsed.length > 0) PRODUCTS = parsed;
+      if (Array.isArray(parsed)) {
+        PRODUCTS = parsed.filter(p => typeof isFakeProduct === 'function' ? !isFakeProduct(p) : true);
+      }
     }
   } catch (e) {}
 
@@ -1566,19 +1576,22 @@ async function loadProductsData() {
   if (typeof firestoreDb !== 'undefined' && firestoreDb) {
     try {
       firestoreDb.collection('products').onSnapshot((snapshot) => {
-        if (!snapshot.empty) {
-          const cloudProducts = [];
-          snapshot.forEach(doc => cloudProducts.push(doc.data()));
-          if (cloudProducts.length > 0) {
-            cloudProducts.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0) || (b.createdAt || 0) - (a.createdAt || 0));
-            PRODUCTS = cloudProducts;
-            try {
-              localStorage.setItem('bloom_custom_products', JSON.stringify(PRODUCTS));
-            } catch (err) {}
-            renderProducts('all');
-            initCategoryFilters();
+        const cloudProducts = [];
+        snapshot.forEach(doc => {
+          const d = doc.data();
+          const isFake = (typeof isFakeProduct === 'function' && isFakeProduct(d)) || 
+                         (typeof FAKE_PRODUCT_IDS !== 'undefined' && FAKE_PRODUCT_IDS.has(doc.id));
+          if (!isFake) {
+            cloudProducts.push(d);
           }
-        }
+        });
+        cloudProducts.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0) || (b.createdAt || 0) - (a.createdAt || 0));
+        PRODUCTS = cloudProducts;
+        try {
+          localStorage.setItem('bloom_custom_products', JSON.stringify(PRODUCTS));
+        } catch (err) {}
+        renderProducts('all');
+        initCategoryFilters();
       }, (err) => {
         console.warn('Firestore products listener notice:', err.message);
       });

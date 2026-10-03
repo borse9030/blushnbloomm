@@ -281,221 +281,29 @@ function isFakeAchievement(item) {
   return false;
 }
 
-// Default bundled product fallback matching the authentic 8 creations in products.json
-const DEFAULT_FALLBACK_PRODUCTS = [
-  {
-    "id": "royal-sovereign-money-garland",
-    "name": "The Royal Sovereign Money Garland",
-    "collectionId": "money-garlands",
-    "category": "Money Garlands",
-    "badge": "Signature Creation",
-    "price": 4500,
-    "priceFormatted": "Starting at ₹4,500",
-    "priceNote": "+ Currency face value (Choice of ₹10 to ₹500 notes)",
-    "shortDesc": "Majestic origami-pleated currency garland with deep burgundy velvet roses and gold zari borders.",
-    "detailedDesc": "A breathtaking masterpiece handcrafted for grooms and grand celebration ceremonies. Each currency note is meticulously pleated using proprietary origami folding techniques that preserve the notes while creating an opulent ceremonial drape. Finished with deep burgundy velvet roses, antique gold brocade neckband, and shimmering pearl drop tassels.",
-    "customizationOptions": [
-      "Choice of currency denomination (₹10, ₹20, ₹50, ₹100, ₹200, ₹500)",
-      "Flower color palette (Burgundy & Gold, Blush & Ivory, or Classic Maroon)",
-      "Neckband trim style (Zari embroidery, Velvet border, or Golden Brocade)",
-      "Custom name or initials tag in brass calligraphy"
-    ],
-    "suitableOccasions": ["Weddings & Baraat", "Engagement / Roka", "Milestone 50th / 60th Birthdays", "Thread Ceremonies"],
-    "details": {
-      "Price Guidance": "Starting at ₹4,500 crafting charge + selected currency amount",
-      "Crafting Time": "3 - 5 Business Days",
-      "Handcrafted In": "Pimpri-Chinchwad, Pune",
-      "Presentation": "Packaged in luxury archival preservation box",
-      "Note Safety": "Zero pinholes or adhesive damage to currency notes"
-    },
-    "image": "assets/images/money_garland.jpg"
-  },
-  {
-    "id": "blush-petal-bridal-bouquet",
-    "name": "The Blush & Wine Bridal Bouquet",
-    "collectionId": "bouquets",
-    "category": "Artisanal Bouquets",
-    "badge": "Bridal Favorite",
-    "price": 2450,
-    "priceFormatted": "₹2,450",
-    "priceNote": "Fresh & Preserved Floral Arrangement",
-    "shortDesc": "Opulent hand-tied bridal bouquet with deep wine garden roses, cream ranunculus, and flowing velvet ribbon.",
-    "detailedDesc": "Designed for the modern romantic bride and grand celebratory entries. An artistic composition of deep wine garden roses, ruffled blush ranunculus, delicate anemones, and silvery seeded eucalyptus. Bound with long, trailing hand-dyed burgundy silk velvet ribbons that catch the breeze beautifully in wedding photography.",
-    "customizationOptions": [
-      "Fresh seasonal blooms or eternal preserved florals",
-      "Color tuning to match bridal lehenga or gown palette",
-      "Ribbon selection (Hand-dyed silk velvet, raw-edge chiffon, or satin)",
-      "Matching groom's boutonniere and bridesmaid posies available on request"
-    ],
-    "suitableOccasions": ["Bridal Entry & Reception", "Wedding Proposals", "Anniversary Milestones", "Luxury Photoshoots"],
-    "details": {
-      "Price Guidance": "₹2,450 (includes hydration pack & satin keepsake ribbon)",
-      "Crafting Time": "24 - 48 Hours notice recommended",
-      "Handcrafted In": "Pimpri-Chinchwad, Pune",
-      "Floral Care": "Delivered with hydration pack & care instructions",
-      "Dimensions": "Approx. 14 inches width × 16 inches height"
-    },
-    "image": "assets/images/editorial_bouquet.jpg"
-  },
-  {
-    "id": "velvet-reverie-luxury-hamper",
-    "name": "The Velvet Reverie Celebration Hamper",
-    "collectionId": "customized-hampers",
-    "category": "Customized Hampers",
-    "badge": "Bespoke Curation",
-    "price": 3850,
-    "priceFormatted": "₹3,850",
-    "priceNote": "Complete Gourmet & Fragrance Trunk",
-    "shortDesc": "Velvet burgundy presentation box with brass dry fruit canisters, scented soy candle, and dried florals.",
-    "detailedDesc": "An experiential luxury gift box created for distinguished celebration gifting. Crafted inside a rich burgundy velvet box with gold foil embossing, featuring hand-hammered brass canisters filled with gourmet roasted almonds and cashews, an artisanal wood-wick soy candle, a delicate preserved flower posy, and a personalized calligraphy greeting with wax seal.",
-    "customizationOptions": [
-      "Custom name / crest foil-stamped on the box lid",
-      "Choice of candle fragrance (Royal Oud, Damask Rose, or Amber Vanilla)",
-      "Selection of gourmet delicacies or sweet confectionery",
-      "Personalized handwritten calligraphy message card with wax stamp"
-    ],
-    "suitableOccasions": ["Diwali & Festive Gifting", "Wedding Welcome Hampers", "Corporate VIP Gifting", "New Home Housewarming"],
-    "details": {
-      "Price Guidance": "₹3,850 inclusive of gourmet dry fruits, candle & trunk",
-      "Crafting Time": "2 - 4 Business Days",
-      "Handcrafted In": "Pimpri-Chinchwad, Pune",
-      "Box Finish": "High-density rigid velvet trunk with brass lock latch",
-      "Dimensions": "12 × 10 × 4.5 inches"
-    },
-    "image": "assets/images/luxury_hamper.jpg"
-  },
-  {
-    "id": "raas-bridal-trousseau-tray",
-    "name": "The Raas Royal Trousseau Tray",
-    "collectionId": "wedding-gifting",
-    "category": "Wedding & Celebration Gifting",
-    "badge": "Heritage Craft",
-    "price": 5200,
-    "priceFormatted": "Starting at ₹5,200",
-    "priceNote": "Custom Sized for Trousseau Exchange",
-    "shortDesc": "Opulent burgundy velvet ceremonial tray with heavy gold zari border, zardozi pouches, and jewelry casket.",
-    "detailedDesc": "A regal presentation tray designed for Indian wedding trousseau displays and ceremonial exchange. Lined in royal burgundy velvet with an antique gold zardozi border, this tray includes an embossed brass jewelry casket, embroidered velvet batwas (potli pouches), fragrant gajra accents with miniature burgundy roses, and Kundan brooch pins.",
-    "customizationOptions": [
-      "Tray dimensions & compartment layouts customized to trousseau items",
-      "Color coordination with bridal trousseau theme (Burgundy, Emerald, or Ivory)",
-      "Personalized acrylic or brass bride & groom monogram plaque",
-      "Full trousseau packaging suite (ring trays, saree trays, watch hampers)"
-    ],
-    "suitableOccasions": ["Wedding Trousseau Exchange", "Engagement Ring Ceremony", "Sangeet & Mehendi Gifting", "Bridal Welcome"],
-    "details": {
-      "Price Guidance": "Starting at ₹5,200 per tray (set discounts for 5+ trays)",
-      "Crafting Time": "4 - 7 Business Days",
-      "Handcrafted In": "Pimpri-Chinchwad, Pune",
-      "Materials": "Hardwood frame, micro-velvet lining, heritage zari lace",
-      "Care": "Includes protective dust cover for long-term preservation"
-    },
-    "image": "assets/images/wedding_trousseau.jpg"
-  },
-  {
-    "id": "eternal-rose-glass-cloche",
-    "name": "The Eternal Burgundy Rose Cloche",
-    "collectionId": "bouquets",
-    "category": "Artisanal Bouquets",
-    "badge": "Everlasting",
-    "price": 2800,
-    "priceFormatted": "₹2,800",
-    "priceNote": "Lasts 3+ Years without water",
-    "shortDesc": "Real preserved Ecuadorian burgundy and blush roses under an antique brass glass cloche dome.",
-    "detailedDesc": "A timeless token of romance that lasts for over 3 years without water or sunlight. A 100% natural, preserved deep burgundy rose and blush companion rose are delicately arranged with preserved baby's breath and eucalyptus inside a crystal-clear glass cloche dome on a solid walnut and antique brass pedestal.",
-    "customizationOptions": [
-      "Engraved brass plaque on the base with date and custom message",
-      "Rose color combination (Burgundy, Dusty Rose, Champagne, or Royal White)",
-      "Addition of subtle warm micro-fairy lights with hidden battery switch"
-    ],
-    "suitableOccasions": ["Anniversaries", "Valentine's & Proposals", "Birthday Keepsakes", "Luxury Desk / Bedside Decor"],
-    "details": {
-      "Price Guidance": "₹2,800 (includes glass cloche, walnut base & gift box)",
-      "Longevity": "Preserved to remain pristine for 3+ years",
-      "Crafting Time": "Ready to dispatch in 24 - 48 Hours",
-      "Dimensions": "Height 8.5 inches × Diameter 5.5 inches",
-      "Packaging": "Delivered in signature Bloom&blush ivory gift box with satin bow"
-    },
-    "image": "assets/images/floral_dome.jpg"
-  },
-  {
-    "id": "pastel-bliss-ceremony-garland",
-    "name": "The Pastel Pearl Ceremony Garland",
-    "collectionId": "money-garlands",
-    "category": "Money Garlands",
-    "badge": "New Arrival",
-    "price": 3800,
-    "priceFormatted": "Starting at ₹3,800",
-    "priceNote": "+ Currency face value (Soft pastel aesthetic)",
-    "shortDesc": "Delicate baby pink and soft gold currency garland with silk rosebuds and cascading pearl drops.",
-    "detailedDesc": "Designed with a lighter, ethereal aesthetic for intimate ceremonies, morning celebrations, and baby milestones. Features origami pleated currency notes harmonized with delicate blush pink silk rosebuds, soft gold scallop lace, and cascading pearl clusters that drape effortlessly.",
-    "customizationOptions": [
-      "Choice of denomination (₹10, ₹20, ₹50, ₹100, ₹200, ₹500)",
-      "Pastel tone customization (Soft Pink, Mint Green, Peach, or Lilac)",
-      "Single garland or matching couple set for bride & groom"
-    ],
-    "suitableOccasions": ["Baby Naming Ceremonies (Barse)", "Dohale Jevan / Baby Showers", "Intimate Engagements", "Graduations"],
-    "details": {
-      "Price Guidance": "Starting at ₹3,800 crafting charge + selected currency amount",
-      "Crafting Time": "3 - 4 Business Days",
-      "Handcrafted In": "Pimpri-Chinchwad, Pune",
-      "Drape Length": "Customizable from 24 to 36 inches",
-      "Note Safety": "Guaranteed damage-free origami technique"
-    },
-    "image": "assets/images/pastel_garland.jpg"
-  },
-  {
-    "id": "bespoke-sandalwood-keepsake-box",
-    "name": "The Heirloom Carved Keepsake Box",
-    "collectionId": "customized-gifts",
-    "category": "Customized Gifts",
-    "badge": "Personalized",
-    "price": 1950,
-    "priceFormatted": "₹1,950",
-    "priceNote": "Includes custom calligraphy letter",
-    "shortDesc": "Hand-carved wooden keepsake box tied with deep wine silk ribbon, personalized calligraphy letter, and wax seal.",
-    "detailedDesc": "A gift of enduring sentiment. Hand-carved from solid seasoned wood with floral jaali filigree, tied with an opulent burgundy satin ribbon, and paired with an authentic hand-lettered calligraphy letter on deckle-edge cotton paper sealed with our signature floral wax stamp.",
-    "customizationOptions": [
-      "Custom initials or names carved onto the lid panel",
-      "Custom letter message scripted by hand in gold or walnut ink",
-      "Interior lining (Burgundy velvet, cream raw silk, or natural wood)"
-    ],
-    "suitableOccasions": ["Wedding Morning Letters", "Father of the Bride Gifts", "Keepsake Jewelry Storage", "Milestone Anniversaries"],
-    "details": {
-      "Price Guidance": "₹1,950 (includes wooden keepsake box & custom calligraphy letter)",
-      "Crafting Time": "3 - 5 Business Days",
-      "Handcrafted In": "Pimpri-Chinchwad, Pune",
-      "Dimensions": "9 × 6 × 3.5 inches",
-      "Finish": "Hand-buffed natural wax with floral filigree"
-    },
-    "image": "assets/images/customized_gifts.jpg"
-  },
-  {
-    "id": "celebration-floral-gift-suite",
-    "name": "The Bloom&blush Signature Suite",
-    "collectionId": "customized-hampers",
-    "category": "Customized Hampers",
-    "badge": "Grand Ensemble",
-    "price": 4900,
-    "priceFormatted": "₹4,900",
-    "priceNote": "Luxury Centerpiece & Gift Suite",
-    "shortDesc": "Complete festive suite featuring fresh garden roses, luxury gift box, perfume vial, and golden accents.",
-    "detailedDesc": "The quintessential Bloom&blush experience. A masterfully composed gifting suite that pairs an editorial fresh flower arrangement of burgundy English garden roses and cream ranunculus with a gold-trimmed gift box, artisanal fragrance, and bespoke greeting card on a warm linen presentation mat.",
-    "customizationOptions": [
-      "Custom floral selection based on recipient's favorite flowers",
-      "Inclusion of luxury perfume, artisanal chocolates, or precious trinkets",
-      "Theme styling for birthdays, corporate appreciation, or wedding anniversaries"
-    ],
-    "suitableOccasions": ["Grand Milestone Birthdays", "Golden Anniversaries", "Festive Celebrations", "Proposal Surprises"],
-    "details": {
-      "Price Guidance": "₹4,900 complete ensemble",
-      "Crafting Time": "2 Business Days",
-      "Handcrafted In": "Pimpri-Chinchwad, Pune",
-      "Includes": "Floral centerpiece, gold foil gift box, fragrance vial, greeting card"
-    },
-    "image": "assets/images/hero.jpg"
-  }
-];
+// Clean production fallback: initially empty array so owner uploads authentic creations
+const DEFAULT_FALLBACK_PRODUCTS = [];
 
+const FAKE_PRODUCT_IDS = new Set([
+  'royal-sovereign-money-garland',
+  'blush-petal-bridal-bouquet',
+  'velvet-reverie-luxury-hamper',
+  'raas-bridal-trousseau-tray',
+  'eternal-rose-glass-cloche',
+  'pastel-bliss-ceremony-garland',
+  'bespoke-sandalwood-keepsake-box',
+  'celebration-floral-gift-suite',
+  'royal-wedding-mandap-decor',
+  'grand-rajputana-money-garland',
+  'gold-leaf-keepsake-box'
+]);
+
+function isFakeProduct(prod) {
+  if (!prod) return true;
+  if (FAKE_PRODUCT_IDS.has(prod.id)) return true;
+  if (typeof prod.id === 'string' && (prod.id.includes('copy') || prod.id.includes('heritage-flora') || prod.id.includes('test-'))) return true;
+  return false;
+}
 // Available bundled media assets for quick selection
 const BUNDLED_ASSETS = [
   { name: 'Money Garland', path: 'assets/images/money_garland.jpg' },
@@ -941,21 +749,17 @@ async function loadProducts() {
   // 0. Connect to Firebase Firestore in real time with auto-sync
   startFirestoreSync();
 
-  // 1. Check localStorage first (and purge any legacy test items)
+  // 1. Check localStorage first (and strictly purge any obsolete mock items)
   const localData = localStorage.getItem('bloom_custom_products');
-  if (localData) {
+  if (localData !== null) {
     try {
       const parsed = JSON.parse(localData);
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        // If local storage has test/fake items from previous sessions, clear it
-        if (parsed.some(p => p.id === 'gold-leaf-keepsake-box' || p.id.includes('copy') || p.id.includes('heritage-flora'))) {
-          console.log('[Admin] Sanitizing stale test products from local storage cache');
-          localStorage.removeItem('bloom_custom_products');
-        } else {
-          PRODUCTS = parsed;
-          console.log('[Admin] Loaded from localStorage cache:', PRODUCTS.length, 'creations');
-          return;
-        }
+      if (Array.isArray(parsed)) {
+        const clean = parsed.filter(p => !isFakeProduct(p));
+        PRODUCTS = clean;
+        localStorage.setItem('bloom_custom_products', JSON.stringify(clean));
+        console.log('[Admin] Loaded from localStorage cache:', PRODUCTS.length, 'creations');
+        return;
       }
     } catch (e) {
       localStorage.removeItem('bloom_custom_products');
@@ -967,19 +771,20 @@ async function loadProducts() {
     const res = await fetch('products.json');
     if (res.ok) {
       const data = await res.json();
-      if (Array.isArray(data) && data.length > 0) {
-        PRODUCTS = data;
+      if (Array.isArray(data)) {
+        const clean = data.filter(p => !isFakeProduct(p));
+        PRODUCTS = clean;
         saveProducts(false); // save to localStorage for subsequent fast edits
         console.log('[Admin] Loaded from products.json:', PRODUCTS.length, 'creations');
         return;
       }
     }
   } catch (err) {
-    console.info('[Admin] Fetching products.json failed (likely local file protocol). Using bundled catalog.');
+    console.info('[Admin] Fetching products.json note:', err);
   }
 
-  // 3. Fallback to bundled
-  PRODUCTS = [...DEFAULT_FALLBACK_PRODUCTS];
+  // 3. Fallback: Clean empty array for production
+  PRODUCTS = [];
   saveProducts(false);
 }
 
@@ -2050,34 +1855,36 @@ function startFirestoreSync() {
 
   try {
     firestoreDb.collection('products').onSnapshot((snapshot) => {
-      if (!snapshot.empty) {
-        const cloudProducts = [];
-        snapshot.forEach(doc => {
-          cloudProducts.push(doc.data());
-        });
-        if (cloudProducts.length > 0) {
-          PRODUCTS = cloudProducts;
-          localStorage.setItem('bloom_custom_products', JSON.stringify(PRODUCTS));
-          renderCategoryFilters();
-          renderProducts();
-          updateStats();
-          updateFirebaseBadge(true, cloudProducts.length);
-          console.log('[Firebase] Automated sync:', cloudProducts.length, 'creations active');
-          return;
+      const cloudProducts = [];
+      const purgeBatch = firestoreDb.batch();
+      let hasPurged = false;
+
+      snapshot.forEach(doc => {
+        const d = doc.data();
+        if (isFakeProduct(d) || FAKE_PRODUCT_IDS.has(doc.id)) {
+          // Immediately purge mock product from Firestore so it never re-appears
+          console.log('[Firebase] Purging obsolete demo product from Cloud:', doc.id);
+          purgeBatch.delete(doc.ref);
+          hasPurged = true;
+        } else {
+          cloudProducts.push(d);
         }
-      } else {
-        // If collection is completely empty, automatically seed it without any manual click
-        console.log('[Firebase] Empty collection detected. Automatically seeding initial catalog...');
-        const batch = firestoreDb.batch();
-        const catalogToUpload = (PRODUCTS && PRODUCTS.length > 0) ? PRODUCTS : DEFAULT_FALLBACK_PRODUCTS;
-        catalogToUpload.forEach(prod => {
-          batch.set(firestoreDb.collection('products').doc(prod.id), prod);
-        });
-        batch.commit().then(() => {
-          console.log('[Firebase] Automatically populated Firestore cloud with initial catalog.');
-          updateFirebaseBadge(true, catalogToUpload.length);
-        }).catch(err => console.warn('[Firebase] Auto-seed note:', err));
+      });
+
+      if (hasPurged) {
+        purgeBatch.commit().then(() => {
+          console.log('[Firebase] Purged obsolete demo products from cloud.');
+        }).catch(err => console.warn('[Firebase] Purge commit warning:', err));
       }
+
+      cloudProducts.sort((a, b) => (a.displayOrder || 0) - (b.displayOrder || 0) || (b.createdAt || 0) - (a.createdAt || 0));
+      PRODUCTS = cloudProducts;
+      localStorage.setItem('bloom_custom_products', JSON.stringify(PRODUCTS));
+      renderCategoryFilters();
+      renderProducts();
+      updateStats();
+      updateFirebaseBadge(true, cloudProducts.length);
+      console.log('[Firebase] Automated sync:', cloudProducts.length, 'creations active');
     }, (err) => {
       console.warn('[Admin] Firestore auto-sync error, will retry:', err);
       updateFirebaseBadge(false, 0, err.message);
@@ -4049,13 +3856,26 @@ async function seedAuthenticCatalogToCloud() {
     COLLECTIONS = [...DEFAULT_FALLBACK_COLLECTIONS];
     saveCollections(false);
 
-    setStep(40, 'Step 2/5: Synchronizing 8 Authentic Boutique Creations...');
-    const prodBatch = firestoreDb.batch();
-    DEFAULT_FALLBACK_PRODUCTS.forEach(prod => {
-      prodBatch.set(firestoreDb.collection('products').doc(prod.id), prod);
-    });
-    await prodBatch.commit();
-    PRODUCTS = [...DEFAULT_FALLBACK_PRODUCTS];
+    setStep(40, 'Step 2/5: Purging obsolete demo products from Cloud...');
+    try {
+      const existingProds = await firestoreDb.collection('products').get();
+      const prodBatch = firestoreDb.batch();
+      let deletedCount = 0;
+      existingProds.forEach(doc => {
+        const d = doc.data();
+        if (isFakeProduct(d) || FAKE_PRODUCT_IDS.has(doc.id)) {
+          prodBatch.delete(doc.ref);
+          deletedCount++;
+        }
+      });
+      if (deletedCount > 0) {
+        await prodBatch.commit();
+        console.log(`[Firebase] Purged ${deletedCount} obsolete demo products.`);
+      }
+    } catch (err) {
+      console.warn('[Firebase] Product purge notice:', err);
+    }
+    PRODUCTS = PRODUCTS.filter(p => !isFakeProduct(p));
     saveProducts(false);
 
     setStep(65, 'Step 3/5: Synchronizing 7 Instagram Portfolio Stories...');

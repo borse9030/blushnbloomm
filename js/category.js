@@ -125,9 +125,11 @@ function initCategoryPage() {
   // 1. Sync custom products / collections from localStorage if available
   try {
     const cProd = localStorage.getItem('bloom_custom_products');
-    if (cProd) {
+    if (cProd !== null) {
       const parsed = JSON.parse(cProd);
-      if (Array.isArray(parsed) && parsed.length > 0) PRODUCTS = parsed;
+      if (Array.isArray(parsed)) {
+        PRODUCTS = parsed.filter(p => typeof isFakeProduct === 'function' ? !isFakeProduct(p) : true);
+      }
     }
     const cCols = localStorage.getItem('bloom_custom_collections');
     if (cCols) {
@@ -354,9 +356,26 @@ function renderCategoryProducts(catId, categoryName) {
     return cat.includes(target) || target.includes(cat);
   });
 
-  // Fallback: If no products specifically tagged, show sample products
+  // Bespoke consultation state if no products are in this category yet
   if (items.length === 0) {
-    items = PRODUCTS.slice(0, 3);
+    if (catalogSubtitle) {
+      catalogSubtitle.textContent = `All ${categoryName} creations are custom designed & handcrafted to order by Founder Siddhi Kokate.`;
+    }
+    const waCategoryUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(`Hello Siddhi, I would like to consult with you for custom ${categoryName} designs for my upcoming occasion.`)}`;
+    grid.innerHTML = `
+      <div class="empty-category-notice" style="grid-column: 1 / -1; text-align: center; padding: 4.5rem 1.5rem; background: rgba(253, 248, 247, 0.75); border-radius: 20px; border: 1px dashed rgba(160, 44, 90, 0.25); max-width: 680px; margin: 2rem auto;">
+        <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🌸</div>
+        <h3 style="font-family: var(--font-serif); font-size: 1.8rem; color: var(--burgundy-deep); margin-bottom: 0.75rem; font-weight: 500;">Bespoke ${escapeHtml(categoryName)} Atelier</h3>
+        <p style="max-width: 540px; margin: 0 auto 1.5rem; color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;">
+          Every ${escapeHtml(categoryName).toLowerCase()} piece is handcrafted to order by Founder Siddhi Kokate with personalized colors, motifs, and details tailored to your auspicious ceremony.
+        </p>
+        <a href="${waCategoryUrl}" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;">
+          <span>Inquire via WhatsApp</span>
+          <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12c0 2.17.7 4.19 1.94 5.86L2.87 22l4.27-1.12C8.66 21.58 10.28 22 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+        </a>
+      </div>
+    `;
+    return;
   }
 
   if (catalogSubtitle) {
@@ -582,14 +601,17 @@ function initFirestoreSync() {
   if (typeof firestoreDb !== 'undefined' && firestoreDb) {
     try {
       firestoreDb.collection('products').onSnapshot((snapshot) => {
-        if (!snapshot.empty) {
-          const cloudProducts = [];
-          snapshot.forEach(doc => cloudProducts.push(doc.data()));
-          if (cloudProducts.length > 0) {
-            PRODUCTS = cloudProducts;
-            renderCategory(CURRENT_CAT_ID, false);
+        const cloudProducts = [];
+        snapshot.forEach(doc => {
+          const d = doc.data();
+          const isFake = (typeof isFakeProduct === 'function' && isFakeProduct(d)) || 
+                         (typeof FAKE_PRODUCT_IDS !== 'undefined' && FAKE_PRODUCT_IDS.has(doc.id));
+          if (!isFake) {
+            cloudProducts.push(d);
           }
-        }
+        });
+        PRODUCTS = cloudProducts;
+        renderCategory(CURRENT_CAT_ID, false);
       });
     } catch (e) {}
   }

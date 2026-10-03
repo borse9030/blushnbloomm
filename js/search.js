@@ -189,7 +189,8 @@
     selectedResultIndex = -1;
 
     const trimmed = (query || '').trim().toLowerCase();
-    const products = (typeof PRODUCTS !== 'undefined' && Array.isArray(PRODUCTS)) ? PRODUCTS : [];
+    const rawProds = (typeof PRODUCTS !== 'undefined' && Array.isArray(PRODUCTS)) ? PRODUCTS : [];
+    const products = rawProds.filter(p => typeof isFakeProduct === 'function' ? !isFakeProduct(p) : true);
     const collections = (typeof COLLECTIONS !== 'undefined' && Array.isArray(COLLECTIONS)) ? COLLECTIONS : [];
 
     // Update bottom WhatsApp custom inquiry link
@@ -423,6 +424,50 @@
    * Default View when query is empty: Shows curated highlights & collections
    */
   function renderDefaultDiscovery(products, collections) {
+    if (!products || products.length === 0) {
+      const cols = (collections && collections.length > 0) ? collections : [
+        { id: 'money-garlands', title: 'Money Garlands', subtitle: 'Auspicious & Ceremonial', image: 'assets/images/money_garland.jpg' },
+        { id: 'bouquets', title: 'Artisanal Bouquets', subtitle: 'Fresh & Preserved Florals', image: 'assets/images/editorial_bouquet.jpg' },
+        { id: 'customized-hampers', title: 'Customized Hampers', subtitle: 'Curated Luxury Boxes', image: 'assets/images/luxury_hamper.jpg' },
+        { id: 'wedding-gifting', title: 'Wedding & Celebration Gifting', subtitle: 'Trousseau & Packaging', image: 'assets/images/wedding_trousseau.jpg' }
+      ];
+
+      let html = `
+        <div class="search-results-meta">
+          <span style="font-weight: 600; color: var(--burgundy-deep); font-size: 0.85rem;">EXPLORE ATELIER COLLECTIONS</span>
+          <span style="font-size: 0.75rem; color: var(--text-muted);">Handcrafted bespoke to order</span>
+        </div>
+        <div class="search-results-list" role="listbox">
+      `;
+
+      html += cols.slice(0, 4).map((c, idx) => `
+        <div class="search-item-card" role="option" data-index="${idx}" data-col-id="${escapeHtml(c.id)}" tabindex="0">
+          <img src="${escapeHtml(c.image)}" alt="${escapeHtml(c.title)}" class="search-item-img" loading="lazy" onerror="this.src='assets/images/hero.jpg'">
+          <div class="search-item-details">
+            <span class="search-item-tag">Bespoke Collection</span>
+            <h3 class="search-item-name">${escapeHtml(c.title)}</h3>
+            <div class="search-item-price">
+              <span style="font-size: 0.8rem; color: var(--text-muted);">${escapeHtml(c.subtitle || 'Custom Order')}</span>
+            </div>
+          </div>
+          <div class="search-item-action">
+            <button type="button" class="search-view-btn">Explore &rarr;</button>
+          </div>
+        </div>
+      `).join('');
+
+      html += `</div>`;
+      searchResultsContainer.innerHTML = html;
+
+      searchResultsContainer.querySelectorAll('.search-item-card').forEach((card) => {
+        card.addEventListener('click', () => {
+          closeSearchModal();
+          window.location.href = `category.html?id=${encodeURIComponent(card.dataset.colId)}`;
+        });
+      });
+      return;
+    }
+
     const featured = products.slice(0, 4);
 
     let html = `
