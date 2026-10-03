@@ -542,6 +542,134 @@ const OCCASION_PRESETS = [
 ];
 
 /* ===================================================================
+   Bloom&blush - Studio Owner Authentication Guard
+   Authorized Credentials:
+   Email: blushsiddhi147@gmail.com
+   Pass:  SiDdHi@147
+   =================================================================== */
+const OWNER_AUTH = {
+  EMAIL: 'blushsiddhi147@gmail.com',
+  PASS: 'SiDdHi@147',
+  STORAGE_KEY: 'bloom_owner_authenticated_session'
+};
+
+function isOwnerAuthenticated() {
+  return sessionStorage.getItem(OWNER_AUTH.STORAGE_KEY) === 'granted' ||
+         localStorage.getItem(OWNER_AUTH.STORAGE_KEY) === 'granted';
+}
+
+function initOwnerAuth() {
+  const authScreen = document.getElementById('owner-auth-screen');
+  const appRoot = document.getElementById('admin-app-root');
+  const authForm = document.getElementById('owner-auth-form');
+  const authEmail = document.getElementById('auth-email');
+  const authPassword = document.getElementById('auth-password');
+  const authRemember = document.getElementById('auth-remember');
+  const authError = document.getElementById('owner-auth-error');
+  const authErrorText = document.getElementById('owner-auth-error-text');
+  const authSubmitBtn = document.getElementById('auth-submit-btn');
+  const togglePwdBtn = document.getElementById('auth-toggle-pwd');
+  const logoutBtn = document.getElementById('btn-owner-logout');
+
+  const updateUI = () => {
+    if (isOwnerAuthenticated()) {
+      if (authScreen) authScreen.style.display = 'none';
+      if (appRoot) appRoot.style.display = 'block';
+    } else {
+      if (appRoot) appRoot.style.display = 'none';
+      if (authScreen) authScreen.style.display = 'flex';
+      if (authEmail && !authEmail.value) {
+        authEmail.focus();
+      } else if (authPassword) {
+        authPassword.focus();
+      }
+    }
+  };
+
+  updateUI();
+
+  if (togglePwdBtn && authPassword) {
+    togglePwdBtn.addEventListener('click', () => {
+      authPassword.type = authPassword.type === 'password' ? 'text' : 'password';
+    });
+  }
+
+  if (authForm) {
+    authForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const enteredEmail = (authEmail.value || '').trim().toLowerCase();
+      const enteredPass = (authPassword.value || '');
+
+      authSubmitBtn.disabled = true;
+      const btnText = authSubmitBtn.querySelector('.btn-text');
+      const btnSpinner = authSubmitBtn.querySelector('.btn-spinner');
+      if (btnText) btnText.style.display = 'none';
+      if (btnSpinner) btnSpinner.style.display = 'inline';
+
+      setTimeout(() => {
+        if (enteredEmail === OWNER_AUTH.EMAIL && enteredPass === OWNER_AUTH.PASS) {
+          if (authError) authError.style.display = 'none';
+
+          if (authRemember && authRemember.checked) {
+            localStorage.setItem(OWNER_AUTH.STORAGE_KEY, 'granted');
+          } else {
+            sessionStorage.setItem(OWNER_AUTH.STORAGE_KEY, 'granted');
+          }
+
+          if (authScreen) {
+            authScreen.classList.add('auth-fade-out');
+            setTimeout(() => {
+              authScreen.style.display = 'none';
+              authScreen.classList.remove('auth-fade-out');
+              if (appRoot) appRoot.style.display = 'block';
+              if (typeof showToast === 'function') {
+                showToast('Welcome back, Siddhi! Studio access granted.', 'success');
+              }
+            }, 250);
+          }
+        } else {
+          if (authError) {
+            authError.style.display = 'flex';
+            if (enteredEmail !== OWNER_AUTH.EMAIL) {
+              authErrorText.textContent = 'Invalid studio owner email. Access denied.';
+            } else {
+              authErrorText.textContent = 'Incorrect security key. Access denied.';
+            }
+          }
+          const card = document.querySelector('.owner-auth-card');
+          if (card) {
+            card.classList.remove('shake-anim');
+            void card.offsetWidth;
+            card.classList.add('shake-anim');
+          }
+          if (authPassword) {
+            authPassword.value = '';
+            authPassword.focus();
+          }
+        }
+
+        authSubmitBtn.disabled = false;
+        if (btnText) btnText.style.display = 'inline';
+        if (btnSpinner) btnSpinner.style.display = 'none';
+      }, 300);
+    });
+  }
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      sessionStorage.removeItem(OWNER_AUTH.STORAGE_KEY);
+      localStorage.removeItem(OWNER_AUTH.STORAGE_KEY);
+      updateUI();
+      if (authPassword) authPassword.value = '';
+      if (authError) authError.style.display = 'none';
+      if (typeof showToast === 'function') {
+        showToast('Signed out of Owner Studio Portal.', 'info');
+      }
+    });
+  }
+}
+
+/* ===================================================================
    Initialization
    =================================================================== */
 document.addEventListener('DOMContentLoaded', async () => {
@@ -552,6 +680,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   try {
+    initOwnerAuth();
     initSyncChannel();
     initTabNavigation();
     initStorageGuideModal();

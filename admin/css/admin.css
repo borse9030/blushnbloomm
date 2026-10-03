@@ -1776,3 +1776,296 @@ textarea.form-control {
   }
 }
 
+/* ===================================================================
+   Bloom&blush - Studio Owner Authentication Gateway Styles
+   =================================================================== */
+.owner-auth-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background: radial-gradient(circle at 50% 20%, rgba(94, 22, 36, 0.95), #1A050B 85%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  overflow-y: auto;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.owner-auth-overlay.auth-fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.owner-auth-card {
+  width: 100%;
+  max-width: 440px;
+  background: rgba(255, 255, 255, 0.98);
+  border-radius: 20px;
+  padding: 2.5rem 2.2rem;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(197, 168, 128, 0.35);
+  position: relative;
+  text-align: center;
+  animation: authCardEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes authCardEnter {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.owner-auth-card.shake-anim {
+  animation: authCardShake 0.45s ease-in-out;
+}
+
+@keyframes authCardShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+
+.owner-auth-header {
+  margin-bottom: 1.8rem;
+}
+
+.owner-auth-logo {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #5E1624, #3B0D16);
+  border: 2px solid #C5A880;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(94, 22, 36, 0.25);
+}
+
+.auth-monogram {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #F8F3ED;
+  letter-spacing: -0.5px;
+}
+
+.owner-auth-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: #3B0D16;
+  margin: 0 0 0.35rem;
+  letter-spacing: -0.3px;
+}
+
+.owner-auth-subtitle {
+  font-size: 0.85rem;
+  color: #6C727F;
+  margin: 0 0 0.9rem;
+}
+
+.owner-auth-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(197, 168, 128, 0.15);
+  border: 1px solid rgba(197, 168, 128, 0.4);
+  color: #5E1624;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.owner-auth-form {
+  text-align: left;
+}
+
+.owner-auth-alert {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: #FFF1F0;
+  border: 1px solid #FFCCC7;
+  color: #CF1322;
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0.75rem 0.95rem;
+  border-radius: 10px;
+  margin-bottom: 1.25rem;
+}
+
+.auth-input-group {
+  margin-bottom: 1.25rem;
+}
+
+.auth-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #3B0D16;
+  margin-bottom: 0.45rem;
+}
+
+.auth-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.auth-icon {
+  position: absolute;
+  left: 0.95rem;
+  color: #8C93A3;
+  pointer-events: none;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 0.82rem 1rem 0.82rem 2.5rem;
+  border: 1.5px solid #E2E8F0;
+  border-radius: 10px;
+  font-size: 0.92rem;
+  background: #FAFAFA;
+  color: #1F2937;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.auth-input:focus {
+  outline: none;
+  border-color: #5E1624;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(94, 22, 36, 0.1);
+}
+
+.auth-toggle-btn {
+  position: absolute;
+  right: 0.75rem;
+  background: transparent;
+  border: none;
+  color: #8C93A3;
+  cursor: pointer;
+  padding: 0.35rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+.auth-toggle-btn:hover {
+  color: #5E1624;
+}
+
+.auth-options-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.4rem;
+}
+
+.auth-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.82rem;
+  color: #4B5563;
+  cursor: pointer;
+  user-select: none;
+}
+
+.auth-checkbox-label input[type="checkbox"] {
+  accent-color: #5E1624;
+  width: 15px;
+  height: 15px;
+  cursor: pointer;
+}
+
+.btn-auth-submit {
+  width: 100%;
+  padding: 0.95rem 1.5rem;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #5E1624 0%, #3B0D16 100%);
+  color: #FFFFFF;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(94, 22, 36, 0.28);
+  transition: all 0.25s ease;
+  letter-spacing: 0.2px;
+}
+
+.btn-auth-submit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 26px rgba(94, 22, 36, 0.36);
+  background: linear-gradient(135deg, #741D2E 0%, #4D121E 100%);
+}
+
+.btn-auth-submit:active {
+  transform: translateY(0);
+}
+
+.btn-auth-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.owner-auth-footer {
+  margin-top: 1.8rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #F0EAE1;
+  font-size: 0.78rem;
+  color: #8C93A3;
+}
+
+.owner-auth-footer p {
+  margin: 0.25rem 0;
+}
+
+.owner-auth-footer a {
+  color: #5E1624;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.owner-auth-footer a:hover {
+  color: #C5A880;
+  text-decoration: underline;
+}
+
+/* Logout button in navbar */
+.btn-outline-danger-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  border: 1px solid rgba(220, 38, 38, 0.35);
+  background: rgba(220, 38, 38, 0.05);
+  color: #DC2626;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-outline-danger-gold:hover {
+  background: #DC2626;
+  color: #FFFFFF;
+  border-color: #DC2626;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.25);
+}
+
+
