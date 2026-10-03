@@ -782,11 +782,19 @@ function setupEventListeners() {
   const priceFormatInput = document.getElementById('prod-price-formatted');
   if (priceInput && priceFormatInput) {
     priceInput.addEventListener('input', () => {
-      const val = parseFloat(priceInput.value);
-      if (!isNaN(val) && val > 0) {
-        if (!priceFormatInput.value || priceFormatInput.dataset.autoFilled === 'true') {
-          priceFormatInput.value = '₹' + val.toLocaleString('en-IN');
-          priceFormatInput.dataset.autoFilled = 'true';
+      const rawVal = priceInput.value.trim();
+      if (rawVal !== '') {
+        const val = parseFloat(rawVal);
+        if (!isNaN(val) && val > 0) {
+          if (!priceFormatInput.value || priceFormatInput.dataset.autoFilled === 'true') {
+            priceFormatInput.value = '₹' + val.toLocaleString('en-IN');
+            priceFormatInput.dataset.autoFilled = 'true';
+          }
+        }
+      } else {
+        if (priceFormatInput.dataset.autoFilled === 'true') {
+          priceFormatInput.value = '';
+          priceFormatInput.dataset.autoFilled = 'false';
         }
       }
     });
@@ -1102,9 +1110,17 @@ function renderProducts() {
 
   // Sort
   if (SORT_BY === 'price-low') {
-    filtered.sort((a, b) => (a.price || 0) - (b.price || 0));
+    filtered.sort((a, b) => {
+      const pa = (a.price !== null && a.price !== undefined && Number(a.price) > 0) ? Number(a.price) : Infinity;
+      const pb = (b.price !== null && b.price !== undefined && Number(b.price) > 0) ? Number(b.price) : Infinity;
+      return pa - pb;
+    });
   } else if (SORT_BY === 'price-high') {
-    filtered.sort((a, b) => (b.price || 0) - (a.price || 0));
+    filtered.sort((a, b) => {
+      const pa = (a.price !== null && a.price !== undefined && Number(a.price) > 0) ? Number(a.price) : -1;
+      const pb = (b.price !== null && b.price !== undefined && Number(b.price) > 0) ? Number(b.price) : -1;
+      return pb - pa;
+    });
   } else if (SORT_BY === 'name-asc') {
     filtered.sort((a, b) => (a.name || '').localeCompare(b.name || ''));
   }
@@ -1142,7 +1158,7 @@ function renderProducts() {
       <div class="card-body">
         <h3 class="card-title">${escapeHtml(p.name)}</h3>
         <div class="card-price-row">
-          <span class="card-price">${escapeHtml(p.priceFormatted || ('₹' + p.price))}</span>
+          <span class="card-price ${!p.price || p.price === 0 ? 'card-price-on-request' : ''}">${escapeHtml(p.priceFormatted || (p.price ? ('₹' + Number(p.price).toLocaleString('en-IN')) : 'Price on Request'))}</span>
           ${p.priceNote ? `<span class="card-price-note">${escapeHtml(p.priceNote)}</span>` : ''}
         </div>
         <p class="card-desc">${escapeHtml(p.shortDesc || p.detailedDesc || 'Handcrafted bespoke piece designed for celebration occasions.')}</p>
@@ -1273,9 +1289,11 @@ function openProductModal(productId = null) {
     // Set badge
     badgeSelect.value = p.badge || '';
 
-    // Price
-    document.getElementById('prod-price').value = p.price || '';
-    document.getElementById('prod-price-formatted').value = p.priceFormatted || '';
+    // Price (Optional)
+    const numericPrice = (p.price !== undefined && p.price !== null && Number(p.price) > 0) ? p.price : '';
+    document.getElementById('prod-price').value = numericPrice;
+    document.getElementById('prod-price-formatted').value = (p.priceFormatted && p.priceFormatted !== 'Price on Request') ? p.priceFormatted : (p.priceFormatted || '');
+    document.getElementById('prod-price-formatted').dataset.autoFilled = 'false';
     document.getElementById('prod-price-note').value = p.priceNote || '';
 
     // Descriptions
@@ -1306,6 +1324,10 @@ function openProductModal(productId = null) {
     // ADD MODE
     modalTitle.textContent = 'Add New Boutique Creation';
     document.getElementById('prod-id').readOnly = false;
+    document.getElementById('prod-price').value = '';
+    document.getElementById('prod-price-formatted').value = '';
+    document.getElementById('prod-price-formatted').dataset.autoFilled = 'false';
+    document.getElementById('prod-price-note').value = '';
     document.getElementById('custom-category-wrapper').style.display = 'none';
     document.getElementById('customization-values').value = '[]';
     document.getElementById('occasion-values').value = '[]';
@@ -1322,8 +1344,23 @@ function handleProductFormSubmit(e) {
 
   const name = document.getElementById('prod-name').value.trim();
   let id = document.getElementById('prod-id').value.trim();
-  const price = parseFloat(document.getElementById('prod-price').value) || 0;
-  const priceFormatted = document.getElementById('prod-price-formatted').value.trim() || ('₹' + price.toLocaleString('en-IN'));
+  
+  // Base Price handling (Optional)
+  const priceRaw = document.getElementById('prod-price').value.trim();
+  const hasPrice = priceRaw !== '' && !isNaN(parseFloat(priceRaw)) && parseFloat(priceRaw) > 0;
+  const price = hasPrice ? parseFloat(priceRaw) : null;
+
+  // Display Price Text handling (Optional)
+  const customPriceFormatted = document.getElementById('prod-price-formatted').value.trim();
+  let priceFormatted = '';
+  if (customPriceFormatted) {
+    priceFormatted = customPriceFormatted;
+  } else if (hasPrice) {
+    priceFormatted = '₹' + price.toLocaleString('en-IN');
+  } else {
+    priceFormatted = 'Price on Request';
+  }
+
   const priceNote = document.getElementById('prod-price-note').value.trim();
   const badge = document.getElementById('prod-badge').value.trim();
   const shortDesc = document.getElementById('prod-short-desc').value.trim();

@@ -320,8 +320,10 @@ function renderCategoryProducts(catId, categoryName) {
   }
 
   grid.innerHTML = items.map(p => {
-    const priceText = p.priceFormatted || (p.price ? `₹${p.price}` : 'Custom Pricing');
-    const waProductText = `Hello Siddhi, I saw "${p.name}" (${priceText}) in your ${categoryName} collection on Bloom&blush and would love to enquire!`;
+    const priceText = p.priceFormatted || (p.price && Number(p.price) > 0 ? `₹${Number(p.price).toLocaleString('en-IN')}` : 'Price on Request');
+    const hasSpecificPrice = p.priceFormatted && p.priceFormatted !== 'Price on Request';
+    const priceSnippet = hasSpecificPrice ? ` (${p.priceFormatted})` : (p.price && Number(p.price) > 0 ? ` (₹${Number(p.price).toLocaleString('en-IN')})` : '');
+    const waProductText = `Hello Siddhi, I saw "${p.name}"${priceSnippet} in your ${categoryName} collection on Bloom&blush and would love to enquire!`;
     const waItemUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(waProductText)}`;
 
     return `
@@ -449,9 +451,9 @@ function openProductModal(productId) {
   }
   if (modalTitle) modalTitle.textContent = product.name;
 
-  const formattedPrice = product.priceFormatted || (product.price ? `₹${product.price}` : '');
+  const formattedPrice = product.priceFormatted || (product.price && Number(product.price) > 0 ? `₹${Number(product.price).toLocaleString('en-IN')}` : 'Price on Request');
   if (modalPrice) modalPrice.textContent = formattedPrice;
-  if (modalPriceNote) modalPriceNote.textContent = product.priceNote || 'Handcrafted on order';
+  if (modalPriceNote) modalPriceNote.textContent = product.priceNote || (product.price && Number(product.price) > 0 ? 'Handcrafted on order' : 'Bespoke pricing on WhatsApp consultation');
   if (modalDesc) modalDesc.textContent = product.detailedDesc;
 
   if (modalCustomizationList && product.customizationOptions) {
@@ -471,7 +473,10 @@ function openProductModal(productId) {
     `).join('');
   }
 
-  const waMsg = `Hello Siddhi, I am interested in ordering/customizing "${product.name}" (${formattedPrice}) from Bloom&blush. Please share availability & consultation.`;
+  const hasSpecificPrice = formattedPrice && formattedPrice !== 'Price on Request';
+  const priceSnippet = hasSpecificPrice ? ` (${formattedPrice})` : '';
+  const enquiryAspect = hasSpecificPrice ? 'availability & consultation' : 'pricing, availability & consultation';
+  const waMsg = `Hello Siddhi, I am interested in ordering/customizing "${product.name}"${priceSnippet} from Bloom&blush. Please share ${enquiryAspect}.`;
   const waUrl = `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(waMsg)}`;
   if (modalWaBtn) modalWaBtn.href = waUrl;
 

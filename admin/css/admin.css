@@ -572,6 +572,16 @@ body {
   color: var(--burgundy-800);
 }
 
+.card-price.card-price-on-request {
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--burgundy-700);
+  font-style: italic;
+  background: rgba(142, 40, 0, 0.06);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+
 .card-price-note {
   font-size: 0.78rem;
   color: var(--text-muted);

@@ -685,21 +685,32 @@
             <select id="prod-badge" class="form-control"></select>
           </div>
 
-          <!-- Numeric Price -->
+          <!-- Numeric Price (Optional) -->
           <div class="form-group">
-            <label class="form-label" for="prod-price">Base Price (₹ INR) *</label>
-            <input type="number" id="prod-price" class="form-control" placeholder="e.g. 4500" min="0" required>
+            <label class="form-label" for="prod-price">
+              <span>Base Price (₹ INR)</span>
+              <span class="helper" style="display:inline; margin-left:0.35rem; color:var(--text-muted); font-size:0.78rem; font-weight:normal;">(Optional)</span>
+            </label>
+            <input type="number" id="prod-price" class="form-control" placeholder="e.g. 4500 (leave blank for Price on Request)" min="0">
+            <span class="helper" style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem; display:block;">Optional. If left blank, this creation will display as "Price on Request" with bespoke WhatsApp enquiry.</span>
           </div>
 
-          <!-- Formatted Display Price -->
+          <!-- Formatted Display Price (Optional) -->
           <div class="form-group">
-            <label class="form-label" for="prod-price-formatted">Display Price Text</label>
-            <input type="text" id="prod-price-formatted" class="form-control" placeholder="e.g. Starting at ₹4,500">
+            <label class="form-label" for="prod-price-formatted">
+              <span>Display Price Text</span>
+              <span class="helper" style="display:inline; margin-left:0.35rem; color:var(--text-muted); font-size:0.78rem; font-weight:normal;">(Optional)</span>
+            </label>
+            <input type="text" id="prod-price-formatted" class="form-control" placeholder="e.g. Starting at ₹4,500 or Price on Request">
+            <span class="helper" style="font-size:0.75rem; color:var(--text-muted); margin-top:0.25rem; display:block;">Auto-fills from numeric price, or enter custom wording like "Price on Request".</span>
           </div>
 
-          <!-- Price Note -->
+          <!-- Price Note (Optional) -->
           <div class="form-group">
-            <label class="form-label" for="prod-price-note">Price Subtext / Note</label>
+            <label class="form-label" for="prod-price-note">
+              <span>Price Subtext / Note</span>
+              <span class="helper" style="display:inline; margin-left:0.35rem; color:var(--text-muted); font-size:0.78rem; font-weight:normal;">(Optional)</span>
+            </label>
             <input type="text" id="prod-price-note" class="form-control" placeholder="e.g. + Currency face value or Fresh blooms">
           </div>
 

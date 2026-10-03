@@ -289,7 +289,7 @@
       html += `<div class="search-results-list" role="listbox">`;
       html += matchedProducts.map((p, idx) => {
         const occasions = Array.isArray(p.suitableOccasions) ? p.suitableOccasions.slice(0, 2).join(' &bull; ') : '';
-        const priceLabel = p.priceFormatted || (p.price ? `₹${p.price.toLocaleString('en-IN')}` : 'Custom Order');
+        const priceLabel = p.priceFormatted || (p.price && Number(p.price) > 0 ? `₹${Number(p.price).toLocaleString('en-IN')}` : 'Price on Request');
 
         return `
           <div 
@@ -401,7 +401,7 @@
     `;
 
     html += featured.map((p, idx) => {
-      const priceLabel = p.priceFormatted || (p.price ? `₹${p.price.toLocaleString('en-IN')}` : 'Custom Order');
+      const priceLabel = p.priceFormatted || (p.price && Number(p.price) > 0 ? `₹${Number(p.price).toLocaleString('en-IN')}` : 'Price on Request');
       return `
         <div class="search-item-card" role="option" data-index="${idx}" data-id="${escapeHtml(p.id)}" tabindex="0">
           <img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}" class="search-item-img" loading="lazy">

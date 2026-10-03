@@ -243,7 +243,7 @@ function renderProducts(filterCollectionId = 'all') {
               <h3 class="col-card-title">${p.name}</h3>
               <div style="display: flex; justify-content: space-between; width: 100%; align-items: center; margin-top: 0.5rem;">
                 <span style="font-family: var(--font-serif); font-size: 1.15rem; color: var(--burgundy-deep); font-weight: 600;">
-                  ${p.priceFormatted || (p.price ? '₹' + p.price : 'Custom')}
+                  ${p.priceFormatted || (p.price && Number(p.price) > 0 ? '₹' + Number(p.price).toLocaleString('en-IN') : 'Price on Request')}
                 </span>
                 <button type="button" class="btn-circle-arrow js-open-product-btn" data-product-id="${p.id}" aria-label="View details of ${p.name}">
                   &rarr;
@@ -1132,8 +1132,10 @@ function escapeHtml(str) {
 }
 
 function getWhatsAppProductUrl(productName, price) {
-  const priceSnippet = price ? ` (${price})` : '';
-  const message = `Hello Siddhi, I am interested in the *${productName}*${priceSnippet} from Bloom&blush. Could you please share details regarding customization options and availability? Thank you!`;
+  const hasSpecificPrice = price && price !== 'Price on Request' && price !== 'Custom';
+  const priceSnippet = hasSpecificPrice ? ` (${price})` : '';
+  const enquiryAspect = hasSpecificPrice ? 'customization options and availability' : 'pricing, customization options and availability';
+  const message = `Hello Siddhi, I am interested in the *${productName}*${priceSnippet} from Bloom&blush. Could you please share details regarding ${enquiryAspect}? Thank you!`;
   return `https://wa.me/${CONFIG.whatsappNumber}?text=${encodeURIComponent(message)}`;
 }
 
@@ -1247,9 +1249,9 @@ function openProductModal(productId) {
   }
   if (modalTitle) modalTitle.textContent = product.name;
 
-  const formattedPrice = product.priceFormatted || (product.price ? `₹${product.price}` : '');
+  const formattedPrice = product.priceFormatted || (product.price && Number(product.price) > 0 ? `₹${Number(product.price).toLocaleString('en-IN')}` : 'Price on Request');
   if (modalPrice) modalPrice.textContent = formattedPrice;
-  if (modalPriceNote) modalPriceNote.textContent = product.priceNote || 'Handcrafted on order';
+  if (modalPriceNote) modalPriceNote.textContent = product.priceNote || (product.price && Number(product.price) > 0 ? 'Handcrafted on order' : 'Bespoke pricing on WhatsApp consultation');
   if (modalDesc) modalDesc.textContent = product.detailedDesc;
 
   if (modalCustomizationList && product.customizationOptions) {
