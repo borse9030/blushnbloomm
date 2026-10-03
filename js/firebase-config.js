@@ -17,6 +17,7 @@ const firebaseConfig = {
 
 // Initialize Firebase (Compat SDK)
 let firebaseApp = null;
+let firebaseAuth = null;
 let firestoreDb = null;
 let firebaseStorage = null;
 let firebaseAnalytics = null;
@@ -24,6 +25,9 @@ let firebaseAnalytics = null;
 try {
   if (typeof firebase !== 'undefined') {
     firebaseApp = firebase.initializeApp(firebaseConfig);
+    if (typeof firebase.auth === 'function') {
+      firebaseAuth = firebase.auth();
+    }
     if (typeof firebase.firestore === 'function') {
       firestoreDb = firebase.firestore();
     }
@@ -33,7 +37,7 @@ try {
     if (typeof firebase.analytics === 'function') {
       firebaseAnalytics = firebase.analytics();
     }
-    console.log('[Firebase] Successfully initialized Firebase Services (Firestore, Storage, Analytics) for Bloom&blush (blushnbloomm-4c7b9)');
+    console.log('[Firebase] Successfully initialized Firebase Services (Auth, Firestore, Storage, Analytics) for Bloom&blush (blushnbloomm-4c7b9)');
   }
 } catch (err) {
   console.warn('[Firebase] Initialization error or already initialized:', err);
