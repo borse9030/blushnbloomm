@@ -15,7 +15,7 @@ const R2Storage = (() => {
     secretAccessKey: '',
     bucketName: 'blushnbloomm-media',
     publicDomain: 'https://pub-91be6110e6d34a3bafea471d064d1b49.r2.dev',
-    workerUrl: ''     // Optional Cloudflare Worker upload proxy
+    workerUrl: 'https://wandering-union-5507.bhaveshcreatess.workers.dev'
   };
 
   // Load saved configuration from localStorage with defaults
@@ -32,6 +32,7 @@ const R2Storage = (() => {
     if (!config.accountId) config.accountId = '';
     if (!config.bucketName) config.bucketName = 'blushnbloomm-media';
     if (!config.publicDomain) config.publicDomain = 'https://pub-91be6110e6d34a3bafea471d064d1b49.r2.dev';
+    if (!config.workerUrl) config.workerUrl = 'https://wandering-union-5507.bhaveshcreatess.workers.dev';
     if (!config.accessKeyId) config.accessKeyId = '';
     if (!config.secretAccessKey) config.secretAccessKey = '';
     return config;
