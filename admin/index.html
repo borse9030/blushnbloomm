@@ -109,11 +109,6 @@
           <span id="cloud-pill-text">Cloud Sync: Active</span>
         </div>
 
-        <button type="button" class="btn btn-outline-gold" id="btn-storage-guide" title="Recommended Free Cloud Storage for Videos &amp; Photos">
-          <svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
-          <span>Free Storage Guide</span>
-        </button>
-
         <a href="./" target="_blank" rel="noopener noreferrer" class="btn btn-outline-gold" title="Open main website in a new window to see live preview">
           <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
           <span>View Main Website</span>
@@ -416,21 +411,6 @@
           </div>
         </div>
       </section>
-
-      <!-- Free Media Storage Guide Callout Strip -->
-      <div class="storage-guide-callout">
-        <div class="storage-callout-text">
-          <h4>
-            <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg>
-            <span>Need Free Storage for Your Videos &amp; Photos?</span>
-          </h4>
-          <p>Host unlimited videos for free using <strong>YouTube (Unlisted)</strong> or <strong>Cloudinary</strong>, and host photos using <strong>ImgBB</strong> or <strong>Firebase Storage</strong>. Zero server charges.</p>
-        </div>
-        <button type="button" class="btn btn-outline-gold js-open-storage-guide" style="white-space: nowrap;">
-          Open Free Storage Guide &rarr;
-        </button>
-      </div>
-
       <!-- Achievements Toolbar -->
       <div class="toolbar-card">
         <div class="toolbar-top">
@@ -1494,118 +1474,7 @@
     </div>
   </div>
 
-  <!-- ===================================================================
-       Modal: Free Cloud Media Storage Guide (Videos & Photos)
-       =================================================================== -->
-  <div class="modal-overlay" id="storage-guide-modal">
-    <div class="modal-card" style="max-width: 860px;">
-      <div class="modal-header" style="background: var(--burgundy-900);">
-        <h2>Recommended Free Cloud Storage for Videos &amp; Photos</h2>
-        <button type="button" class="modal-close-btn js-close-modal" aria-label="Close modal">&times;</button>
-      </div>
-      <div class="modal-body" style="padding: 1.5rem;">
-        <p style="font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 1.25rem;">
-          Hosting high-definition videos and large photos directly on small servers can cause slow load times or expensive bandwidth bills. Below are the <strong>top 100% free options</strong> to host your boutique media smoothly:
-        </p>
 
-        <div class="storage-guide-grid">
-
-          <!-- 1. YouTube Unlisted (Best for Videos) -->
-          <div class="storage-option-card recommended">
-            <div class="storage-option-header">
-              <span class="storage-option-title">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                <span>YouTube (Unlisted)</span>
-              </span>
-              <span class="storage-free-badge">100% Free &bull; Unlimited</span>
-            </div>
-            <p class="storage-option-desc">
-              <strong>Best for:</strong> Achievement videos, reels, and craft masterclasses of any length or file size.
-            </p>
-            <ol class="storage-steps-list">
-              <li>Upload your video on <a href="https://studio.youtube.com" target="_blank" rel="noopener">YouTube Studio</a>.</li>
-              <li>Set visibility to <strong>"Unlisted"</strong> (only visible when embedded on your website).</li>
-              <li>Copy the link (e.g. <code>https://youtu.be/...</code>) and paste it into the achievement video field.</li>
-              <li><em>Bonus:</em> Cover photo is automatically generated!</li>
-            </ol>
-            <a href="https://studio.youtube.com" target="_blank" rel="noopener" class="btn btn-outline-gold btn-sm">
-              Open YouTube Studio &rarr;
-            </a>
-          </div>
-
-          <!-- 2. Cloudinary -->
-          <div class="storage-option-card">
-            <div class="storage-option-header">
-              <span class="storage-option-title">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="#3448C5"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
-                <span>Cloudinary</span>
-              </span>
-              <span class="storage-free-badge">25 GB Free / Month</span>
-            </div>
-            <p class="storage-option-desc">
-              <strong>Best for:</strong> High-res photography, short video clips, and direct MP4 / WebP streaming with auto-compression.
-            </p>
-            <ol class="storage-steps-list">
-              <li>Sign up for a free account at <a href="https://cloudinary.com" target="_blank" rel="noopener">Cloudinary.com</a>.</li>
-              <li>Upload your photos or video clips in the Media Library.</li>
-              <li>Click <em>"Copy URL"</em> and paste directly into Bloom&amp;blush!</li>
-            </ol>
-            <a href="https://cloudinary.com" target="_blank" rel="noopener" class="btn btn-outline-gold btn-sm">
-              Visit Cloudinary &rarr;
-            </a>
-          </div>
-
-          <!-- 3. Firebase Storage -->
-          <div class="storage-option-card">
-            <div class="storage-option-header">
-              <span class="storage-option-title">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="#FFCA28"><path d="M3.89 15.672L6.255.461A.542.542 0 0 1 7.27.288l2.543 4.771zm16.794 3.692l-2.25-14a.54.54 0 0 0-.919-.267L3.316 19.364l7.865 4.417a1.789 1.789 0 0 0 1.735 0z"/></svg>
-                <span>Firebase Storage</span>
-              </span>
-              <span class="storage-free-badge">5 GB Free Included</span>
-            </div>
-            <p class="storage-option-desc">
-              <strong>Best for:</strong> Built-in storage directly inside your existing Google Firebase project (<code>blushnbloomm-4c7b9</code>).
-            </p>
-            <ol class="storage-steps-list">
-              <li>Open your <a href="https://console.firebase.google.com/project/blushnbloomm-4c7b9/storage" target="_blank" rel="noopener">Firebase Console Storage</a>.</li>
-              <li>Upload files into a <code>media/</code> folder.</li>
-              <li>Get the public download URL and paste into your creation or achievement.</li>
-            </ol>
-            <a href="https://console.firebase.google.com/project/blushnbloomm-4c7b9/storage" target="_blank" rel="noopener" class="btn btn-outline-gold btn-sm">
-              Open Firebase Console &rarr;
-            </a>
-          </div>
-
-          <!-- 4. ImgBB / PostImages -->
-          <div class="storage-option-card">
-            <div class="storage-option-header">
-              <span class="storage-option-title">
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="#0080FF"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
-                <span>ImgBB (Instant Photos)</span>
-              </span>
-              <span class="storage-free-badge">100% Free &bull; No Card</span>
-            </div>
-            <p class="storage-option-desc">
-              <strong>Best for:</strong> Instant photo uploads up to 32 MB with direct image links.
-            </p>
-            <ol class="storage-steps-list">
-              <li>Go to <a href="https://imgbb.com" target="_blank" rel="noopener">ImgBB.com</a>.</li>
-              <li>Drop your image and select <em>"Don't autodelete"</em>.</li>
-              <li>Under Embed codes, select <strong>"Direct links"</strong> and paste here.</li>
-            </ol>
-            <a href="https://imgbb.com" target="_blank" rel="noopener" class="btn btn-outline-gold btn-sm">
-              Visit ImgBB &rarr;
-            </a>
-          </div>
-
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary js-close-modal">Got it, Thanks!</button>
-      </div>
-    </div>
-  </div>
 
   <!-- Toast Notifications Container -->
   <div class="toast-container" id="toast-container"></div>
