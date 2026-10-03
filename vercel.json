@@ -13,6 +13,9 @@
     { "source": "/policy", "destination": "/privacy-policy.html" },
     { "source": "/terms-and-conditions", "destination": "/terms-and-conditions.html" },
     { "source": "/terms", "destination": "/terms-and-conditions.html" },
+    { "source": "/refund-policy", "destination": "/refund-policy.html" },
+    { "source": "/refunds", "destination": "/refund-policy.html" },
+    { "source": "/cancellation-policy", "destination": "/refund-policy.html" },
     { "source": "/admin", "destination": "/admin/index.html" },
     { "source": "/admin/(.*)", "destination": "/admin/$1" }
   ],

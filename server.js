@@ -37,6 +37,7 @@ const server = http.createServer((req, res) => {
   if (reqPath === '/sitemap') reqPath = '/sitemap.html';
   if (reqPath === '/privacy-policy' || reqPath === '/policy') reqPath = '/privacy-policy.html';
   if (reqPath === '/terms-and-conditions' || reqPath === '/terms') reqPath = '/terms-and-conditions.html';
+  if (reqPath === '/refund-policy' || reqPath === '/refunds' || reqPath === '/cancellation-policy') reqPath = '/refund-policy.html';
 
   if (req.method === 'POST' && reqPath === '/api/save-thumbnail') {
     let body = '';
