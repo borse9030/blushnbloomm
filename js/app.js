@@ -130,30 +130,27 @@ function renderCollectionsGrid(selectedId = 'all') {
     : COLLECTIONS.filter(c => c.id === selectedId);
 
   container.innerHTML = items.map(col => `
-    <article class="collection-editorial-card js-tilt-card js-explore-col" data-collection="${col.id}">
+    <article class="collection-editorial-card js-tilt-card js-explore-col" data-collection="${col.id}" title="Click to open dedicated ${col.title} showcase">
       <div class="col-card-media">
         <img src="${col.image}" alt="${col.title} - Bloom&blush Pune" loading="lazy">
+        <span class="col-card-view-badge">Dedicated Showcase &rarr;</span>
       </div>
       <div class="col-card-footer">
         <h3 class="col-card-title">${col.title}</h3>
-        <button type="button" class="btn-circle-arrow js-col-arrow" data-collection="${col.id}" aria-label="Explore ${col.title}">
+        <button type="button" class="btn-circle-arrow js-col-arrow" data-collection="${col.id}" aria-label="Explore dedicated ${col.title} page">
           &rarr;
         </button>
       </div>
     </article>
   `).join('');
 
-  // Handle click on collection card -> scroll to featured and filter creations
+  // Handle click on collection card -> Navigate directly to dedicated category page
   container.querySelectorAll('.js-explore-col, .js-col-arrow').forEach(el => {
     el.addEventListener('click', (e) => {
       e.stopPropagation();
       const colId = el.dataset.collection || (el.closest('.collection-editorial-card') ? el.closest('.collection-editorial-card').dataset.collection : null);
       if (colId) {
-        filterProductsByCollection(colId);
-        const featuredSec = document.getElementById('featured');
-        if (featuredSec) {
-          featuredSec.scrollIntoView({ behavior: 'smooth' });
-        }
+        window.location.href = `category.html?id=${encodeURIComponent(colId)}`;
       }
     });
   });
