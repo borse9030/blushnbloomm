@@ -143,4 +143,24 @@
     <priority>0.70</priority>
   </url>
 
+  <!-- =========================================================
+       10. Privacy Policy & Client Confidentiality Charter
+       ========================================================= -->
+  <url>
+    <loc>https://blushnbloomm.in/privacy-policy.html</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+  </url>
+
+  <!-- =========================================================
+       11. Terms & Conditions of Studio Artistry & Product Policies
+       ========================================================= -->
+  <url>
+    <loc>https://blushnbloomm.in/terms-and-conditions.html</loc>
+    <lastmod>2026-10-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.60</priority>
+  </url>
+
 </urlset>

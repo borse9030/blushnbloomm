@@ -9,6 +9,10 @@
     { "source": "/customized-gifts", "destination": "/customized-gifts.html" },
     { "source": "/luxury-addons", "destination": "/luxury-addons.html" },
     { "source": "/sitemap", "destination": "/sitemap.html" },
+    { "source": "/privacy-policy", "destination": "/privacy-policy.html" },
+    { "source": "/policy", "destination": "/privacy-policy.html" },
+    { "source": "/terms-and-conditions", "destination": "/terms-and-conditions.html" },
+    { "source": "/terms", "destination": "/terms-and-conditions.html" },
     { "source": "/admin", "destination": "/admin/index.html" },
     { "source": "/admin/(.*)", "destination": "/admin/$1" }
   ],
